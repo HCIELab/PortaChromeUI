@@ -1,8 +1,4 @@
 
-float PIXEL_WIDTH =20.0f;
-float PIXEL_HEIGHT = 10.0f;
-
-
 
 class Pixel{
   float x;
@@ -81,7 +77,7 @@ Fibers createDefaultFibers(){
       float y = (PIXEL_HEIGHT+ PIXEL_PADDING_Y)*i;
       cameraImgWidth1 = (x>cameraImgWidth1)? x:cameraImgWidth1;
       cameraImgHeight1 = (y>cameraImgHeight1)? y:cameraImgHeight1;
-      Pixel p = new Pixel(x,y, 255.0f,255.0f,255.0f);
+      Pixel p = new Pixel(x,y, 255.0f,0.0f,255.0f);
       pixelList.add(p);
     }
     fiberList.add(new Fiber(pixelList));

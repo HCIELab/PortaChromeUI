@@ -5,18 +5,21 @@
  * Brightness is the relative lightness or darkness of a color.
  * Move the cursor vertically over each bar to alter its brightness. 
  */
- 
 
+Canvas canvas = new Canvas();
 
 void setup() {
-  size(640, 360);
+
+  pixelDensity(displayDensity());
   colorMode(RGB, 255, 255, 255);
   noStroke();
-  background(0);
-  Fibers fibers = createDefaultFibers();
-  fibers.drawFibers(0.0f,0.0f,300.0f,300.0f);
+  background(255);
+  size(700, 720);
+  canvas.drawGUI();
+
 }
 
 void draw() {
-
+  background(255);
+  canvas.updateGUI();
 }
