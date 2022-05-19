@@ -14,12 +14,17 @@ void setup() {
   colorMode(RGB, 255, 255, 255);
   noStroke();
   background(255);
-  size(700, 720);
+  size(1600, 900);
   canvas.drawGUI();
+ 
 
 }
 
 void draw() {
   background(255);
   canvas.updateGUI();
+}
+
+void mousePressed() {
+  save("line.tif");
 }

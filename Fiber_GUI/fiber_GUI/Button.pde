@@ -24,6 +24,8 @@ class Button{
     // stroke(255);
     if(mouseX> centerX - width/2 && mouseX< centerX + width/2 && mouseY > centerY - height/2 && mouseY<centerY+height/2 && mousePressed){
       fill(pressColor);
+      // selectInput("Select a file to process:", "fileSelected");
+      // img = new Img( loadImage(fileSelected),WINDOW_WIDTH/4,WINDOW_HEIGHT/4 );
     }
     else {
       fill(noPressColor);
@@ -35,4 +37,14 @@ class Button{
     text(text, centerX,centerY);
   }
 
+}
+
+void fileSelected(File selection) {
+  if (selection == null) {
+    println("Window was closed or the user hit cancel.");
+  } else {
+    println("User selected " + selection.getAbsolutePath());
+    // return selection.getAbsolutePath();
+  }
+  
 }
