@@ -25,6 +25,3 @@ void draw() {
   canvas.updateGUI();
 }
 
-void mousePressed() {
-  save("line.tif");
-}

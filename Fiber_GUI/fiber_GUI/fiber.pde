@@ -35,6 +35,7 @@ class Fiber {
   void updatePixelColor(float topLeftX, float topLeftY, float canvasWidth, float canvasHeight,float cameraImgWidth, float cameraImgHeight){
     // get color from canvas which is on the left side
     loadPixels();
+    img.img.loadPixels();
     for(int i=0; i<pixels.size(); i++){
       Pixel pixel = pixels.get(i);
       float worldX = map(pixel.x,0,cameraImgWidth,0,canvasWidth)+topLeftX;
