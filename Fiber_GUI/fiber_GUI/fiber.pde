@@ -14,16 +14,15 @@ class Pixel{
 }
 
 class Fiber {
-  ArrayList<Pixel> pixels;
+  ArrayList<Pixel> leds;
 
-  Fiber(ArrayList<Pixel> inputPixels){
-  
-     pixels = inputPixels;
+  Fiber(ArrayList<Pixel> inputLeds){
+     leds = inputLeds;
   }
 
   void drawFiber(float topLeftX, float topLeftY, float canvasWidth, float canvasHeight,float cameraImgWidth, float cameraImgHeight){
-    for(int i=0; i<pixels.size(); i++){
-      Pixel pixel = pixels.get(i);
+    for(int i=0; i<leds.size(); i++){
+      Pixel pixel = leds.get(i);
       float worldX = map(pixel.x,0,cameraImgWidth,0,canvasWidth)+topLeftX;
       float worldY = map(pixel.y,0,cameraImgHeight,0,canvasHeight)+topLeftY;
       noStroke();
@@ -35,13 +34,18 @@ class Fiber {
   void updatePixelColor(float topLeftX, float topLeftY, float canvasWidth, float canvasHeight,float cameraImgWidth, float cameraImgHeight){
     // get color from canvas which is on the left side
     loadPixels();
-    img.img.loadPixels();
-    for(int i=0; i<pixels.size(); i++){
-      Pixel pixel = pixels.get(i);
+
+    for(int i=0; i<leds.size(); i++){
+      Pixel pixel = leds.get(i);
       float worldX = map(pixel.x,0,cameraImgWidth,0,canvasWidth)+topLeftX;
       float worldY = map(pixel.y,0,cameraImgHeight,0,canvasHeight)+topLeftY;
-      pixel.c = img.img.get((int)(worldX-img.centerX+img.width/2-SUB_WIN_SPACING),(int)( worldY-img.centerY+img.height/2));
-
+      // pixel.c = img.img.get((int)(worldX-img.centerX+img.width/2-SUB_WIN_SPACING),(int)( worldY-img.centerY+img.height/2));
+      int referX = (int)(worldX-SUB_WIN_SPACING);
+      int referY = (int)( worldY);
+      pixel.c = pixels[referY*WINDOW_WIDTH+referX];
+   
+      // if(i==0)print("worldX-SUBWINSPACING: "+ x);
+      // if(i==0)print("worldY: "+ worldY+'\n');
     }
   }
 
@@ -74,9 +78,7 @@ class Fibers {
     }
   }
 
-  void testFunc(){
-    print("call function");
-  }
+ 
 
 }
 

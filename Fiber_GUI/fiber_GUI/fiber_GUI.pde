@@ -10,18 +10,19 @@ Canvas canvas = new Canvas();
 
 void setup() {
 
-  pixelDensity(displayDensity());
+  // pixelDensity(displayDensity());
+  pixelDensity(1);
   colorMode(RGB, 255, 255, 255);
   noStroke();
   background(255);
   size(1600, 900);
   canvas.drawGUI();
- 
+  frameRate(60);
 
 }
 
 void draw() {
-  background(255);
+  // background(255);
   canvas.updateGUI();
 }
 

@@ -10,5 +10,7 @@ float PIXEL_HEIGHT = 5.0f;
 
 // widget settings
 float SUB_WIN_SPACING = 800; // spacing between two major sub window.
+int SUB_WIN_HEIGHT = 600; 
+int SUB_WIN_WIDTH = 600;
 int IMG_MOVE_SPEED=5;
 int IMG_SCALE_SPEED=5;
