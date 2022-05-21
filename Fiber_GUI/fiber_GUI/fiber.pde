@@ -43,9 +43,6 @@ class Fiber {
       int referX = (int)(worldX-SUB_WIN_SPACING);
       int referY = (int)( worldY);
       pixel.c = pixels[referY*WINDOW_WIDTH+referX];
-   
-      // if(i==0)print("worldX-SUBWINSPACING: "+ x);
-      // if(i==0)print("worldY: "+ worldY+'\n');
     }
   }
 
@@ -77,9 +74,6 @@ class Fibers {
       targetFiber.updatePixelColor( topLeftX,  topLeftY,  canvasWidth,  canvasHeight, cameraImgWidth,  cameraImgHeight);
     }
   }
-
- 
-
 }
 
 

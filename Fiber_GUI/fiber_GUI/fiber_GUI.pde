@@ -1,11 +1,3 @@
-/**
- * Brightness 
- * by Rusty Robison. 
- * 
- * Brightness is the relative lightness or darkness of a color.
- * Move the cursor vertically over each bar to alter its brightness. 
- */
-
 Canvas canvas = new Canvas();
 
 void setup() {
@@ -17,7 +9,7 @@ void setup() {
   background(255);
   size(1600, 900);
   canvas.drawGUI();
-  frameRate(60);
+
 
 }
 
@@ -26,3 +18,34 @@ void draw() {
   canvas.updateGUI();
 }
 
+void mouseWheel(MouseEvent event) {
+  float e = event.getCount();
+  brush.radius += (int)e;
+}
+
+void keyPressed() {
+  if (key == 'd') {
+    img.changeImg(img.centerX + IMG_MOVE_SPEED,img.centerY,img.width,img.height);
+  } 
+  else if (key == 'a') {
+    img.changeImg(img.centerX - IMG_MOVE_SPEED,img.centerY,img.width,img.height);
+  }
+  else if (key == 'w') {
+    img.changeImg(img.centerX ,img.centerY - IMG_MOVE_SPEED ,img.width,img.height);
+  } 
+  else if (key == 's') {
+    img.changeImg(img.centerX ,img.centerY + IMG_MOVE_SPEED ,img.width,img.height);
+  }
+  else if (key == 'q') {
+    img.changeImg(img.centerX ,img.centerY  ,img.width-IMG_SCALE_SPEED,img.height- IMG_SCALE_SPEED);
+  }
+  else if (key == 'e') {
+    img.changeImg(img.centerX ,img.centerY  ,img.width + IMG_SCALE_SPEED,img.height + IMG_SCALE_SPEED);
+  }
+}
+
+void mouseClicked() {
+  canvas.addImgBtn.checkBtnClicked();
+  canvas.brushBtn.checkBtnClicked();
+  canvas.startBtn.checkBtnClicked();
+}
