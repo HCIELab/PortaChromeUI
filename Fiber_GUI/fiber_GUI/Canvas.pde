@@ -26,6 +26,7 @@ class Canvas{
     text("ChromoFiber Design Tool", 100, 70 ); 
     // img = new Img( imgTmp,400,500, imgTmp.width,imgTmp.height);
     fibers = createDefaultFibers();
+    // fibers = createFibers2();
     brushBtn = new Button(900,50,200,50,color(255,0,0),color(200,50,0),"Brush Off",0);
     addImgBtn = new Button(1150,50,200,50,color(255,0,0),color(200,50,0),"Add an Image",1);
     startBtn = new Button(1400,50,200,50,color(255,0,0),color(200,50,0),"Start Color Changing",2);
