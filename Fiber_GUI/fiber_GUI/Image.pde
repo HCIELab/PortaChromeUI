@@ -20,7 +20,7 @@ class Img{
     img.resize(width, height);
   }
   void drawImg() {
-    image(img, centerX - width / 2, centerY - height / 2, width, height); 
+    if(img != null) image(img, centerX - width / 2, centerY - height / 2, width, height); 
   }
   void drawImgOnPg(PGraphics pg) {
     pg.image(img, centerX - width / 2, centerY - height / 2, width, height); 

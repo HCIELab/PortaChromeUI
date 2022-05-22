@@ -42,10 +42,21 @@ void keyPressed() {
   else if (key == 'e') {
     img.changeImg(img.centerX ,img.centerY  ,img.width + IMG_SCALE_SPEED,img.height + IMG_SCALE_SPEED);
   }
+
+  else if (key == '1') {
+    canvas.fibers.drawSetting = 1;
+  }
+  else if (key == '2') {
+    canvas.fibers.drawSetting = 2;
+  }
 }
 
 void mouseClicked() {
   canvas.addImgBtn.checkBtnClicked();
   canvas.brushBtn.checkBtnClicked();
   canvas.startBtn.checkBtnClicked();
+}
+
+void mouseDragged(){
+  brush.drawWithBrush();
 }
