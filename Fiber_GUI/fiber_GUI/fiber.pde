@@ -64,6 +64,21 @@ class Fiber {
       pixel.c = pixels[referY * WINDOW_WIDTH + referX];
     }
   }
+  void updatePixelColor2(float topLeftX, float topLeftY, float canvasWidth, float canvasHeight,float cameraImgWidth, float cameraImgHeight) {
+    // get color from canvas which is on the left side
+    
+
+    layersMerged.loadPixels();
+    for (int i = 0; i < leds.size(); i++) {
+      Pixel pixel = leds.get(i);
+      float worldX = map(pixel.x,0,cameraImgWidth,0,canvasWidth) + topLeftX;
+      float worldY = map(pixel.y,0,cameraImgHeight,0,canvasHeight) + topLeftY;
+      // pixel.c = img.img.get((int)(worldX-img.centerX+img.width/2-SUB_WIN_SPACING),(int)( worldY-img.centerY+img.height/2));
+      int referX = (int)(worldX - 900);
+      int referY = (int)(worldY )-200;
+      pixel.c = layersMerged.pixels[referY * SUB_WIN_WIDTH + referX];
+    }
+  }
   
 }
 
@@ -91,7 +106,8 @@ class Fibers {
   void updateFibers(float topLeftX, float topLeftY, float canvasWidth, float canvasHeight) {
     for (int i = 0; i < fiberNum;i++) {
       Fiber targetFiber = fibers.get(i);
-      targetFiber.updatePixelColor(topLeftX,  topLeftY,  canvasWidth,  canvasHeight, cameraImgWidth,  cameraImgHeight);
+  
+      targetFiber.updatePixelColor2(topLeftX,  topLeftY,  canvasWidth,  canvasHeight, cameraImgWidth,  cameraImgHeight);
     }
   }
 }
@@ -124,6 +140,34 @@ Fibers createDefaultFibers() {
 }
 
 Fibers createFibers2() {
+  int fiberNum = 60;
+  int pixelsPerFiber = 60;
+  float PIXEL_PADDING_X = 5.0f;
+  float PIXEL_PADDING_Y = 5.0f;
+  float cameraImgWidth1 = (PIXEL_PADDING_X+PIXEL_WIDTH)*pixelsPerFiber;
+  float cameraImgHeight1 = (PIXEL_PADDING_Y+PIXEL_HEIGHT)*fiberNum; 
+  float deltaR = PIXEL_PADDING_X+PIXEL_WIDTH;
+  float deltaTheta = 3.14/2/fiberNum;
+  ArrayList<Fiber> fiberList =  new ArrayList<Fiber>();
+  for (int i = 0; i < fiberNum; ++i) {
+    ArrayList<Pixel> pixelList =  new ArrayList<Pixel>();
+    float thetai = deltaTheta * i;
+    for (int j = 0; j < pixelsPerFiber;j++) {
+      // color c = color(100,200,100);
+      float rj = deltaR * j;
+      float x = rj * cos(thetai);
+      float y = rj * sin(thetai);
+      
+      Pixel p = new Pixel(x,y, 255.0f,0.0f,255.0f);
+      pixelList.add(p);
+    }
+    fiberList.add(new Fiber(pixelList));
+
+  }
+  return new Fibers(fiberList,cameraImgWidth1,cameraImgHeight1);
+}
+
+Fibers createHatFibers() {
   int fiberNum = 60;
   int pixelsPerFiber = 60;
   float PIXEL_PADDING_X = 5.0f;

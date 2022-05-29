@@ -24,6 +24,9 @@ void mouseWheel(MouseEvent event) {
 }
 
 void keyPressed() {
+  if(img == null) {
+    if(key == 'a' || key == 's' || key == 'd' || key == 'w' || key == 'q' || key == 'e')return;
+  }
   if (key == 'd') {
     img.changeImg(img.centerX + IMG_MOVE_SPEED,img.centerY,img.width,img.height);
   } 

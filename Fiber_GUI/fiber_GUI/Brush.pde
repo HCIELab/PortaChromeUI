@@ -1,7 +1,7 @@
 class Brush {
   int radius;
   color c;
-  PGraphics pgImg;
+  // PGraphics pgImg;
   boolean isValid;
   PGraphics cursorLayer;
 
@@ -9,7 +9,7 @@ class Brush {
     radius = radius1;
     c = c1;
     isValid = false;
-    pgImg = createGraphics(SUB_WIN_WIDTH,SUB_WIN_HEIGHT);
+    // pgImg = createGraphics(SUB_WIN_WIDTH,SUB_WIN_HEIGHT);
     cursorLayer = createGraphics(SUB_WIN_WIDTH,SUB_WIN_HEIGHT);
   }
 
@@ -21,8 +21,12 @@ class Brush {
     // cursorLayer.ellipse(mouseX-100,mouseY-200,radius,radius);
     // // cursorLayer.tint(255,50)
     // cursorLayer.endDraw();
-    
-    image(pgImg, 100, 200); 
+    paintLayer.beginDraw();
+    paintLayer.fill(c);
+    // paintLayer.ellipse(mouseX-100,mouseY-200,radius,radius);
+    paintLayer.endDraw();
+
+    image(paintLayer, 100, 200); 
     // image(cursorLayer, 100, 200); 
 
   }
@@ -30,10 +34,11 @@ class Brush {
     if(!isValid) {
       return;
     }
-    pgImg.beginDraw();
-    pgImg.noStroke();
-    pgImg.fill(c);
-    pgImg.ellipse(mouseX-100,mouseY-200,radius,radius);
-    pgImg.endDraw();
+ 
+    paintLayer.beginDraw();
+    paintLayer.noStroke();
+    paintLayer.fill(c);
+    paintLayer.ellipse(mouseX-PAINT_WIN_LEFT_TOP_X,mouseY- PAINT_WIN_LEFT_TOP_Y,radius,radius);
+    paintLayer.endDraw();
   }
 }

@@ -23,7 +23,7 @@ class Img{
     if(img != null) image(img, centerX - width / 2, centerY - height / 2, width, height); 
   }
   void drawImgOnPg(PGraphics pg) {
-    pg.image(img, centerX - width / 2, centerY - height / 2, width, height); 
+    pg.image(img, centerX - width / 2 - PAINT_WIN_LEFT_TOP_X , centerY - height / 2 -PAINT_WIN_LEFT_TOP_Y , width, height); 
   }
   
 }
