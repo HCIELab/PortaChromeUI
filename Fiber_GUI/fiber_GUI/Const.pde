@@ -20,4 +20,4 @@ color INIT_BURSH_COLOR = color(197,156,245);
 
 
 // other settings
-float INIT_PIC_WIDTH = 50.0f; 
+float INIT_PIC_WIDTH = 200.0f; 

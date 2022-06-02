@@ -64,7 +64,7 @@ class Button{
             break;
           }
           case 1 : {
-            PImage imgTmp= loadImage("images/flower.jpeg");
+            PImage imgTmp= loadImage("images/Pikachu.jpg");
             float scale = INIT_PIC_WIDTH/imgTmp.width;
 
             img = new Img( imgTmp,400,500, (int)(imgTmp.width*scale),(int)(imgTmp.height*scale));

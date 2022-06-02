@@ -66,8 +66,6 @@ class Fiber {
   }
   void updatePixelColor2(float topLeftX, float topLeftY, float canvasWidth, float canvasHeight,float cameraImgWidth, float cameraImgHeight) {
     // get color from canvas which is on the left side
-    
-
     layersMerged.loadPixels();
     for (int i = 0; i < leds.size(); i++) {
       Pixel pixel = leds.get(i);
@@ -147,7 +145,7 @@ Fibers createFibers2() {
   float cameraImgWidth1 = (PIXEL_PADDING_X+PIXEL_WIDTH)*pixelsPerFiber;
   float cameraImgHeight1 = (PIXEL_PADDING_Y+PIXEL_HEIGHT)*fiberNum; 
   float deltaR = PIXEL_PADDING_X+PIXEL_WIDTH;
-  float deltaTheta = 3.14/2/fiberNum;
+  float deltaTheta = 3.14/3/fiberNum;
   ArrayList<Fiber> fiberList =  new ArrayList<Fiber>();
   for (int i = 0; i < fiberNum; ++i) {
     ArrayList<Pixel> pixelList =  new ArrayList<Pixel>();
@@ -172,10 +170,11 @@ Fibers createHatFibers() {
   int pixelsPerFiber = 60;
   float PIXEL_PADDING_X = 5.0f;
   float PIXEL_PADDING_Y = 5.0f;
-  float cameraImgWidth1 = (PIXEL_PADDING_X+PIXEL_WIDTH)*pixelsPerFiber;
-  float cameraImgHeight1 = (PIXEL_PADDING_Y+PIXEL_HEIGHT)*fiberNum; 
+  
+  float cameraImgHeight1 =(PIXEL_PADDING_Y+PIXEL_HEIGHT)*fiberNum;  
+  float cameraImgWidth1 = cameraImgHeight1;
   float deltaR = PIXEL_PADDING_X+PIXEL_WIDTH;
-  float deltaTheta = 3.14/2/fiberNum;
+  float deltaTheta = 3.14/3/fiberNum;
   ArrayList<Fiber> fiberList =  new ArrayList<Fiber>();
   for (int i = 0; i < fiberNum; ++i) {
     ArrayList<Pixel> pixelList =  new ArrayList<Pixel>();
@@ -183,8 +182,8 @@ Fibers createHatFibers() {
     for (int j = 0; j < pixelsPerFiber;j++) {
       // color c = color(100,200,100);
       float rj = deltaR * j;
-      float x = rj * cos(thetai);
-      float y = rj * sin(thetai);
+      float x = cameraImgWidth1/2 - rj* cos(3.14/3 + thetai);
+      float y = rj * sin(3.14/3 + thetai );
       
       Pixel p = new Pixel(x,y, 255.0f,0.0f,255.0f);
       pixelList.add(p);

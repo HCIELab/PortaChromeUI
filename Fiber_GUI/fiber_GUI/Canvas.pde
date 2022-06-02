@@ -24,7 +24,7 @@ class Canvas{
     paintLayer = createGraphics(SUB_WIN_WIDTH,SUB_WIN_HEIGHT);
     picLayer = createGraphics(SUB_WIN_WIDTH,SUB_WIN_HEIGHT);
     layersMerged = createGraphics(SUB_WIN_WIDTH,SUB_WIN_HEIGHT);
-    PImage imgTmp= loadImage("images/hat.jpg");
+    PImage imgTmp= loadImage("images/hat2.png");
     float aspectRatio = ((float)imgTmp.height)/imgTmp.width;
     float aspectRatioSubWin = ((float)SUB_WIN_HEIGHT)/(float)SUB_WIN_WIDTH;
 
@@ -38,10 +38,11 @@ class Canvas{
     }
     textSize(50);
     fill(0, 0, 0);
-    text("ChromoFiber Design Tool", 100, 70 ); 
+    text("ChromoFiber Design Tool", 100, 70 );
     // img = new Img( imgTmp,400,500, imgTmp.width,imgTmp.height);
-    fibers = createDefaultFibers();
+    // fibers = createDefaultFibers();
     // fibers = createFibers2();
+    fibers = createHatFibers();
     brushBtn = new Button(900,50,200,50,color(255,0,0),color(200,50,0),"Brush Off",0);
     addImgBtn = new Button(1150,50,200,50,color(255,0,0),color(200,50,0),"Add an Image",1);
     startBtn = new Button(1400,50,200,50,color(255,0,0),color(200,50,0),"Start Color Changing",2);
