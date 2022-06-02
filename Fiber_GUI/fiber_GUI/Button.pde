@@ -64,10 +64,8 @@ class Button{
             break;
           }
           case 1 : {
-            PImage imgTmp= loadImage("images/Pikachu.jpg");
-            float scale = INIT_PIC_WIDTH/imgTmp.width;
-
-            img = new Img( imgTmp,400,500, (int)(imgTmp.width*scale),(int)(imgTmp.height*scale));
+            selectInput("Choose an image","imageSelected");
+            
             // print("case1");
             break;
         }
@@ -77,12 +75,18 @@ class Button{
   
 }
 
-void fileSelected(File selection) {
-  if (selection == null) {
-    println("Window was closed or the user hit cancel.");
-  } else {
-    println("User selected " + selection.getAbsolutePath());
-    // return selection.getAbsolutePath();
+void imageSelected(File selection){
+    if(selection ==null){println("Error");}
+    else{
+      PImage imgTmp = loadImage( selection.getAbsolutePath() );
+      float scale = INIT_PIC_WIDTH/imgTmp.width;
+
+      img = new Img( imgTmp,400,500, (int)(imgTmp.width*scale),(int)(imgTmp.height*scale));
+      startImageProcessing();
+    }
   }
-  
-}
+
+  void startImageProcessing(){
+    // now the picture is loaded 
+    // we can now do some stuff with the picture
+  }
