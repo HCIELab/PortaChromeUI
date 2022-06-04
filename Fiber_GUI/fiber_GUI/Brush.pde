@@ -26,8 +26,8 @@ class Brush {
     // paintLayer.ellipse(mouseX-100,mouseY-200,radius,radius);
     paintLayer.endDraw();
 
-    image(paintLayer, 100, 200); 
-    // image(cursorLayer, 100, 200); 
+    image(paintLayer, PAINT_WIN_LEFT_TOP_X, PAINT_WIN_LEFT_TOP_Y); 
+
 
   }
   void drawWithBrush(){

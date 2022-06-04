@@ -58,7 +58,6 @@ class Fiber {
       Pixel pixel = leds.get(i);
       float worldX = map(pixel.x,0,cameraImgWidth,0,canvasWidth) + topLeftX;
       float worldY = map(pixel.y,0,cameraImgHeight,0,canvasHeight) + topLeftY;
-      // pixel.c = img.img.get((int)(worldX-img.centerX+img.width/2-SUB_WIN_SPACING),(int)( worldY-img.centerY+img.height/2));
       int referX = (int)(worldX - SUB_WIN_SPACING);
       int referY = (int)(worldY);
       pixel.c = pixels[referY * WINDOW_WIDTH + referX];
@@ -72,8 +71,8 @@ class Fiber {
       float worldX = map(pixel.x,0,cameraImgWidth,0,canvasWidth) + topLeftX;
       float worldY = map(pixel.y,0,cameraImgHeight,0,canvasHeight) + topLeftY;
       // pixel.c = img.img.get((int)(worldX-img.centerX+img.width/2-SUB_WIN_SPACING),(int)( worldY-img.centerY+img.height/2));
-      int referX = (int)(worldX - 900);
-      int referY = (int)(worldY )-200;
+      int referX = (int)(worldX - FIBER_WIN_LEFT_TOP_X);
+      int referY = (int)(worldY )- FIBER_WIN_LEFT_TOP_Y;
       pixel.c = layersMerged.pixels[referY * SUB_WIN_WIDTH + referX];
     }
   }

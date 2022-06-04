@@ -14,12 +14,11 @@ class Canvas{
   Button startBtn;
   
   Canvas(){
-    
   }
 
 
-
   void drawGUI(){
+
     stroke(0);
     paintLayer = createGraphics(SUB_WIN_WIDTH,SUB_WIN_HEIGHT);
     picLayer = createGraphics(SUB_WIN_WIDTH,SUB_WIN_HEIGHT);
@@ -28,13 +27,11 @@ class Canvas{
     float aspectRatio = ((float)imgTmp.height)/imgTmp.width;
     float aspectRatioSubWin = ((float)SUB_WIN_HEIGHT)/(float)SUB_WIN_WIDTH;
 
-
     if(aspectRatio > aspectRatioSubWin) {
-
-      photo = new Img( imgTmp,400,500, imgTmp.width * SUB_WIN_HEIGHT/ imgTmp.height,SUB_WIN_HEIGHT);
+      photo = new Img( imgTmp, PAINT_WIN_CENTER_X, PAINT_WIN_CENTER_Y, imgTmp.width * SUB_WIN_HEIGHT/ imgTmp.height,SUB_WIN_HEIGHT);
     }
     else {
-      photo = new Img( imgTmp,400,500, SUB_WIN_WIDTH, imgTmp.height * SUB_WIN_WIDTH/imgTmp.width);
+      photo = new Img( imgTmp, PAINT_WIN_CENTER_X, PAINT_WIN_CENTER_Y, SUB_WIN_WIDTH, imgTmp.height * SUB_WIN_WIDTH/imgTmp.width);
     }
     textSize(50);
     fill(0, 0, 0);
@@ -43,9 +40,9 @@ class Canvas{
     // fibers = createDefaultFibers();
     // fibers = createFibers2();
     fibers = createHatFibers();
-    brushBtn = new Button(900,50,200,50,color(255,0,0),color(200,50,0),"Brush Off",0);
-    addImgBtn = new Button(1150,50,200,50,color(255,0,0),color(200,50,0),"Add an Image",1);
-    startBtn = new Button(1400,50,200,50,color(255,0,0),color(200,50,0),"Start Color Changing",2);
+    brushBtn = new Button(800,50,180,50,color(255,0,0),color(200,50,0),"Brush Off",0);
+    addImgBtn = new Button(1000,50,180,50,color(255,0,0),color(200,50,0),"Add an Image",1);
+    startBtn = new Button(1200,50,180,50,color(255,0,0),color(200,50,0),"Start Color Changing",2);
     // tint(255, 128);
     brush = new Brush(20,INIT_BURSH_COLOR,true);
   }
@@ -63,7 +60,7 @@ class Canvas{
     image(paintLayer, PAINT_WIN_LEFT_TOP_X, PAINT_WIN_LEFT_TOP_Y);
     stroke(0);
     noFill();
-    rect(100,200,600,600,10);
+    rect(PAINT_WIN_LEFT_TOP_X,PAINT_WIN_LEFT_TOP_Y, SUB_WIN_WIDTH, SUB_WIN_HEIGHT,10);
   
     if(photo != null)photo.drawImg();
     if(img != null)img.drawImgOnPg(picLayer);
@@ -75,10 +72,10 @@ class Canvas{
     layersMerged.image(paintLayer,0,0);
     layersMerged.endDraw();
     // ellipse(mouseX,mouseY,20,20);
-    fibers.updateFibers(900.0f,200.0f,600.0f,600.0f);
-    fibers.drawFibers(900.0f,200.0f,600.0f,600.0f);
+    fibers.updateFibers(FIBER_WIN_LEFT_TOP_X, FIBER_WIN_LEFT_TOP_Y, SUB_WIN_WIDTH, SUB_WIN_HEIGHT);
+    fibers.drawFibers(FIBER_WIN_LEFT_TOP_X, FIBER_WIN_LEFT_TOP_Y, SUB_WIN_WIDTH, SUB_WIN_HEIGHT);
     
-    image(layersMerged,100,200);
+    image(layersMerged,PAINT_WIN_LEFT_TOP_X, PAINT_WIN_LEFT_TOP_Y);
     addImgBtn.drawButton();
     brushBtn.drawButton();
     startBtn.drawButton();

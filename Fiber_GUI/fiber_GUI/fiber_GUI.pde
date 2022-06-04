@@ -7,7 +7,7 @@ void setup() {
   colorMode(RGB, 255, 255, 255);
   noStroke();
   background(255);
-  size(1600, 900);
+  size(1400, 800);
   canvas.drawGUI();
   
 
@@ -25,7 +25,7 @@ void mouseWheel(MouseEvent event) {
 
 void keyPressed() {
   if(img == null) {
-    if(key == 'a' || key == 's' || key == 'd' || key == 'w' || key == 'q' || key == 'e')return;
+    if(key == 'a' || key == 's' || key == 'd' || key == 'w' || key == 'q' || key == 'e' || key == 'r')return;
   }
   if (key == 'd') {
     img.changeImg(img.centerX + IMG_MOVE_SPEED,img.centerY,img.width,img.height);
@@ -44,6 +44,9 @@ void keyPressed() {
   }
   else if (key == 'e') {
     img.changeImg(img.centerX ,img.centerY  ,img.width + IMG_SCALE_SPEED,img.height + IMG_SCALE_SPEED);
+  }
+  else if (key == 'r') {
+    img.rotateAngle += IMG_ROTATE_SPEED;
   }
 
   else if (key == '1') {

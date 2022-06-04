@@ -40,7 +40,7 @@ class Button{
     // }
     fill(currColor);
     rect(centerX - width / 2, centerY - height / 2, width, height,10);
-    textSize(TEXT_SIZE);
+    textSize(BTN_TEXT_SIZE);
     textAlign(CENTER,CENTER);
     fill(255);
     text(text, centerX,centerY);
@@ -81,7 +81,7 @@ void imageSelected(File selection){
       PImage imgTmp = loadImage( selection.getAbsolutePath() );
       float scale = INIT_PIC_WIDTH/imgTmp.width;
 
-      img = new Img( imgTmp,400,500, (int)(imgTmp.width*scale),(int)(imgTmp.height*scale));
+      img = new Img( imgTmp,PAINT_WIN_LEFT_TOP_X + SUB_WIN_WIDTH/2,PAINT_WIN_LEFT_TOP_Y+ SUB_WIN_HEIGHT/2, (int)(imgTmp.width*scale),(int)(imgTmp.height*scale));
       startImageProcessing();
     }
   }

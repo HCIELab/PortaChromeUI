@@ -4,12 +4,14 @@ class Img{
   int centerY;
   int width;
   int height;
+  float rotateAngle;
   Img(PImage img1, int centerX1, int centerY1, int width1, int height1) {
     img = img1;
     centerX = centerX1;
     centerY = centerY1;
     width = width1;
     height = height1;
+    rotateAngle = 0.0f;
     img.resize(width1, height1);
   }
   void changeImg(int centerX1, int centerY1, int width1, int height1) {
@@ -19,11 +21,18 @@ class Img{
     height = height1;
     img.resize(width, height);
   }
+
   void drawImg() {
-    if(img != null) image(img, centerX - width / 2, centerY - height / 2, width, height); 
+    if(img != null) {
+      image(img, centerX - width / 2, centerY - height / 2, width, height); 
+    }
   }
   void drawImgOnPg(PGraphics pg) {
-    pg.image(img, centerX - width / 2 - PAINT_WIN_LEFT_TOP_X , centerY - height / 2 -PAINT_WIN_LEFT_TOP_Y , width, height); 
+    pg.pushMatrix();
+    pg.translate(centerX- PAINT_WIN_LEFT_TOP_X, centerY-PAINT_WIN_LEFT_TOP_Y );
+    pg.rotate(rotateAngle);
+    pg.image(img,  - width / 2  , - height / 2 , width, height); 
+    pg.popMatrix();
   }
   
 }
