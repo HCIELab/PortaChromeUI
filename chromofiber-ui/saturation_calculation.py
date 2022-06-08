@@ -32,6 +32,15 @@ def linear_programming_solve(A, b):
   We then convert y0, y1, y2 to x3, x4, x5, respectively
   and then solve to fit the scipy API
   here: https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.linprog.html
+  input 有cmy,
+  y0 = |c-c'| -> Y0>= c-c'; y0>= c'-c
+  y1 = |M-M'|
+  y2 = |Y-Y‘|
+  我们希望色差最小-> y0+y1+y2最小
+  梯度下降可能更好，用y0^2 + y1^2 +y3^2
+  
+
+  
   '''
   c = [0,0,0,1,1,1]
   A_ub = []
