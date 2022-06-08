@@ -27,7 +27,6 @@ class Brush {
     paintLayer.noStroke();
     paintLayer.fill(c);
     paintLayer.stroke(c);
-    // paintLayer.ellipse(mouseX-PAINT_WIN_LEFT_TOP_X,mouseY- PAINT_WIN_LEFT_TOP_Y,radius,radius);
     paintLayer.strokeWeight(radius);  // Thicker
     paintLayer.line(mouseX-PAINT_WIN_LEFT_TOP_X, mouseY- PAINT_WIN_LEFT_TOP_Y, pmouseX-PAINT_WIN_LEFT_TOP_X, pmouseY- PAINT_WIN_LEFT_TOP_Y);
     paintLayer.endDraw();

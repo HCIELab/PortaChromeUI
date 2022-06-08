@@ -1,10 +1,13 @@
+
 Img img;
 Img photo;
 PGraphics paintLayer;
 PGraphics picLayer;
 PGraphics layersMerged;
 
+
 Brush brush;
+float brushSize;
 
 class Canvas{
 
@@ -79,6 +82,9 @@ class Canvas{
     addImgBtn.drawButton();
     brushBtn.drawButton();
     startBtn.drawButton();
+    brush.radius = (int)brushSize;
+    color cnew = color(cw.r(), cw.g(), cw.b());
+    brush.c = cnew;
     
   }
 

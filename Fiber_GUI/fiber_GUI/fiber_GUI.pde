@@ -1,20 +1,30 @@
+
+import controlP5.*;
+ControlP5 cp5;
+ColorWheel cw;
 Canvas canvas = new Canvas();
 
 void setup() {
-
-  // pixelDensity(displayDensity());
   pixelDensity(1);
   colorMode(RGB, 255, 255, 255);
   noStroke();
   background(255);
   size(1400, 800);
+  cp5 = new ControlP5(this);
+  cw = cp5.addColorWheel("wheel")
+        .setPosition(1100, 100);
+  cp5.addSlider("brushSize")
+     .setPosition(BRUSH_SLIDRE_X, BRUSH_SLIDRE_Y)
+     .setRange(0,MAX_BRUSH_SIZE)
+     .setWidth(BRUSH_SLIDRE_WID)
+     .setHeight(BRUSH_SLIDRE_HEIGHT)
+     .setValue(20)
+     ;
   canvas.drawGUI();
-  
-
 }
 
 void draw() {
-  // background(255);
+
   canvas.updateGUI();
 }
 
@@ -66,3 +76,6 @@ void mouseClicked() {
 void mouseDragged(){
   brush.drawWithBrush();
 }
+
+
+ 
