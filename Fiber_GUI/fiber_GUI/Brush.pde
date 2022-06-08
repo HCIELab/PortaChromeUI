@@ -1,44 +1,35 @@
 class Brush {
   int radius;
   color c;
-  // PGraphics pgImg;
   boolean isValid;
   PGraphics cursorLayer;
-
   Brush(int radius1, color c1, boolean isValid){
     radius = radius1;
     c = c1;
     isValid = false;
-    // pgImg = createGraphics(SUB_WIN_WIDTH,SUB_WIN_HEIGHT);
     cursorLayer = createGraphics(SUB_WIN_WIDTH,SUB_WIN_HEIGHT);
   }
 
   void showBrushResult(){
-    // cursorLayer.beginDraw();
-    // cursorLayer.clear();
-    // cursorLayer.stroke(0);
-    // cursorLayer.fill(c);
-    // cursorLayer.ellipse(mouseX-100,mouseY-200,radius,radius);
-    // // cursorLayer.tint(255,50)
-    // cursorLayer.endDraw();
+
     paintLayer.beginDraw();
     paintLayer.fill(c);
-    // paintLayer.ellipse(mouseX-100,mouseY-200,radius,radius);
     paintLayer.endDraw();
-
     image(paintLayer, PAINT_WIN_LEFT_TOP_X, PAINT_WIN_LEFT_TOP_Y); 
-
-
   }
+
   void drawWithBrush(){
     if(!isValid) {
       return;
     }
- 
+    
     paintLayer.beginDraw();
     paintLayer.noStroke();
     paintLayer.fill(c);
-    paintLayer.ellipse(mouseX-PAINT_WIN_LEFT_TOP_X,mouseY- PAINT_WIN_LEFT_TOP_Y,radius,radius);
+    paintLayer.stroke(c);
+    // paintLayer.ellipse(mouseX-PAINT_WIN_LEFT_TOP_X,mouseY- PAINT_WIN_LEFT_TOP_Y,radius,radius);
+    paintLayer.strokeWeight(radius);  // Thicker
+    paintLayer.line(mouseX-PAINT_WIN_LEFT_TOP_X, mouseY- PAINT_WIN_LEFT_TOP_Y, pmouseX-PAINT_WIN_LEFT_TOP_X, pmouseY- PAINT_WIN_LEFT_TOP_Y);
     paintLayer.endDraw();
   }
 }
