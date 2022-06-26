@@ -12,7 +12,9 @@ void setup() {
   size(1400, 800);
   cp5 = new ControlP5(this);
   cw = cp5.addColorWheel("wheel")
-        .setPosition(1100, 100);
+        .setPosition(1150, 200)
+        ;
+
   cp5.addSlider("brushSize")
      .setPosition(BRUSH_SLIDRE_X, BRUSH_SLIDRE_Y)
      .setRange(0,MAX_BRUSH_SIZE)
@@ -20,6 +22,41 @@ void setup() {
      .setHeight(BRUSH_SLIDRE_HEIGHT)
      .setValue(20)
      ;
+
+  cp5.addSlider("picRotation")
+     .setPosition(PICROTATION_SLIDER_X, PICROTATION_SLIDER_Y)
+     .setRange(0,MAX_ROTATE)
+     .setWidth(PICROTATION_SLIDER_WID)
+     .setHeight(PICROTATION_SLIDER_HEIGHT)
+     .setValue(0)
+     ;
+
+  cp5.addSlider("picScale")
+     .setPosition(PICSCALE_SLIDER_X, PICSCALE_SLIDER_Y)
+     .setRange(MIN_SCALE,MAX_SCALE)
+     .setWidth(PICSCALE_SLIDER_WID)
+     .setHeight(PICSCALE_SLIDER_HEIGHT)
+     .setValue(100)
+     ;
+     
+  cp5.addSlider("imgX")
+     .setPosition(IMGX_SLIDER_X, IMGX_SLIDER_Y)
+     .setRange(MIN_X,MAX_X)
+     .setWidth(IMGX_SLIDER_WID)
+     .setHeight(IMGX_SLIDER_HEIGHT)
+     .setValue((MIN_X+MAX_X)/2)
+     ;
+
+  cp5.addSlider("imgY")
+     .setPosition(IMGY_SLIDER_X, IMGY_SLIDER_Y)
+     .setRange(MIN_Y, MAX_Y)
+     .setWidth(IMGY_SLIDER_WID)
+     .setHeight(IMGY_SLIDER_HEIGHT)
+     .setValue((MIN_Y+MAX_Y)/2)
+     ;
+  
+
+
   canvas.drawGUI();
 }
 
@@ -58,7 +95,6 @@ void keyPressed() {
   else if (key == 'r') {
     img.rotateAngle += IMG_ROTATE_SPEED;
   }
-
   else if (key == '1') {
     canvas.fibers.drawSetting = 1;
   }
@@ -71,6 +107,7 @@ void mouseClicked() {
   canvas.addImgBtn.checkBtnClicked();
   canvas.brushBtn.checkBtnClicked();
   canvas.startBtn.checkBtnClicked();
+
 }
 
 void mouseDragged(){

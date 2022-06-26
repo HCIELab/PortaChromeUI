@@ -11,6 +11,7 @@ class Pixel{
     c =  color(r,g,b);
   }
   
+  
 }
 
 class Fiber {

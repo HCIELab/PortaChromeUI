@@ -28,16 +28,6 @@ class Button{
   }
   
   void drawButton() {
-    // stroke(255);
-    // if (mouseX > centerX - width / 2 && mouseX < centerX + width / 2 && mouseY > centerY - height / 2 && mouseY < centerY + height / 2 && mousePressed) {
-    //   fill(pressColor);
-    //   // buttonFunc();
-    //   // selectInput("Select a file to process:", "fileSelected");
-    //   // img = new Img( loadImage(fileSelected),WINDOW_WIDTH/4,WINDOW_HEIGHT/4 );
-    // }
-    // else {
-    //   fill(noPressColor);
-    // }
     fill(currColor);
     rect(centerX - width / 2, centerY - height / 2, width, height,10);
     textSize(BTN_TEXT_SIZE);
