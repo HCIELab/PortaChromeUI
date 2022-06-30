@@ -3,9 +3,9 @@
 
 [ChromoFiber Design Tool (python version)](https://github.com/echo-xiao9/FiberGUI/tree/main/chromofiber-ui)
 
-[LED Locator(OpenCV version)](https://github.com/echo-xiao9/FiberGUI/tree/main/camera/videoProcess)
+[LED Locator (OpenCV version)](https://github.com/echo-xiao9/FiberGUI/tree/main/camera/videoProcess)
 
-[LED stripe controller(Arduino version)]()
+[LED stripe controller(Arduino version)](https://github.com/echo-xiao9/FiberGUI/blob/main/camera/testLed/testLed.ino)
 
 ### Dev log
 
