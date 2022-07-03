@@ -9,7 +9,12 @@ import cvui
 
 areaThreshold = 0.003
 cap = cv.VideoCapture('../clips/IMG_1086.MOV')
-blinkingInterval = 1000  # 1s
+# get total frame number 
+totalFrame = int(cap.get(cv.CAP_PROP_FRAME_COUNT))
+fps = cap.get(cv.CAP_PROP_FPS)
+print("fps: " + str(fps))
+
+blinkingInterval = 1* int(fps)  # 1s
 
 deltaInterval = 100
 
@@ -37,26 +42,31 @@ def startCapture(thresh):
         return False
 
 
-def canCapture():
-    global lastBlinkTime
-    global curBlinkLED
-    if findFirstLed is False:
-        return False
+# def canCapture():
+#     global lastBlinkTime
+#     global curBlinkLED
+#     if findFirstLed is False:
+#         return False
+#     else:
+#         timeAfterFirstBlink = int(
+#             round(time.time() * 1000)) - firstLEDTime - start_time
+#         if (timeAfterFirstBlink - lastBlinkTime) > blinkingInterval/2:
+#             # print("Blinking"+str(timeAfterFirstBlink))
+
+#             if(timeAfterFirstBlink > (curBlinkLED+1)*blinkingInterval - deltaInterval) and (timeAfterFirstBlink < (curBlinkLED+1)*blinkingInterval + deltaInterval):
+#                 curBlinkLED += 1
+#                 lastBlinkTime = timeAfterFirstBlink
+#                 print("find"+str(curBlinkLED)+"LED, time:"+str(lastBlinkTime))
+#                 return True
+#     return False
+
+# # find the center of the led area and draw the circle
+
+def canCapture(curFrame):
+    if(curFrame%blinkingInterval==0):
+        return True
     else:
-        timeAfterFirstBlink = int(
-            round(time.time() * 1000)) - firstLEDTime - start_time
-        if (timeAfterFirstBlink - lastBlinkTime) > blinkingInterval/2:
-            # print("Blinking"+str(timeAfterFirstBlink))
-
-            if(timeAfterFirstBlink > (curBlinkLED+1)*blinkingInterval - deltaInterval) and (timeAfterFirstBlink < (curBlinkLED+1)*blinkingInterval + deltaInterval):
-                curBlinkLED += 1
-                lastBlinkTime = timeAfterFirstBlink
-                print("find"+str(curBlinkLED)+"LED, time:"+str(lastBlinkTime))
-                return True
-    return False
-
-# find the center of the led area and draw the circle
-
+        return False
 
 def findCenter(img, resultImg):
     # convert image to grayscale image
@@ -84,11 +94,16 @@ def findCenter(img, resultImg):
 def main():
    
     global findFirstLed
+
     # concatenate image Horizontally
     resultImgRGB = np.zeros((1920, 1080, 3), np.uint8)
+   
+    # while cap.isOpened():
+    for curFrame in range(totalFrame):
+        print(curFrame)
 
-    while cap.isOpened():
         ret, frame = cap.read()
+
         
 
         # if frame is read correctly ret is True
@@ -104,7 +119,7 @@ def main():
             # cv.imshow('Image', gray)
             findFirstLed = startCapture(thresh)
         else:
-            if canCapture() is True:
+            if canCapture(curFrame) is True:
                 # show the image
                 resultImg = findCenter(frame, resultImg)
                 resultImgRGB = cv.cvtColor(resultImg,cv.COLOR_GRAY2RGB)
