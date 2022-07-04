@@ -12,7 +12,7 @@ FASTLED_USING_NAMESPACE
 // -Mark Kriegsman, December 2014
 
 
-#define DATA_PIN    4 //Pin for data on LedStrip
+#define DATA_PIN    7 //Pin for data on LedStrip
 //#define CLK_PIN   4
 #define LED_TYPE    WS2811
 #define COLOR_ORDER GRB
@@ -38,11 +38,11 @@ void setup() {
 void loop() {
   for (int i = 1; i < NUM_LEDS; i++) {
     digitalWrite(LED,HIGH); // Turn on LED  
-    delay(500);
+    delay(200);
     leds[i] = CRGB::White;  //set the all leds to blue
     leds[i-1] = CRGB::Black; 
     FastLED.show();
-    delay(500); // 500ms   
+    delay(200); // 500ms   
     digitalWrite(LED,LOW); // Turn off LED  
   }
   FastLED.show();       //start the leds
