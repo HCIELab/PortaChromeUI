@@ -5,7 +5,7 @@ import cv2 as cv
 
 
 areaThreshold = 0.0005
-cap = cv.VideoCapture('../#scanning-samples/1.mp4')
+cap = cv.VideoCapture('../#scanning-samples/0.mp4')
 # get total frame number
 totalFrame = int(cap.get(cv.CAP_PROP_FRAME_COUNT))
 fps = cap.get(cv.CAP_PROP_FPS)
@@ -28,6 +28,7 @@ def startCapture(thresh, curFrame):
     global startFrame
     whiteAreaSize = sum(sum(thresh))
     whiteProportion = whiteAreaSize / (thresh.shape[0]*thresh.shape[1])
+    print("whiteProportion"+str(whiteProportion))
     if(whiteProportion >= areaThreshold):
         # firstLEDTime = int(round(time.time() * 1000)) - start_time
         # lastBlinkTime = firstLEDTime
@@ -85,17 +86,18 @@ def findMaxLightArea(img):
     contours, hierarchy = cv.findContours(
         gray_temp, cv.RETR_TREE, cv.CHAIN_APPROX_NONE)
 
-​    #find the area of all the contours and fill it with 0 expect the largest contour
+    # find the area of all the contours and fill it with 0 expect the largest contour
     area = []
-    for i in xrange(len(contours)):
-        area.append(cv2.contourArea(contours[i]))
+    for i in range(len(contours)):
+        area.append(cv.contourArea(contours[i]))
     max_idx = np.argmax(area)
-    for i in xrange(len(contours)):
-        if(i == max_idx):
-            continue
-        cv.fillConvexPoly(gray, contours[i], 0)
-    return img
-
+    # for i in range(len(contours)):
+    #     if(i == max_idx):
+    #         continue
+    #     cv.fillConvexPoly(gray, contours[i], 0)
+    cv.fillConvexPoly(gray, contours[max_idx], 0)
+    cv.imshow("gray", gray)
+    return gray
 
 def main():
 
@@ -118,7 +120,9 @@ def main():
             gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
             resultImg = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
             # filter the image with a threshold
-            ret, thresh = cv.threshold(gray, 230, 255, cv.THRESH_BINARY)
+            
+            ret, thresh = cv.threshold(resultImg, 230, 255, cv.THRESH_BINARY)
+            # resultImg = findMaxLightArea(resultImg)
             # cv.imshow('thresh', thresh)
             findFirstLed = startCapture(thresh, curFrame)
         else:
