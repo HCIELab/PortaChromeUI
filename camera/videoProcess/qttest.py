@@ -8,10 +8,6 @@ import sys
 import numpy as np
 import cv2 as cv
 
-
-
-
-
 class Window(QMainWindow):
 
     isObversed = True
@@ -73,13 +69,37 @@ class Window(QMainWindow):
         self.exportBtn.resize(300, 50)
         self.exportBtn.clicked.connect(self.exportData)
 
+        # label "threshold"
+        self.thresholdLabel = QLabel(self)
+        self.thresholdLabel.move(950, 520)
+        self.thresholdLabel.setText("Detection\nThreshold")
+
+        # label value of slider
+        self.thresholdValue = QLabel(self)
+        self.thresholdValue.move(1050, 520)
+        self.thresholdValue.setText("10")
+
+        # add a slider to control threshold value
+        self.thresholdSlider = QSlider(Qt.Horizontal, self)
+        self.thresholdSlider.move(1080, 510)
+        self.thresholdSlider.setMinimum(0)
+        self.thresholdSlider.setMaximum(50)
+        self.thresholdSlider.setValue(10)
+        self.thresholdSlider.setTickPosition(QSlider.TicksBelow)
+        self.thresholdSlider.setTickInterval(10)
+        self.thresholdSlider.resize(300, 50)
+        self.thresholdSlider.valueChanged.connect(self.changeThreshold)
+
         # show all the widget
         self.show()
 
     # select and process video
     def selectAndProcess(self):
         fileName = self.selectVideo()
-        print("fileName: " + fileName)
+        self.findFirstLed = False
+        
+        self.curLED = 1
+        print("curLED: ", self.curLED)
         resultImg = self.processVideo(fileName)
         height, width, channel = resultImg.shape
         bytesPerLine = 3 * width
@@ -123,9 +143,10 @@ class Window(QMainWindow):
         whiteAreaSize = sum(sum(thresh))
         whiteProportion = whiteAreaSize / (thresh.shape[0]*thresh.shape[1])
         if(whiteProportion >= self.areaThreshold):
-
+            
             print("find first LED")
             self.startFrame = curFrame
+            self.curLed = 1
             print("startFrame"+str(self.startFrame))
             return True
         else:
@@ -133,16 +154,15 @@ class Window(QMainWindow):
 
 
     def canCapture(self, curFrame):
-        print("curLED"+str(self.curLED))
-        print(curFrame - (self.curLED * self.blinkingInterval)-self.startFrame)
         if curFrame - (self.curLED * self.blinkingInterval)-self.startFrame < 0.5 and curFrame - (self.curLED * self.blinkingInterval)-self.startFrame > - 0.5:
             self.curLED += 1
+            print("curLED"+str(self.curLED))
             return True
         else:
             return False
 
 
-    def findCenter(self, img, resultImg, curFrame):
+    def findCenter(self, img, resultImg, curFrame, rgbResultImg):
         # convert image to grayscale image
         gray_image = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
         # convert the grayscale image to binary image
@@ -157,16 +177,15 @@ class Window(QMainWindow):
         except:
             return img, resultImg
         #  highlight the center
-        # cv.circle(img, (cX, cY), 5, (0, 0, 255), -1)
-        # cv.putText(img, "centroid", (cX - 25, cY - 25),
-        #            cv.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+
         if self.canCapture(curFrame) is True:
-            print("canCapture")
+            # print("canCapture")
             #  highlight the center
-            self.f.write(str(cX) + " " + str(cY) + '\n')
+            # self.f.write(str(cX) + " " + str(cY) + '\n')
             cv.circle(resultImg, (cX, cY), 5, (255, 255, 255), -1)
+            cv.circle(rgbResultImg, (cX, cY), 5, (0, 0, 255), -1)
             # cv.imshow("Image", resultImg)
-        return img, resultImg
+        return img, resultImg, rgbResultImg
 
     def processVideo(self, fileName):
         cap = cv.VideoCapture(fileName)
@@ -180,7 +199,7 @@ class Window(QMainWindow):
 
         # concatenate image Horizontally
         resultImgRGB = np.zeros((1920, 1080, 3), np.uint8)
-        curLED = 0
+        
         # while cap.isOpened():
         for curFrame in range(totalFrame):
             if(not cap.isOpened()):
@@ -197,16 +216,24 @@ class Window(QMainWindow):
                 # filter the image with a threshold
                 ret, thresh = cv.threshold(gray, 230, 255, cv.THRESH_BINARY)
                 self.findFirstLed = self.startCapture(thresh, curFrame)
+                rgbResultImg = frame
+                frame, resultImg,rgbResultImg = self.findCenter(frame, resultImg, curFrame,rgbResultImg)
             else:
-
+                
                 # show the image
-                frame, resultImg = self.findCenter(frame, resultImg, curFrame)
-                resultImgRGB = cv.cvtColor(resultImg, cv.COLOR_GRAY2RGB)
+                frame, resultImg,rgbResultImg = self.findCenter(frame, resultImg, curFrame,rgbResultImg)
+        
 
         cap.release()
         # cv.destroyAllWindows()
         self.f.close()
-        return resultImgRGB
+        return rgbResultImg
+
+    def changeThreshold(self):
+        newVal = self.thresholdSlider.value()
+        self.areaThreshold = newVal/10000
+        # change threshold value to
+        self.thresholdValue.setText(str(newVal))
 
 # create pyqt5 app
 App = QApplication(sys.argv)
