@@ -55,37 +55,44 @@ class Button{
                         } else{
                             text = "BrushOff";
                             currColor = noPressColor;
-                            }
+                        }
                         // print("brush is valid:" + brush.isValid + '\n');
                         break;
-                        }
+                    }
                     case 1 : {
                         selectInput("Choose an image","imageSelected");
                         
                         // print("case1");
                         break;
-                    }
-                    case 2 : {
+                }
+                case 2 : {
                         print("start color changeing ");
                         // // write led data to myPort
-                        Fiber targetFiber = canvas.allFibers.fibers.get(0);
-                        String code ="";
-                        for (int i = 0; i <targetFiber.leds.size() ; i++) {
-                            Pixel p = targetFiber.leds.get(i);
-                            // the acutual rgb of color is grb
-                            code += str(int(red(p.c)))+","+str(int(green(p.c)))+","+str(int(blue(p.c)))+"#";
+                        String code = "";
+                        int ledIndex = 0;
+                        for (int j = 0;j < canvas.allFibers.fibers.size();j++) {
+                            Fiber targetFiber = canvas.allFibers.fibers.get(j);
+                            
+                            for (int i = 0; i < targetFiber.leds.size() && ledIndex <70; i++) {
+                                Pixel p = targetFiber.leds.get(i);
+                                // the acutual rgb of color is grb
+                                ledIndex += 1;
+                                code += str(int(red(p.c))) + "," + str(int(green(p.c))) + "," + str(int(blue(p.c))) + "#";
+                            }
+                            
                         }
-                        code +="*";
+                        code += "*";
                         myPort.write(code);
-                        print(code+'\n');
+                        print(code + '\n');
+                        // basic rgb test
                         // myPort.write("255,0,0#0,255,0#0,0,255#*");    
                         break;
                     }
-                }
             }
         }
-    
     }
+    
+}
 
 void imageSelected(File selection) {
     if (selection ==  null) {println("Error");}
@@ -95,10 +102,10 @@ void imageSelected(File selection) {
         
         img = new Img(imgTmp,PAINT_WIN_LEFT_TOP_X + SUB_WIN_WIDTH / 2,PAINT_WIN_LEFT_TOP_Y + SUB_WIN_HEIGHT / 2,(int)(imgTmp.width * scale),(int)(imgTmp.height * scale));
         startImageProcessing();
-        }
     }
+}
 
 void startImageProcessing() {
     // now the picture is loaded 
     // we can now dosome stuff with the picture
-    }
+}

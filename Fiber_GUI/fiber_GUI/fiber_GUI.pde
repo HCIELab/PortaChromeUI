@@ -148,6 +148,6 @@ String val = myPort.readStringUntil('\n');
 if (val != null) {
   //trim whitespace and formatting characters (like carriage return)
   val = trim(val);
-  println(val);
+//   println(val);
   }
 }
