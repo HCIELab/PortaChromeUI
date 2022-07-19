@@ -10,13 +10,11 @@ class Pixel{
     y = y1;
     c =  color(r,g,b);
   }
-  
-  
 }
 
 class Fiber {
+    
   ArrayList<Pixel> leds;
-
   Fiber(ArrayList<Pixel> inputLeds) {
     leds = inputLeds;
   }

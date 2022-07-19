@@ -14,11 +14,12 @@ int imgY;
 
 class Canvas{
 
-  Fibers fibers;
+  Fibers allFibers;
   Button addImgBtn;
   Button brushBtn;
   Button startBtn;
-  
+  // toggle button control the view (back or front)
+  Button toggleFrontBack;
   Canvas(){
   }
 
@@ -46,15 +47,21 @@ class Canvas{
     text("Image Scale", PICSCALE_SLIDER_X, PICSCALE_SLIDER_Y - SLIDER_TEXT_PADDING );
     text("Image X", IMGX_SLIDER_X, IMGX_SLIDER_Y - SLIDER_TEXT_PADDING );
     text("Image Y", IMGY_SLIDER_X, IMGY_SLIDER_Y - SLIDER_TEXT_PADDING );
-    fibers = createHatFibers();
+    allFibers = createHatFibers();
     brushBtn = new Button(1250,50,180,40,color(255,0,0),color(200,50,0),"Brush Off",0);
     addImgBtn = new Button(1250,100,180,40,color(255,0,0),color(200,50,0),"Add an Image",1);
     startBtn = new Button(1250,150,180,40,color(255,0,0),color(200,50,0),"Start Color Changing",2);
+    
     // tint(255, 128);
     brush = new Brush(20,INIT_BURSH_COLOR,true);
   }
 
   void updateGUI(){
+    // String val = myPort.readStringUntil('*');
+    // if(val !=null ){
+    //     println("READ"+val+'\n');
+    // }
+
     paintLayer.beginDraw();
     picLayer.beginDraw();
     layersMerged.beginDraw();
@@ -81,8 +88,8 @@ class Canvas{
     layersMerged.image(paintLayer,0,0);
     layersMerged.endDraw();
     // ellipse(mouseX,mouseY,20,20);
-    fibers.updateFibers(FIBER_WIN_LEFT_TOP_X, FIBER_WIN_LEFT_TOP_Y, SUB_WIN_WIDTH, SUB_WIN_HEIGHT);
-    fibers.drawFibers(FIBER_WIN_LEFT_TOP_X, FIBER_WIN_LEFT_TOP_Y, SUB_WIN_WIDTH, SUB_WIN_HEIGHT);
+    allFibers.updateFibers(FIBER_WIN_LEFT_TOP_X, FIBER_WIN_LEFT_TOP_Y, SUB_WIN_WIDTH, SUB_WIN_HEIGHT);
+    allFibers.drawFibers(FIBER_WIN_LEFT_TOP_X, FIBER_WIN_LEFT_TOP_Y, SUB_WIN_WIDTH, SUB_WIN_HEIGHT);
     
     image(layersMerged,PAINT_WIN_LEFT_TOP_X, PAINT_WIN_LEFT_TOP_Y);
     addImgBtn.drawButton();
