@@ -82,6 +82,7 @@ class Button{
                             
                         }
                         code += "*";
+
                         myPort.write(code);
                         
                         // basic rgb test
@@ -90,25 +91,38 @@ class Button{
                     }
 
                 case 3 : {
-                        // the text need to be passed is same as case 2, pass it to python to calculate the real color
-                        print("start calculate real color");
-                        String code = "";
-                        int ledIndex = 0;
-                        for (int j = 0;j < canvas.allFibers.fibers.size();j++) {
-                            Fiber targetFiber = canvas.allFibers.fibers.get(j);
-                            
-                            for (int i = 0; i < targetFiber.leds.size() ; i++) {
-                                Pixel p = targetFiber.leds.get(i);
-                                // the acutual rgb of color is grb
-                                ledIndex += 1;
-                                code += str(int(red(p.c))) + "," + str(int(green(p.c))) + "," + str(int(blue(p.c))) + "#";
+                        if(isShowRealColor == false) {
+                            text = "Real Color";
+                            // the text need to be passed is same as case 2, pass it to python to calculate the real color
+                            print("start calculate real color");
+                            String code = "";
+                            int ledIndex = 0;
+                            for (int j = 0;j < canvas.allFibers.fibers.size();j++) {
+                                Fiber targetFiber = canvas.allFibers.fibers.get(j);
+                                
+                                for (int i = 0; i < targetFiber.leds.size() ; i++) {
+                                    Pixel p = targetFiber.leds.get(i);
+                                    // the acutual rgb of color is grb
+                                    ledIndex += 1;
+                                    code += str(int(red(p.c))) + "," + str(int(green(p.c))) + "," + str(int(blue(p.c))) + "#";
+                                }
+                                
                             }
-                            
+                            code += "*";
+                            print("processing sent "+ledIndex+" led to python");
+                            output.println(code);
+                            output.flush();
+                            output.close();
+                            // tell python solver.py to calculate
+                            myClient.write("1");
+                            isShowRealColor = true;
                         }
-                        code += "*";
-                        print("processing sent "+ledIndex+" led to python");
-                        myClient.write(code);
-                        isShowRealColor = true;
+                        else{
+                            text = "Target Color";
+                            print("show original color");
+                            isShowRealColor = false;
+                        }
+
                         break;
                 }
             }

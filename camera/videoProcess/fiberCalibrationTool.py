@@ -16,6 +16,30 @@ class Window(QMainWindow):
     findFirstLed = False
     startFrame = 0
     blinkingInterval = 0
+
+    # const for UI settings
+    subWinWidth = 480 # 1920/4
+    subWinHeight = 270
+
+    # horizonal paddings
+    leftPadding = 50
+    # distance between two subwinows
+    centralPadding1 = 50 
+    # distance betwwen right window and slider
+    centralPadding2 = 50
+    rightPadding = 50
+
+    # vertical paddings
+    topPadding = 100
+    bottomPadding = 50
+    centralPaddingHori = 30
+
+    # button & slider setting
+    btnHeight = 50
+    # sliderWidth = 50
+    # sliderTopPadding = 40
+    # sliderHeight = subWinHeight - sliderTopPadding
+
     f = open("ledPos.txt", "a")
 
     def __init__(self):
@@ -23,8 +47,9 @@ class Window(QMainWindow):
 
         # set the title
         self.setWindowTitle("Fiber Calibration Tool")
-        width = 1430
-        height = 600
+        width = self.leftPadding + self.subWinWidth*2 + self.centralPadding1   + self.rightPadding
+        height = self.topPadding + self.subWinHeight + self.centralPaddingHori*2 + self.btnHeight*2 + self.bottomPadding
+
         # setting the fixed width of window
         self.setFixedWidth(width)
         self.setFixedHeight(height)
@@ -32,69 +57,81 @@ class Window(QMainWindow):
 
         # display window tile
         self.label = QLabel(self)
-        self.label.move(50, 20)
+        self.label.move(self.leftPadding, 20)
         self.label.setText("Fiber Calibration Tool")
         self.label.setFont(QFont("SansSerif", 35))
         self.label.resize(self.label.sizeHint())
 
         # display obverse image
-        self.ledImageObverse = QLabel(self)
-        self.ledImageObverse.move(50, 100)
-        self.ledImageObverse.resize(640, 360)
-        pixmap = QPixmap('obverse.png')
-        self.ledImageObverse.setPixmap(pixmap)
+        self.ledImageFront = QLabel(self)
+        self.ledImageFront.move(self.leftPadding, self.topPadding)
+        self.ledImageFront.resize(self.subWinWidth, self.subWinHeight)
+        pixmap = QPixmap('noVideo.png')
+        self.ledImageFront.setPixmap(pixmap)
 
-        # display reverse image
+        # display back image
+        backImgX = self.leftPadding+ self.subWinWidth + self.centralPadding1
         self.ledImageReverse = QLabel(self)
-        self.ledImageReverse.move(740, 100)
-        self.ledImageReverse.resize(640, 360)
-        pixmap1 = QPixmap('reverse.png')
+        self.ledImageReverse.move(backImgX, self.topPadding)
+        self.ledImageReverse.resize(self.subWinWidth, self.subWinHeight)
+        pixmap1 = QPixmap('noVideo.png')
         self.ledImageReverse.setPixmap(pixmap1)
-
+        
         # select obverse/reverse button
-        self.selectSideBtn = QPushButton("Select Obverse", self)
-        self.selectSideBtn.move(50, 510)
-        self.selectSideBtn.resize(300, 50)
-        self.selectSideBtn.clicked.connect(self.changeSide)
+        FrontBtnY =self.topPadding+ self.subWinHeight + self.centralPaddingHori
+        self.upLoadFrontBtn = QPushButton("Upload Front View", self)
+        self.upLoadFrontBtn.move(self.leftPadding, self.topPadding+ self.subWinHeight + self.centralPaddingHori)
+        self.upLoadFrontBtn.resize(self.subWinWidth, self.btnHeight)
+        self.upLoadFrontBtn.clicked.connect(self.uploadFrontView)
 
-        # import video button
-        self.importBtn = QPushButton("Import Video", self)
-        self.importBtn.move(350, 510)
-        self.importBtn.resize(300, 50)
-        self.importBtn.clicked.connect(self.selectAndProcess)
+        # upload Front button
+    
+        self.uploadBackBtn = QPushButton("Upload Back View", self)
+        self.uploadBackBtn.move(backImgX, FrontBtnY)
+        self.uploadBackBtn.resize(self.subWinWidth, self.btnHeight)
+        self.uploadBackBtn.clicked.connect(self.uploadBackView)
 
         # export data button
         self.exportBtn = QPushButton("Export Data", self)
-        self.exportBtn.move(650, 510)
-        self.exportBtn.resize(300, 50)
+        self.exportBtn.move(self.leftPadding+self.subWinWidth/2, FrontBtnY+self.btnHeight+self.centralPaddingHori)
+        self.exportBtn.resize(self.subWinWidth+self.centralPadding1, self.btnHeight)
         self.exportBtn.clicked.connect(self.exportData)
 
-        # label "threshold"
-        self.thresholdLabel = QLabel(self)
-        self.thresholdLabel.move(950, 520)
-        self.thresholdLabel.setText("Detection\nThreshold")
+        # # label "threshold"
+        # sliderX = self.leftPadding + self.subWinWidth*2 + self.centralPadding1+ self.centralPadding2
+        # self.thresholdLabel = QLabel(self)
+        # self.thresholdLabel.move(sliderX-30, self.topPadding)
+        # self.thresholdLabel.setText("Detection\nThreshold")
 
-        # label value of slider
-        self.thresholdValue = QLabel(self)
-        self.thresholdValue.move(1050, 520)
-        self.thresholdValue.setText("10")
+        # # label value of slider
+        
+        # self.thresholdValue = QLabel(self)
+        # self.thresholdValue.move(sliderX+40, self.topPadding)
+        # self.thresholdValue.setText("10")
 
-        # add a slider to control threshold value
-        self.thresholdSlider = QSlider(Qt.Horizontal, self)
-        self.thresholdSlider.move(1080, 510)
-        self.thresholdSlider.setMinimum(0)
-        self.thresholdSlider.setMaximum(50)
-        self.thresholdSlider.setValue(10)
-        self.thresholdSlider.setTickPosition(QSlider.TicksBelow)
-        self.thresholdSlider.setTickInterval(10)
-        self.thresholdSlider.resize(300, 50)
-        self.thresholdSlider.valueChanged.connect(self.changeThreshold)
+        # # add a slider to control threshold value
+        
+        # self.thresholdSlider = QSlider(Qt.Vertical, self)
+        # self.thresholdSlider.move(sliderX, self.topPadding + self.sliderTopPadding)
+        # self.thresholdSlider.setMinimum(0)
+        # self.thresholdSlider.setMaximum(50)
+        # self.thresholdSlider.setValue(10)
+        # self.thresholdSlider.setTickPosition(QSlider.TicksBelow)
+        # self.thresholdSlider.setTickInterval(10)
+        # self.thresholdSlider.resize(self.sliderWidth, self.sliderHeight)
+        # self.thresholdSlider.valueChanged.connect(self.changeThreshold)
 
         # show all the widget
         self.show()
+    # upload front side
+    def uploadFrontView(self):
+        self.selectAndProcess(True)
+
+    def uploadBackView(self):
+        self.selectAndProcess(False)
 
     # select and process video
-    def selectAndProcess(self):
+    def selectAndProcess(self,side):
         fileName = self.selectVideo()
         self.findFirstLed = False
         
@@ -110,8 +147,8 @@ class Window(QMainWindow):
 
         qImg.bits()
         img_pix = QPixmap.fromImage(qImg)
-        if(self.isObversed):
-            self.ledImageObverse.setPixmap(img_pix)
+        if(side):
+            self.ledImageFront.setPixmap(img_pix)
         else:
             self.ledImageReverse.setPixmap(img_pix)
 
@@ -123,10 +160,10 @@ class Window(QMainWindow):
         self.isObversed = not self.isObversed
         if(self.isObversed):
             # change button text to "Select Obversed"
-            self.selectSideBtn.setText("Select Obverse")
+            self.upLoadFrontBtn.setText("Select Obverse")
         else:
             # change button text to "Select Reverse"
-            self.selectSideBtn.setText("Select Reverse")
+            self.upLoadFrontBtn.setText("Select Reverse")
 
     def selectVideo(self):
         # fileName = QFileDialog.getOpenFileName(self, 'OpenFile')
@@ -229,11 +266,11 @@ class Window(QMainWindow):
         self.f.close()
         return rgbResultImg
 
-    def changeThreshold(self):
-        newVal = self.thresholdSlider.value()
-        self.areaThreshold = newVal/10000
-        # change threshold value to
-        self.thresholdValue.setText(str(newVal))
+    # def changeThreshold(self):
+    #     newVal = self.thresholdSlider.value()
+    #     self.areaThreshold = newVal/10000
+    #     # change threshold value to
+    #     self.thresholdValue.setText(str(newVal))
 
 # create pyqt5 app
 App = QApplication(sys.argv)

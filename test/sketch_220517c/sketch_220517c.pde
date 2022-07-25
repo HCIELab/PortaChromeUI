@@ -1,70 +1,28 @@
-/**
- * ControlP5 Color picker. a simple color picker, 
- * 4 horizontal sliders controlling the RGBA channels of a color.
- * to grab the current color value, use function getColorValue() of
- * the color picker.
- *
- * find a list of public methods available for the ColorPicker Controller 
- * at the bottom of this sketch's source code
- *
- * by Andreas Schlegel, 2012
- * www.sojamo.de/libraries/controlP5
- *
- */
-import controlP5.*;
-
-ControlP5 cp5;
-
-ColorPicker cp;
-ColorWheel cw;
+import nmi.assayoptimization.*;
+import nmi.data.*;
+import nmi.gui.*;
+import nmi.tools.*;
+import scpsolver.constraints.*;
+import scpsolver.graph.*;
+import scpsolver.infeas.*;
+import scpsolver.lpsolver.*;
+import scpsolver.problems.*;
+import scpsolver.qpsolver.*;
+import scpsolver.util.*;
+import scpsolver.util.debugging.*;
 
 void setup() {
-  size(800, 400);
-  noStroke();
-  cp5 = new ControlP5(this);
-  cp = cp5.addColorPicker("picker")
-          .setPosition(60, 100)
-          .setColorValue(color(255, 128, 0, 128))
-          ;
-  cw = cp5.addColorWheel("wheel")
-        .setPosition(100, 200)
+  LinearProgram lp = new LinearProgram(new double[]{5.0,10.0});
+  lp.addConstraint(new LinearBiggerThanEqualsConstraint(new double[]{3.0,1.0}, 8.0, "c1"));
+  lp.addConstraint(new LinearBiggerThanEqualsConstraint(new double[]{0.0,4.0}, 4.0, "c2"));
+  lp.addConstraint(new LinearSmallerThanEqualsConstraint(new double[]{2.0,0.0}, 2.0, "c3"));
+  lp.setMinProblem(true);
+  LinearProgramSolver solver  = SolverFactory.newDefault();
+  double[] sol = new double[2];
+  solver.solve(lp);
+  print("sol");
+  //print(sol[0]);
 }
 
-void draw() {
-  background(cp.getColorValue());
-  fill(0, 80);
-  rect(50, 90, 275, 80);
+void draw(){
 }
-
-public void controlEvent(ControlEvent c) {
-  // when a value change from a ColorPicker is received, extract the ARGB values
-  // from the controller's array value
-  if(c.isFrom(cp)) {
-    int r = int(c.getArrayValue(0));
-    int g = int(c.getArrayValue(1));
-    int b = int(c.getArrayValue(2));
-    int a = int(c.getArrayValue(3));
-    color col = color(r,g,b,a);
-    println("event\talpha:"+a+"\tred:"+r+"\tgreen:"+g+"\tblue:"+b+"\tcol"+col);
-  }
-}
-
-// color information from ColorPicker 'picker' are forwarded to the picker(int) function
-void picker(int col) {
-  println("picker\talpha:"+alpha(col)+"\tred:"+red(col)+"\tgreen:"+green(col)+"\tblue:"+blue(col)+"\tcol"+col);
-}
-
-
-void keyPressed() {
-  switch(key) {
-    case('1'):
-    // method A to change color
-    cp.setArrayValue(new float[] {120, 0, 120, 255});
-    break;
-    case('2'):
-    // method B to change color
-    cp.setColorValue(color(255, 0, 0, 255));
-    break;
-  }
-}
- 

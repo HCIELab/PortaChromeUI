@@ -107,29 +107,40 @@ dataSent=""
 ledNum=0
 while True:
     data = conn.recv(1024).decode("utf-8")
-    rgbs = data.split("#")
-    print('Received:'+ data)
-    for i in range(len(rgbs)-1):
+    # if data is not None:
+    #     print('Received:'+ data)
 
-        color = rgbs[i].split(',')
-        if not data: break
-        
-        # do whatever you need to do with the data
-        for i in range(len(color)):
-            color[i] = float(color[i])/255
-        # print(color) # Paging Python!
-        d = Deactivation();
-        time, realColor1 = d.compute_deactivation_time(color)
-        ledNum+=1
-        # print("realColor")
-        # print("ledNum"+str(ledNum))
-        # print(realColor1)
-        dataSent += str(int(realColor1[0]*255))+","+str(int(realColor1[1]*255))+","+str(int(realColor1[2]*255))+"#";
-    dataSent+='\n'
-    print("dataSent"+dataSent)
-    print("ledNum"+str(ledNum))
-    # send dataSent to socket 
-    conn.send(dataSent.encode("utf-8"))
+    if data =="1":
+        # read colors of leds sent by processing
+        fread = open("ledsOri.txt","r")
+        rgbs = fread.read().split("#")
+        fread.close()
+        # write colors of leds after deactivation
+        fwirte = open("ledsDeactivate.txt","w")
+        for i in range(len(rgbs)-1):
+
+            color = rgbs[i].split(',')
+            if not data: break
+            
+            # do whatever you need to do with the data
+            for i in range(len(color)):
+                color[i] = float(color[i])/255
+            # print(color) # Paging Python!
+            d = Deactivation();
+            time, realColor1 = d.compute_deactivation_time(color)
+            ledNum+=1
+            # print("realColor")
+            # print("ledNum"+str(ledNum))
+            # print(realColor1)
+            dataSent += str(int(realColor1[0]*255))+","+str(int(realColor1[1]*255))+","+str(int(realColor1[2]*255))+"#"
+        print("dataSent"+dataSent)
+        print("ledNum"+str(ledNum))
+        fwirte.write(dataSent)
+        fwirte.close()
+        # send dataSent to socket 
+        conn.send("0\n".encode("utf-8"))
+    
+    
 
 
 
