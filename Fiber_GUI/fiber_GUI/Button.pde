@@ -42,6 +42,7 @@ class Button{
     // type0: brush button; 
     // type1: choose image button; 
     // type2: start color changing button;
+    // type3
     void checkBtnClicked() {
         if (mouseX > centerX - width / 2 && mouseX < centerX + width / 2 && mouseY > centerY - height / 2 && mouseY < centerY + height / 2) {
             isPressed = !isPressed;
@@ -59,9 +60,8 @@ class Button{
                         // print("brush is valid:" + brush.isValid + '\n');
                         break;
                     }
-                    case 1 : {
+                case 1 : {
                         selectInput("Choose an image","imageSelected");
-                        
                         // print("case1");
                         break;
                 }
@@ -83,11 +83,34 @@ class Button{
                         }
                         code += "*";
                         myPort.write(code);
-                        print(code + '\n');
+                        
                         // basic rgb test
                         // myPort.write("255,0,0#0,255,0#0,0,255#*");    
                         break;
                     }
+
+                case 3 : {
+                        // the text need to be passed is same as case 2, pass it to python to calculate the real color
+                        print("start calculate real color");
+                        String code = "";
+                        int ledIndex = 0;
+                        for (int j = 0;j < canvas.allFibers.fibers.size();j++) {
+                            Fiber targetFiber = canvas.allFibers.fibers.get(j);
+                            
+                            for (int i = 0; i < targetFiber.leds.size() ; i++) {
+                                Pixel p = targetFiber.leds.get(i);
+                                // the acutual rgb of color is grb
+                                ledIndex += 1;
+                                code += str(int(red(p.c))) + "," + str(int(green(p.c))) + "," + str(int(blue(p.c))) + "#";
+                            }
+                            
+                        }
+                        code += "*";
+                        print("processing sent "+ledIndex+" led to python");
+                        myClient.write(code);
+                        isShowRealColor = true;
+                        break;
+                }
             }
         }
     }

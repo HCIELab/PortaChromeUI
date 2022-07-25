@@ -33,7 +33,7 @@ Adafruit_NeoPixel neopixel_object_array[NUM_DATA_PIN];
 #define BLUETOOTH_SERVER_NAME "/dev/tty.usbmodem141101" //"ESP32BluetoothTest1"
 
 bool blt_enabled = false; // turn it to false if not using bluetooth communication
-BluetoothSerial SerialBT;
+//BluetoothSerial SerialBT;
 
 void setup() {  
   // Initialize the Neopixel Arrays
@@ -54,14 +54,14 @@ void setup() {
 
   // Initializes bluetooth
   Serial.begin(115200); // start the serial monitor for debugging purpose
-  SerialBT.begin(BLUETOOTH_SERVER_NAME); // Bluetooth device name
-  
-  if(blt_enabled){
-    SerialBT.println("The device started on the serial Bluetooth, now you can pair it with bluetooth!"); 
-    Serial.println("The device started on the serial Bluetooth, now you can pair it with bluetooth!");
-  }else{
-    Serial.println("The device started on the serial port, now you can pair it with bluetooth!");
-  }
+//  SerialBT.begin(BLUETOOTH_SERVER_NAME); // Bluetooth device name
+//  
+//  if(blt_enabled){
+//    SerialBT.println("The device started on the serial Bluetooth, now you can pair it with bluetooth!"); 
+//    Serial.println("The device started on the serial Bluetooth, now you can pair it with bluetooth!");
+//  }else{
+//    Serial.println("The device started on the serial port, now you can pair it with bluetooth!");
+//  }
 }
 
 struct RGB_timer {
@@ -91,58 +91,58 @@ void loop() {
   
   int i = 0;
   
-  while(blt_enabled && SerialBT.available() || !(blt_enabled) && Serial.available()){
-    
-        String fiber = blt_enabled ? SerialBT.readStringUntil('*') : Serial.readStringUntil('*');
-        
-        while(fiber.indexOf('#') != -1){
-          int index = fiber.indexOf('#');
-          String input = fiber.substring(0,index);
-          fiber.remove(0,index + 1);
-    
-          if (input[0] == 'd') {
-            
-            // display mode start
-            neopixel_object_array[i].clear();
-            currentIndex = 0;
-            currentMode = 0;
-            
-            }
-          else if (input[0] == 'v') {
-            
-            // visible light deactivation start
-            // read the next three digits to figure out how many pixels we have
-            actualNumPixel = input.substring(1,4).toInt();
-            neopixel_object_array[i].clear();
-            currentIndex = 0;
-            currentMode = 1;
-            hasInitialized = false;
-            
-            } else {
-            // now we read color values 
-            
-            if (currentMode == 0) { 
-              // display mode
-              int red = input.substring(0, 3).toInt();
-              int green = input.substring(4, 7).toInt();
-              int blue = input.substring(8, 11).toInt();
-              neopixel_object_array[i].setPixelColor(currentIndex, red, green, blue);
-              currentIndex += 1;
-            }
-      
-            else if (currentMode == 1) {
-              // deactivation mode, using visible light
-              // reading in deactivation time value
-              int red_time = input.substring(0, 3).toInt();
-              int green_time = input.substring(4, 7).toInt();
-              int blue_time = input.substring(8, 11).toInt();
-      
-              // populate the timer
-              RGB_timer timer = {red_time * 1000, green_time * 1000, blue_time * 1000};        
-              desaturationTimerMillisecond[currentIndex] = timer;
-              currentIndex += 1;
-            }
-            }
+//  while(blt_enabled && SerialBT.available() || !(blt_enabled) && Serial.available()){
+//    
+////        String fiber = blt_enabled ? SerialBT.readStringUntil('*') : Serial.readStringUntil('*');
+//        
+//        while(fiber.indexOf('#') != -1){
+//          int index = fiber.indexOf('#');
+//          String input = fiber.substring(0,index);
+//          fiber.remove(0,index + 1);
+//    
+//          if (input[0] == 'd') {
+//            
+//            // display mode start
+//            neopixel_object_array[i].clear();
+//            currentIndex = 0;
+//            currentMode = 0;
+//            
+//            }
+//          else if (input[0] == 'v') {
+//            
+//            // visible light deactivation start
+//            // read the next three digits to figure out how many pixels we have
+//            actualNumPixel = input.substring(1,4).toInt();
+//            neopixel_object_array[i].clear();
+//            currentIndex = 0;
+//            currentMode = 1;
+//            hasInitialized = false;
+//            
+//            } else {
+//            // now we read color values 
+//            
+//            if (currentMode == 0) { 
+//              // display mode
+//              int red = input.substring(0, 3).toInt();
+//              int green = input.substring(4, 7).toInt();
+//              int blue = input.substring(8, 11).toInt();
+//              neopixel_object_array[i].setPixelColor(currentIndex, red, green, blue);
+//              currentIndex += 1;
+//            }
+//      
+//            else if (currentMode == 1) {
+//              // deactivation mode, using visible light
+//              // reading in deactivation time value
+//              int red_time = input.substring(0, 3).toInt();
+//              int green_time = input.substring(4, 7).toInt();
+//              int blue_time = input.substring(8, 11).toInt();
+//      
+//              // populate the timer
+//              RGB_timer timer = {red_time * 1000, green_time * 1000, blue_time * 1000};        
+//              desaturationTimerMillisecond[currentIndex] = timer;
+//              currentIndex += 1;
+//            }
+//            }
           };
     
         // deactivation mode + have read everything
@@ -153,25 +153,25 @@ void loop() {
             
             RGB_timer timer = desaturationTimerMillisecond[i];
   
-            
-            SerialBT.print(timer.r);
-            SerialBT.print(",");
-            SerialBT.print(timer.g);
-            SerialBT.print(",");
-            SerialBT.print(timer.b);
-            SerialBT.print("| ");
+//            
+//            SerialBT.print(timer.r);
+//            SerialBT.print(",");
+//            SerialBT.print(timer.g);
+//            SerialBT.print(",");
+//            SerialBT.print(timer.b);
+//            SerialBT.print("| ");
             
             desaturationTimerMillisecond[i].r = timer.r - timeSliceMillisecond;
             desaturationTimerMillisecond[i].g = timer.g - timeSliceMillisecond;
             desaturationTimerMillisecond[i].b = timer.b - timeSliceMillisecond;
     
-            SerialBT.print(timer.r);
-            SerialBT.print(",");
-            SerialBT.print(timer.g);
-            SerialBT.print(",");
-            SerialBT.print(timer.b);
-            SerialBT.print("; ");
-            
+//            SerialBT.print(timer.r);
+//            SerialBT.print(",");
+//            SerialBT.print(timer.g);
+//            SerialBT.print(",");
+//            SerialBT.print(timer.b);
+//            SerialBT.print("; ");
+//            
             
             // find out whether anything changed
             if ( timer.r > 0 && timer.r <= timeSliceMillisecond ||
@@ -188,7 +188,7 @@ void loop() {
               }
             }
   
-            SerialBT.println(" end");
+//            SerialBT.println(" end");
     
             neopixel_object_array[i].show();
             delay(timeSliceMillisecond);

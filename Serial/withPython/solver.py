@@ -103,23 +103,31 @@ s.bind((HOST, PORT))
 s.listen(1)
 conn, addr = s.accept()
 print('Connected by', addr)
+dataSent=""
+ledNum=0
 while True:
     data = conn.recv(1024).decode("utf-8")
-    color = data.split(',')
-    if not data: break
-    
-    # do whatever you need to do with the data
-    for i in range(len(color)):
-        color[i] = float(color[i])/255
-    print(color) # Paging Python!
-    d = Deactivation();
-    time, realColor1 = d.compute_deactivation_time(color)
-    print("time")
-    print(time) 
-    print("realColor")
-    print(realColor1)
-    dataSent= str(int(realColor1[0]*255))+","+str(int(realColor1[1]*255))+","+str(int(realColor1[2]*255))+"\n";
+    rgbs = data.split("#")
+    print('Received:'+ data)
+    for i in range(len(rgbs)-1):
+
+        color = rgbs[i].split(',')
+        if not data: break
+        
+        # do whatever you need to do with the data
+        for i in range(len(color)):
+            color[i] = float(color[i])/255
+        # print(color) # Paging Python!
+        d = Deactivation();
+        time, realColor1 = d.compute_deactivation_time(color)
+        ledNum+=1
+        # print("realColor")
+        # print("ledNum"+str(ledNum))
+        # print(realColor1)
+        dataSent += str(int(realColor1[0]*255))+","+str(int(realColor1[1]*255))+","+str(int(realColor1[2]*255))+"#";
+    dataSent+='\n'
     print("dataSent"+dataSent)
+    print("ledNum"+str(ledNum))
     # send dataSent to socket 
     conn.send(dataSent.encode("utf-8"))
 

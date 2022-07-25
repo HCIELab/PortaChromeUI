@@ -78,3 +78,28 @@ Users can drag the slider to control the threshold.
 ![image-20220710233159355](README.assets/image-20220710233159355.png)
 
 Press Import Video button→ choose a video from a new dialog
+
+### [0717 Linear Programming and Control fiber with processing](https://plausible-bard-9b1.notion.site/0717-Linear-Programming-and-Control-fiber-with-processing-831b898c91314319b801d3585a6dde31)
+
+youtube link:https://youtu.be/ei8W3mmJWns
+
+- [x]  deactivation with linear programing:  communicate with python and get read color
+- [ ]  put updated color to canvas
+- [x]  control fiber with processing
+- [x]  double-faced (arduino, processing, python)
+
+#### Control fiber with processing
+
+Successfully implement processing and Arduino communication with Serial
+
+![image-20220725114147868](README.assets/image-20220725114147868.png)
+
+#### adeactivation with linear programing
+
+let processing communicate with python
+
+This is a screenshot of processing terminal.
+
+![image-20220725114204810](README.assets/image-20220725114204810.png)
+
+use scipy in python for linear programming

@@ -11,6 +11,8 @@ float picRotation;
 float picScale;
 int imgX;
 int imgY;
+boolean isShowRealColor=false;
+
 
 class Canvas{
 
@@ -18,6 +20,7 @@ class Canvas{
   Button addImgBtn;
   Button brushBtn;
   Button startBtn;
+  Button deactivateBtn;
   // toggle button control the view (back or front)
   Button toggleFrontBack;
   Canvas(){
@@ -51,7 +54,7 @@ class Canvas{
     brushBtn = new Button(1250,50,180,40,color(255,0,0),color(200,50,0),"Brush Off",0);
     addImgBtn = new Button(1250,100,180,40,color(255,0,0),color(200,50,0),"Add an Image",1);
     startBtn = new Button(1250,150,180,40,color(255,0,0),color(200,50,0),"Start Color Changing",2);
-    
+    deactivateBtn =  new Button(1250,650,180,40,color(255,0,0),color(200,50,0),"Deacviate",3);
     // tint(255, 128);
     brush = new Brush(20,INIT_BURSH_COLOR,true);
   }
@@ -95,6 +98,7 @@ class Canvas{
     addImgBtn.drawButton();
     brushBtn.drawButton();
     startBtn.drawButton();
+    deactivateBtn.drawButton();
     brush.radius = (int)brushSize;
  
     if(img != null) {
