@@ -89,7 +89,7 @@ class Window(QMainWindow):
         # draw text : "R:     s" 
         self.redText = QLabel(self)
         self.redText.move(ithX, ithY+self.curSetId.height()+self.centralPaddingVert)
-        self.redText.setText("R:     s")
+        self.redText.setText("R:           s")
         self.redText.setFont(QFont("SansSerif", 20))
         self.redText.resize(self.redText.sizeHint())
 
@@ -104,7 +104,7 @@ class Window(QMainWindow):
         # draw text : "G:     s"
         self.greenText = QLabel(self)
         self.greenText.move(ithX+ self.centralPaddingHori, ithY+self.curSetId.height()+self.centralPaddingVert)
-        self.greenText.setText("G:     s")
+        self.greenText.setText("G:           s")
         self.greenText.setFont(QFont("SansSerif", 20))
         self.greenText.resize(self.greenText.sizeHint())
 
@@ -119,7 +119,7 @@ class Window(QMainWindow):
         # draw text : "B:     s"
         self.blueText = QLabel(self)
         self.blueText.move(ithX + self.centralPaddingHori*2, ithY+self.curSetId.height()+self.centralPaddingVert)
-        self.blueText.setText("B:     s")
+        self.blueText.setText("B:           s")
         self.blueText.setFont(QFont("SansSerif", 20))
         self.blueText.resize(self.blueText.sizeHint())
 

@@ -9,6 +9,8 @@
 
 [LED stripe controller(Arduino version)](https://github.com/echo-xiao9/FiberGUI/blob/main/camera/testLed/testLed.ino)
 
+[Color Gradient Viewer(python version)](https://github.com/echo-xiao9/FiberGUI/blob/main/gradientDebug/gradientDebug.py)
+
 ## Dev log
 
 [TOC]
@@ -103,3 +105,31 @@ This is a screenshot of processing terminal.
 ![image-20220725114204810](README.assets/image-20220725114204810.png)
 
 use scipy in python for linear programming
+
+### [0725 Fiber deactivation result, color gradient algorithm and demo for color gradient viewer](https://www.notion.so/0725-Fiber-deactivation-result-color-gradient-algorithm-and-demo-for-color-gradient-viewer-f2cec4b289d14ec2a9031cd5cc96d110)
+
+**fiber deactivation result**
+
+https://youtu.be/lqntPTtslf0
+
+When users click the “target color” button, the text on the button will turn into “Real color”. Then processing send all target colors of LEDs to python to do linear programming. The python calculates the color after deactivation and sends the data back.
+
+![image-20220726213825607](README.assets/image-20220726213825607.png)
+
+![image-20220726213839050](README.assets/image-20220726213839050.png)
+
+**Algorithm for color gradient calculation**
+
+![image-20220726213847127](README.assets/image-20220726213847127.png)
+
+Step 1: shoot images ( cyan under red, green, blue light for x s)
+
+step 2: use opencv to extract the data and fit the surfaces.
+
+step3: calculate the color between the LEDs.
+
+**Color Gradient Viewer**
+
+![image-20220726213856738](README.assets/image-20220726213856738.png)
+
+The user can input the flashing time of a different color for each LED.
