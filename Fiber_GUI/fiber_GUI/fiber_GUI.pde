@@ -122,7 +122,6 @@ void updateFiberRealColor(String newColor) {
     for (int i = 0; i < rgbs.length; i++) {
         String[] rgb = rgbs[i].split(",");
         if (rgb.length < 3)break;
-        println(rgb[0] + " " + rgb[1] + " " + rgb[2]);
         int r = Integer.valueOf(rgb[0]);
         int g = Integer.valueOf(rgb[1]);
         int b = Integer.valueOf(rgb[2]);

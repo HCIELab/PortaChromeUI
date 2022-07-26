@@ -129,7 +129,6 @@ class Fibers {
                 color newColor = color(realColors.get(realColorIdx).r, realColors.get(realColorIdx).g, realColors.get(realColorIdx).b);
                 targetFiber.ledsRealColor.get(j).c = newColor;
                 realColorIdx++;
-                // print("i:"+i+" j:"+j+" realColorIdx:"+realColorIdx);
             }
         }
     }

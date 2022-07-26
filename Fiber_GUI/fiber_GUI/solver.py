@@ -15,6 +15,36 @@ from scipy import optimize
 FULL_DEACTIVATION_TIME = [[467, 712, 687], [1500, 242, 177], [10000, 900, 20]]
 
 
+RGB_SCALE = 255
+CMYK_SCALE = 1
+def rgb_to_cmyk(r, g, b):
+    if (r, g, b) == (0, 0, 0):
+        # black
+        return 0, 0, 0, CMYK_SCALE
+
+    # rgb [0,255] -> cmy [0,1]
+    c = 1 - r / RGB_SCALE
+    m = 1 - g / RGB_SCALE
+    y = 1 - b / RGB_SCALE
+
+    # extract out k [0, 1]
+    min_cmy = min(c, m, y)
+    c = (c - min_cmy) / (1 - min_cmy)
+    m = (m - min_cmy) / (1 - min_cmy)
+    y = (y - min_cmy) / (1 - min_cmy)
+    k = min_cmy
+
+    # rescale to the range [0,CMYK_SCALE]
+    return c * CMYK_SCALE, m * CMYK_SCALE, y * CMYK_SCALE, k * CMYK_SCALE
+
+
+# convert cmyk to rgb color
+def cmyk_to_rgb(c,m,y,k):
+    r = RGB_SCALE*(1-c)*(1-k)
+    g = RGB_SCALE*(1-m)*(1-k)
+    b = RGB_SCALE*(1-y)*(1-k)
+    return int(r), int(g), int(b)
+
 # solve Ax = b
 # get the closest value that it gives while
 # keeping x non-negative
@@ -121,18 +151,16 @@ while True:
 
             color = rgbs[i].split(',')
             if not data: break
-            
+            c,m,y,k = rgb_to_cmyk(int(color[0]),int(color[1]),int(color[2]))
             # do whatever you need to do with the data
-            for i in range(len(color)):
-                color[i] = float(color[i])/255
+          
             # print(color) # Paging Python!
             d = Deactivation();
-            time, realColor1 = d.compute_deactivation_time(color)
+            time, realColor1 = d.compute_deactivation_time([c,m,y])
             ledNum+=1
-            # print("realColor")
-            # print("ledNum"+str(ledNum))
-            # print(realColor1)
-            dataSent += str(int(realColor1[0]*255))+","+str(int(realColor1[1]*255))+","+str(int(realColor1[2]*255))+"#"
+            realR, realG, realB = cmyk_to_rgb(realColor1[0],realColor1[1],realColor1[2],k)
+       
+            dataSent += str(realR)+","+str(realG)+","+str(realB)+"#"
         print("dataSent"+dataSent)
         print("ledNum"+str(ledNum))
         fwirte.write(dataSent)
