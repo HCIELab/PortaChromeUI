@@ -137,6 +137,7 @@ class Fibers {
 
 
 Fibers createDefaultFibers() {
+    // all fibers makes up a rectangle
     int fiberNum = 60;
     int pixelsPerFiber = 60;
     float PIXEL_PADDING_X = 5.0f;
@@ -191,6 +192,7 @@ Fibers createFibers2() {
 }
 
 Fibers createHatFibers() {
+    // create a sector so that the fibers to mimic a hat
     int fiberNum = 30;
     int pixelsPerFiber = 30;
     float PIXEL_PADDING_X = 5.0f;
@@ -209,7 +211,6 @@ Fibers createHatFibers() {
             float rj = deltaR * j;
             float x = cameraImgWidth1 / 2 - rj * cos(3.14 / 3 + thetai);
             float y = rj * sin(3.14 / 3 + thetai);
-            
             Pixel p = new Pixel(x,y, 255.0f,0.0f,255.0f);
             pixelList.add(p);
         }
@@ -217,4 +218,35 @@ Fibers createHatFibers() {
         
     }
     return new Fibers(fiberList,cameraImgWidth1,cameraImgHeight1);
+}
+
+ // process every line in the ledpos file, and output the fibers
+Fibers readFibersFromFile(){
+    ArrayList<Fiber> fiberList =  new ArrayList<Fiber>();
+    String[] lines =loadStrings("ledPos.txt");
+    int fiberNum = lines.length;
+
+    //  create a fiber with each line
+    for (int i = 0; i < fiberNum; i++) {
+        ArrayList<Pixel> pixelList =  new ArrayList<Pixel>();
+        
+        // spilt the positions with ';'
+        String[] pos = split(lines[i], ';');
+        for(int j = 0; j<pos.length-1; j++) {
+            // spilt the position with ','
+            println(pos[j]);
+            String[] posi = split(pos[j], ',');
+            // get the x and y position of each led
+            int x = Integer.parseInt(posi[0]);
+            int y = Integer.parseInt(posi[1]);
+            // create a new pixel with the x and y position
+            Pixel p = new Pixel(x,y, 255.0f,0.0f,255.0f);
+            // add the pixel to the fiber
+            pixelList.add(p);
+        }
+        // create a new fiber with the pixel list
+        fiberList.add(new Fiber(pixelList));
+    }
+    canvas.allFibers = new Fibers(fiberList,1920, 1080);
+    return new Fibers(fiberList,1920, 1080);
 }

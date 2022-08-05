@@ -8,7 +8,7 @@ boolean firstContact = false;
 void setup() {
   size(200, 200); //make our canvas 200 x 200 pixels big
   //  initialize your serial port and set the baud rate to 9600
-  myPort = new Serial(this, Serial.list()[5], 9600);
+  myPort = new Serial(this, Serial.list()[3], 9600);
   myPort.bufferUntil('\n'); 
   println("start");
 }

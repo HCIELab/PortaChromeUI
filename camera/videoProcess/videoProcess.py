@@ -5,7 +5,7 @@ import cv2 as cv
 
 
 areaThreshold = 0.0005
-cap = cv.VideoCapture('../#scanning-samples/0.mp4')
+cap = cv.VideoCapture('../#scanning-samples/test.mp4')
 # get total frame number
 totalFrame = int(cap.get(cv.CAP_PROP_FRAME_COUNT))
 fps = cap.get(cv.CAP_PROP_FPS)

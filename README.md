@@ -116,15 +116,15 @@ When users click the “target color” button, the text on the button will turn
 
 ![image-20220726213825607](README.assets/image-20220726213825607.png)
 
-![image-20220726213839050](README.assets/image-20220726213839050.png)
+![image-20220726220926467](README.assets/image-20220726220926467.png)
 
 **Algorithm for color gradient calculation**
 
 ![image-20220726213847127](README.assets/image-20220726213847127.png)
 
-Step 1: shoot images ( cyan under red, green, blue light for x s)
+Step 1: shoot photos ( cyan under red, green, blue light for x s)
 
-step 2: use opencv to extract the data and fit the surfaces.
+step 2: use OpenCV to extract the data and fit the surfaces.
 
 step3: calculate the color between the LEDs.
 
@@ -132,4 +132,5 @@ step3: calculate the color between the LEDs.
 
 ![image-20220726213856738](README.assets/image-20220726213856738.png)
 
-The user can input the flashing time of a different color for each LED.
+sers can input the flashing time of a different color for each LED.
+

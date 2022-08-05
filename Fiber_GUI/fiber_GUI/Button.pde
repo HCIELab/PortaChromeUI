@@ -11,9 +11,12 @@ class Button{
     color currColor;
     boolean isPressed;
     String text;
-    //type0: brush button; 
-    //type1: choose image button; 
-    //type2: start color changing button;
+
+    // type 0: brush on/off; 
+    // type 1: choose image; 
+    // type 2: start color changing;
+    // type 3: show color after deactivation; 
+    // type 4: import package from calibration tool;
     int type; 
     
     Button(float centerX1, float centerY1, float width1, float height1, color pressColor1, color noPressColor1, String text1, int type1) {
@@ -39,10 +42,11 @@ class Button{
     }
     
     // checkwhich button is clicked and respond accordingly
-    // type0: brush button; 
-    // type1: choose image button; 
-    // type2: start color changing button;
-    // type3
+    // type 0: brush on/off; 
+    // type 1: choose image; 
+    // type 2: start color changing;
+    // type 3: show color after deactivation; 
+    // type 4: import package from calibration tool;
     void checkBtnClicked() {
         if (mouseX > centerX - width / 2 && mouseX < centerX + width / 2 && mouseY > centerY - height / 2 && mouseY < centerY + height / 2) {
             isPressed = !isPressed;
@@ -125,6 +129,10 @@ class Button{
 
                         break;
                 }
+                case 4:{
+                    readFibersFromFile();
+                    break;
+                }
             }
         }
     }
@@ -138,11 +146,11 @@ void imageSelected(File selection) {
         float scale = INIT_PIC_WIDTH / imgTmp.width;
         
         img = new Img(imgTmp,PAINT_WIN_LEFT_TOP_X + SUB_WIN_WIDTH / 2,PAINT_WIN_LEFT_TOP_Y + SUB_WIN_HEIGHT / 2,(int)(imgTmp.width * scale),(int)(imgTmp.height * scale));
-        startImageProcessing();
+        // startImageProcessing();
     }
 }
 
-void startImageProcessing() {
-    // now the picture is loaded 
-    // we can now dosome stuff with the picture
-}
+// void startImageProcessing() {
+//     // now the picture is loaded 
+//     // we can now dosome stuff with the picture
+// }

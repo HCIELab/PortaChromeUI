@@ -21,6 +21,8 @@ class Canvas{
   Button brushBtn;
   Button startBtn;
   Button deactivateBtn;
+  Button importBtn;
+
   // toggle button control the view (back or front)
   Button toggleFrontBack;
   Canvas(){
@@ -55,6 +57,7 @@ class Canvas{
     addImgBtn = new Button(1250,100,180,40,color(255,0,0),color(200,50,0),"Add an Image",1);
     startBtn = new Button(1250,150,180,40,color(255,0,0),color(200,50,0),"Start Color Changing",2);
     deactivateBtn =  new Button(1250,650,180,40,color(255,0,0),color(200,50,0),"Target Color",3);
+    importBtn =  new Button(1050,50,180,40,color(255,0,0),color(200,50,0),"Import",4);
     // tint(255, 128);
     brush = new Brush(20,INIT_BURSH_COLOR,true);
   }
@@ -95,6 +98,7 @@ class Canvas{
     brushBtn.drawButton();
     startBtn.drawButton();
     deactivateBtn.drawButton();
+    importBtn.drawButton();
     brush.radius = (int)brushSize;
  
     if(img != null) {

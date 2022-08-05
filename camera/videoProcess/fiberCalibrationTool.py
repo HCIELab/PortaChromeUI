@@ -40,7 +40,7 @@ class Window(QMainWindow):
     # sliderTopPadding = 40
     # sliderHeight = subWinHeight - sliderTopPadding
 
-    f = open("ledPos.txt", "a")
+    f = open("/Users/kangyixiao/EchoFile/coding/fiber_GUI/Fiber_GUI/fiber_GUI/ledPos.txt", "a")
 
     def __init__(self):
         super().__init__()
@@ -218,9 +218,10 @@ class Window(QMainWindow):
         if self.canCapture(curFrame) is True:
             # print("canCapture")
             #  highlight the center
-            # self.f.write(str(cX) + " " + str(cY) + '\n')
+            self.f.write(str(cX) + "," + str(cY) + ';')
             cv.circle(resultImg, (cX, cY), 5, (255, 255, 255), -1)
             cv.circle(rgbResultImg, (cX, cY), 5, (0, 0, 255), -1)
+
             # cv.imshow("Image", resultImg)
         return img, resultImg, rgbResultImg
 

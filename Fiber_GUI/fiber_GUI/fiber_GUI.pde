@@ -6,6 +6,7 @@ Client myClient;
 Serial myPort; 
 PrintWriter output;
 
+
 // since we're doing serial handshaking, 
 // we need to check if we've heard from the microcontroller
 boolean firstContact = false;
@@ -33,12 +34,12 @@ void setup() {
     background(255);
     size(1400, 800);
     output = createWriter("ledsOri.txt"); 
+    
     printArray(Serial.list());
     myClient = new Client(this, "127.0.0.1", 50007); 
     // Open the port you are using at the rate you want:
     myPort = new Serial(this, Serial.list()[3], 9600);
     myPort.bufferUntil('\n'); 
-    
     
     
     cp5 = new ControlP5(this);
@@ -99,12 +100,12 @@ void draw() {
     } 
     if (myClient != null) {
         String input = myClient.readStringUntil(byte('\n'));
-
+        
         if (input != null) {
             println("input: " + input);
             String[] lines = loadStrings("ledsDeactivate.txt");
-            println("lines:"+lines[0]);
-
+            println("lines:" + lines[0]);
+            
             updateFiberRealColor(lines[0]);
         }
     }
@@ -145,28 +146,28 @@ void keyPressed() {
     } 
     else if (key == 'a') {
         img.changeImg(img.centerX - IMG_MOVE_SPEED,img.centerY,img.width,img.height);
-        }
+    }
     else if (key == 'w') {
         img.changeImg(img.centerX ,img.centerY - IMG_MOVE_SPEED ,img.width,img.height);
-        } 
+    } 
     else if (key == 's') {
         img.changeImg(img.centerX ,img.centerY + IMG_MOVE_SPEED ,img.width,img.height);
-        }
+    }
     else if (key == 'q') {
         img.changeImg(img.centerX ,img.centerY  ,img.width - IMG_SCALE_SPEED,img.height - IMG_SCALE_SPEED);
-        }
+    }
     else if (key == 'e') {
         img.changeImg(img.centerX ,img.centerY  ,img.width + IMG_SCALE_SPEED,img.height + IMG_SCALE_SPEED);
-        }
+    }
     else if (key == 'r') {
         img.rotateAngle += IMG_ROTATE_SPEED;
-        }
+    }
     else if (key == '1') {
         canvas.allFibers.drawSetting = 1;
-        }
+    }
     else if (key == '2') {
         canvas.allFibers.drawSetting = 2;
-        }
+    }
 }
 
 void mouseClicked() {
@@ -174,11 +175,12 @@ void mouseClicked() {
     canvas.brushBtn.checkBtnClicked();
     canvas.startBtn.checkBtnClicked();
     canvas.deactivateBtn.checkBtnClicked();
-    }
+    canvas.importBtn.checkBtnClicked();
+}
 
 void mouseDragged() {
     brush.drawWithBrush();
-    }
+}
 
 
 void serialEvent(Serial myPort) {
