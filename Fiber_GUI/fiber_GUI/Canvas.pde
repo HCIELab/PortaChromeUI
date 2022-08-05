@@ -12,7 +12,7 @@ float picScale;
 int imgX;
 int imgY;
 boolean isShowRealColor=false;
-
+boolean hasFiber = false;
 
 class Canvas{
 
@@ -33,7 +33,7 @@ class Canvas{
     paintLayer = createGraphics(SUB_WIN_WIDTH,SUB_WIN_HEIGHT);
     picLayer = createGraphics(SUB_WIN_WIDTH,SUB_WIN_HEIGHT);
     layersMerged = createGraphics(SUB_WIN_WIDTH,SUB_WIN_HEIGHT);
-    PImage imgTmp= loadImage("images/hat2.png");
+    PImage imgTmp= loadImage("images/0_bg.png");
     float aspectRatio = ((float)imgTmp.height)/imgTmp.width;
     float aspectRatioSubWin = ((float)SUB_WIN_HEIGHT)/(float)SUB_WIN_WIDTH;
 
@@ -89,9 +89,11 @@ class Canvas{
     layersMerged.image(picLayer,0,0);
     layersMerged.image(paintLayer,0,0);
     layersMerged.endDraw();
-    // ellipse(mouseX,mouseY,20,20);
-    allFibers.updateFibers(FIBER_WIN_LEFT_TOP_X, FIBER_WIN_LEFT_TOP_Y, SUB_WIN_WIDTH, SUB_WIN_HEIGHT);
-    allFibers.drawFibers(FIBER_WIN_LEFT_TOP_X, FIBER_WIN_LEFT_TOP_Y, SUB_WIN_WIDTH, SUB_WIN_HEIGHT);
+
+    if(hasFiber){
+        allFibers.updateFibers(FIBER_WIN_LEFT_TOP_X, FIBER_WIN_LEFT_TOP_Y, SUB_WIN_WIDTH, SUB_WIN_HEIGHT);
+        allFibers.drawFibers(FIBER_WIN_LEFT_TOP_X, FIBER_WIN_LEFT_TOP_Y, SUB_WIN_WIDTH, SUB_WIN_HEIGHT);
+    }
     
     image(layersMerged,PAINT_WIN_LEFT_TOP_X, PAINT_WIN_LEFT_TOP_Y);
     addImgBtn.drawButton();

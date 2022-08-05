@@ -28,6 +28,8 @@ class Fiber {
     
     }
     
+    // convert the xy in coordinate of fibers[1920, 1080] to the world coordinates
+    // if we need to draw the line between each led to make them look like a fiber(drawsetting =1 )
     void drawFiber(float topLeftX, float topLeftY, float canvasWidth, float canvasHeight,float cameraImgWidth, float cameraImgHeight,int drawSetting) {
          ArrayList<Pixel> ledsDrawn = ledsRealColor;
     
@@ -39,7 +41,7 @@ class Fiber {
         }
         Pixel pixel0 = ledsDrawn.get(0);
         float prevWorldX = map(pixel0.x,0,cameraImgWidth,0,canvasWidth) + topLeftX;
-        float prevWorldY = map(pixel0.y,0,cameraImgHeight,0,canvasHeight) + topLeftY;
+        float prevWorldY = canvasWidth/cameraImgWidth + topLeftY;
         stroke(220,220,220);
         if (drawSetting == 2)noStroke();
         else strokeWeight(1); 
@@ -229,7 +231,7 @@ Fibers readFibersFromFile(){
     //  create a fiber with each line
     for (int i = 0; i < fiberNum; i++) {
         ArrayList<Pixel> pixelList =  new ArrayList<Pixel>();
-        
+
         // spilt the positions with ';'
         String[] pos = split(lines[i], ';');
         for(int j = 0; j<pos.length-1; j++) {

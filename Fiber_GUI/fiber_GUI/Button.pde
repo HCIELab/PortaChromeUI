@@ -131,12 +131,12 @@ class Button{
                 }
                 case 4:{
                     readFibersFromFile();
+                    hasFiber = true;
                     break;
                 }
             }
         }
     }
-    
 }
 
 void imageSelected(File selection) {

@@ -10,8 +10,8 @@ float PIXEL_HEIGHT = 7.0f;
 
 // widget settings
 int SUB_WIN_SPACING = 550; // spacing between two major sub window.
-int SUB_WIN_HEIGHT = 500; 
-int SUB_WIN_WIDTH = 500;
+int SUB_WIN_HEIGHT = 270; 
+int SUB_WIN_WIDTH = 480;
 
 int PAINT_WIN_LEFT_TOP_X = 50;
 int PAINT_WIN_LEFT_TOP_Y = 200;
