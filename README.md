@@ -134,3 +134,22 @@ step3: calculate the color between the LEDs.
 
 sers can input the flashing time of a different color for each LED.
 
+### [0807 demo of Fiber Calibration Tool and design tool](https://plausible-bard-9b1.notion.site/0807-demo-of-Fiber-Calibration-Tool-and-design-tool-87c51532211c4bbfbdc3feadc5619bb6)
+
+Youtube link for demo: https://youtu.be/jWNFN9iuoOI
+
+This is the workflow of the chromo Fiber project. It contains three parts: Chromofiber Calibration Tool, Chromo Fiber Design Tool and a Linear Programming Solver. 
+
+![image-20220807193711147](README.assets/image-20220807193711147.png)
+
+**Details for design tool and calibration tool**
+
+The position of each LED is marked with a red circle.![image-20220807193813022](README.assets/image-20220807193813022.png)
+
+![image-20220807193820662](README.assets/image-20220807193820662.png)
+
+![image-20220807193825890](README.assets/image-20220807193825890.png)
+
+**Color Changing**
+
+After the user clicks on the ‘Start Color Changing’ button, the LED will change according to the pattern.![image-20220807193903430](README.assets/image-20220807193903430.png)
