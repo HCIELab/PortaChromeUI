@@ -1,4 +1,6 @@
  #include <FastLED.h>
+#define SERIAL_BUFFER_SIZE 2000
+
 
 FASTLED_USING_NAMESPACE
  #define DATA_PIN    7 //Pin for data on LedStrip

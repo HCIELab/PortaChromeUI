@@ -7,6 +7,8 @@ from PyQt5.QtWidgets import *
 import sys
 import numpy as np
 import cv2 as cv
+import os
+
 
 class Window(QMainWindow):
 
@@ -18,13 +20,13 @@ class Window(QMainWindow):
     blinkingInterval = 0
 
     # const for UI settings
-    subWinWidth = 480 # 1920/4
+    subWinWidth = 480  # 1920/4
     subWinHeight = 270
 
     # horizonal paddings
     leftPadding = 50
     # distance between two subwinows
-    centralPadding1 = 50 
+    centralPadding1 = 50
     # distance betwwen right window and slider
     centralPadding2 = 50
     rightPadding = 50
@@ -40,15 +42,21 @@ class Window(QMainWindow):
     # sliderTopPadding = 40
     # sliderHeight = subWinHeight - sliderTopPadding
 
-    f = open("/Users/kangyixiao/EchoFile/coding/fiber_GUI/Fiber_GUI/fiber_GUI/ledPos.txt", "a")
+    # export bgImage
+    bgImage = None
+    # bgImage path to be saved
+    # f = open(
+    #     "/Users/kangyixiao/EchoFile/coding/fiber_GUI/Fiber_GUI/fiber_GUI/ledPos.txt",
+        # "w")
+    ledPositions = ""
 
     def __init__(self):
         super().__init__()
 
         # set the title
         self.setWindowTitle("Fiber Calibration Tool")
-        width = self.leftPadding + self.subWinWidth*2 + self.centralPadding1   + self.rightPadding
-        height = self.topPadding + self.subWinHeight + self.centralPaddingHori*2 + self.btnHeight*2 + self.bottomPadding
+        width = self.leftPadding + self.subWinWidth + self.rightPadding
+        height = self.topPadding + self.subWinHeight + self.centralPaddingHori * 2 + self.btnHeight * 2 + self.bottomPadding
 
         # setting the fixed width of window
         self.setFixedWidth(width)
@@ -62,7 +70,7 @@ class Window(QMainWindow):
         self.label.setFont(QFont("SansSerif", 35))
         self.label.resize(self.label.sizeHint())
 
-        # display obverse image
+        # # display obverse image
         self.ledImageFront = QLabel(self)
         self.ledImageFront.move(self.leftPadding, self.topPadding)
         self.ledImageFront.resize(self.subWinWidth, self.subWinHeight)
@@ -70,31 +78,35 @@ class Window(QMainWindow):
         self.ledImageFront.setPixmap(pixmap)
 
         # display back image
-        backImgX = self.leftPadding+ self.subWinWidth + self.centralPadding1
-        self.ledImageReverse = QLabel(self)
-        self.ledImageReverse.move(backImgX, self.topPadding)
-        self.ledImageReverse.resize(self.subWinWidth, self.subWinHeight)
-        pixmap1 = QPixmap('noVideo.png')
-        self.ledImageReverse.setPixmap(pixmap1)
-        
+        # backImgX = self.leftPadding+ self.subWinWidth + self.centralPadding1
+        # self.ledImageReverse = QLabel(self)
+        # self.ledImageReverse.move(backImgX, self.topPadding)
+        # self.ledImageReverse.resize(self.subWinWidth, self.subWinHeight)
+        # pixmap1 = QPixmap('noVideo.png')
+        # self.ledImageReverse.setPixmap(pixmap1)
+
         # select obverse/reverse button
-        FrontBtnY =self.topPadding+ self.subWinHeight + self.centralPaddingHori
-        self.upLoadFrontBtn = QPushButton("Upload Front View", self)
-        self.upLoadFrontBtn.move(self.leftPadding, self.topPadding+ self.subWinHeight + self.centralPaddingHori)
+        FrontBtnY = self.topPadding + self.subWinHeight + self.centralPaddingHori
+        self.upLoadFrontBtn = QPushButton("Upload Video", self)
+        self.upLoadFrontBtn.move(
+            self.leftPadding,
+            self.topPadding + self.subWinHeight + self.centralPaddingHori)
         self.upLoadFrontBtn.resize(self.subWinWidth, self.btnHeight)
         self.upLoadFrontBtn.clicked.connect(self.uploadFrontView)
 
-        # upload Front button
-    
-        self.uploadBackBtn = QPushButton("Upload Back View", self)
-        self.uploadBackBtn.move(backImgX, FrontBtnY)
-        self.uploadBackBtn.resize(self.subWinWidth, self.btnHeight)
-        self.uploadBackBtn.clicked.connect(self.uploadBackView)
+        # # upload Front button
+
+        # self.uploadBackBtn = QPushButton("Upload Back View", self)
+        # self.uploadBackBtn.move(backImgX, FrontBtnY)
+        # self.uploadBackBtn.resize(self.subWinWidth, self.btnHeight)
+        # self.uploadBackBtn.clicked.connect(self.uploadBackView)
 
         # export data button
         self.exportBtn = QPushButton("Export Data", self)
-        self.exportBtn.move(self.leftPadding+self.subWinWidth/2, FrontBtnY+self.btnHeight+self.centralPaddingHori)
-        self.exportBtn.resize(self.subWinWidth+self.centralPadding1, self.btnHeight)
+        self.exportBtn.move(
+            self.leftPadding,
+            FrontBtnY + self.btnHeight + self.centralPaddingHori)
+        self.exportBtn.resize(self.subWinWidth, self.btnHeight)
         self.exportBtn.clicked.connect(self.exportData)
 
         # # label "threshold"
@@ -104,13 +116,13 @@ class Window(QMainWindow):
         # self.thresholdLabel.setText("Detection\nThreshold")
 
         # # label value of slider
-        
+
         # self.thresholdValue = QLabel(self)
         # self.thresholdValue.move(sliderX+40, self.topPadding)
         # self.thresholdValue.setText("10")
 
         # # add a slider to control threshold value
-        
+
         # self.thresholdSlider = QSlider(Qt.Vertical, self)
         # self.thresholdSlider.move(sliderX, self.topPadding + self.sliderTopPadding)
         # self.thresholdSlider.setMinimum(0)
@@ -123,6 +135,7 @@ class Window(QMainWindow):
 
         # show all the widget
         self.show()
+
     # upload front side
     def uploadFrontView(self):
         self.selectAndProcess(True)
@@ -131,13 +144,14 @@ class Window(QMainWindow):
         self.selectAndProcess(False)
 
     # select and process video
-    def selectAndProcess(self,side):
+    def selectAndProcess(self, side):
         fileName = self.selectVideo()
         self.findFirstLed = False
-        
+
         self.curLED = 1
         print("curLED: ", self.curLED)
         resultImg = self.processVideo(fileName)
+        self.bgImage = resultImg
         height, width, channel = resultImg.shape
         bytesPerLine = 3 * width
         qImg = QImage(resultImg.data, width, height, bytesPerLine,
@@ -147,18 +161,52 @@ class Window(QMainWindow):
 
         qImg.bits()
         img_pix = QPixmap.fromImage(qImg)
-        if(side):
+        if (side):
             self.ledImageFront.setPixmap(img_pix)
         else:
             self.ledImageReverse.setPixmap(img_pix)
 
     def exportData(self):
+
+        # Using cv2.imwrite() method
+        # Saving the image
+        try:
+            options = QFileDialog.Options()
+            options |= QFileDialog.DontUseNativeDialog
+            bgImage_path, _ = QFileDialog.getSaveFileName(
+                self,
+                "Please specify the path for background image",
+                "/Users/kangyixiao/EchoFile/coding/fiber_GUI/Fiber_GUI/fiber_GUI/images/bgImage.png",
+                "All Files (*);;Image Files (*.png)",
+                options=options)
+            ledPos_path, _ = QFileDialog.getSaveFileName(
+                self,
+                "Please specify the path for background image",
+                "/Users/kangyixiao/EchoFile/coding/fiber_GUI/Fiber_GUI/fiber_GUI/ledPos.txt",
+                "All Files (*);;Text Files (*.txt)",
+                options=options)
+            if bgImage_path:
+                print("bgImage_path:"+ bgImage_path)
+            if self.bgImage is not None:
+                print("bgImage is not None")
+                cv.imwrite(bgImage_path, self.bgImage)
+            if ledPos_path:
+                print("ledPos_path:"+ ledPos_path)
+            if self.ledPositions != "":
+                outputFile = open(ledPos_path, 'w')
+                outputFile.write(self.ledPositions)
+                outputFile.close()
+        except:
+            print(
+                "Export failed, please input a valid path for image(.png, .jpg)."
+            )
+
         return
 
     def changeSide(self):
 
         self.isObversed = not self.isObversed
-        if(self.isObversed):
+        if (self.isObversed):
             # change button text to "Select Obversed"
             self.upLoadFrontBtn.setText("Select Obverse")
         else:
@@ -168,36 +216,38 @@ class Window(QMainWindow):
     def selectVideo(self):
         # fileName = QFileDialog.getOpenFileName(self, 'OpenFile')
         fileName = QFileDialog.getOpenFileName(
-            self, "Open File", "/Users/kangyixiao/EchoFile/coding/fiber_GUI/camera/#scanning-samples")
+            self, "Open File",
+            "/Users/kangyixiao/EchoFile/coding/fiber_GUI/camera/#scanning-samples"
+        )
         # split file name with '\''
         result = fileName[0]
         return result
 
     # check if the first led begin blinking
 
-
     def startCapture(self, thresh, curFrame):
         whiteAreaSize = sum(sum(thresh))
-        whiteProportion = whiteAreaSize / (thresh.shape[0]*thresh.shape[1])
-        if(whiteProportion >= self.areaThreshold):
-            
+        whiteProportion = whiteAreaSize / (thresh.shape[0] * thresh.shape[1])
+        if (whiteProportion >= self.areaThreshold):
+
             print("find first LED")
             self.startFrame = curFrame
             self.curLed = 1
-            print("startFrame"+str(self.startFrame))
+            print("startFrame" + str(self.startFrame))
             return True
         else:
             return False
-
 
     def canCapture(self, curFrame):
-        if curFrame - (self.curLED * self.blinkingInterval)-self.startFrame < 0.5 and curFrame - (self.curLED * self.blinkingInterval)-self.startFrame > - 0.5:
+        if curFrame - (self.curLED * self.blinkingInterval
+                       ) - self.startFrame < 0.5 and curFrame - (
+                           self.curLED *
+                           self.blinkingInterval) - self.startFrame > -0.5:
             self.curLED += 1
-            print("curLED"+str(self.curLED))
+            print("curLED" + str(self.curLED))
             return True
         else:
             return False
-
 
     def findCenter(self, img, resultImg, curFrame, rgbResultImg):
         # convert image to grayscale image
@@ -218,7 +268,7 @@ class Window(QMainWindow):
         if self.canCapture(curFrame) is True:
             # print("canCapture")
             #  highlight the center
-            self.f.write(str(cX) + "," + str(cY) + ';')
+            self.ledPositions += str(cX) + "," + str(cY) + ';'
             cv.circle(resultImg, (cX, cY), 5, (255, 255, 255), -1)
             cv.circle(rgbResultImg, (cX, cY), 5, (0, 0, 255), -1)
 
@@ -231,16 +281,16 @@ class Window(QMainWindow):
         totalFrame = int(cap.get(cv.CAP_PROP_FRAME_COUNT))
         fps = cap.get(cv.CAP_PROP_FPS)
         print("fps: " + str(fps))
-        self.blinkingInterval = fps*0.4
+        self.blinkingInterval = fps * 0.4
         self.findFirstLed = False
         print("blinking interval: " + str(self.blinkingInterval))
 
         # concatenate image Horizontally
         resultImgRGB = np.zeros((1920, 1080, 3), np.uint8)
-        
+
         # while cap.isOpened():
         for curFrame in range(totalFrame):
-            if(not cap.isOpened()):
+            if (not cap.isOpened()):
                 break
             ret, frame = cap.read()
             # if frame is read correctly ret is True
@@ -255,16 +305,17 @@ class Window(QMainWindow):
                 ret, thresh = cv.threshold(gray, 230, 255, cv.THRESH_BINARY)
                 self.findFirstLed = self.startCapture(thresh, curFrame)
                 rgbResultImg = frame
-                frame, resultImg,rgbResultImg = self.findCenter(frame, resultImg, curFrame,rgbResultImg)
+                frame, resultImg, rgbResultImg = self.findCenter(
+                    frame, resultImg, curFrame, rgbResultImg)
             else:
-                
+
                 # show the image
-                frame, resultImg,rgbResultImg = self.findCenter(frame, resultImg, curFrame,rgbResultImg)
-        
+                frame, resultImg, rgbResultImg = self.findCenter(
+                    frame, resultImg, curFrame, rgbResultImg)
 
         cap.release()
         # cv.destroyAllWindows()
-        self.f.close()
+        
         return rgbResultImg
 
     # def changeThreshold(self):
@@ -273,9 +324,10 @@ class Window(QMainWindow):
     #     # change threshold value to
     #     self.thresholdValue.setText(str(newVal))
 
+
 # create pyqt5 app
 App = QApplication(sys.argv)
 # create the instance of our Window
 window = Window()
 # start the app
-sys.exit(App.exec())
+sys.exit(App. exec ())
