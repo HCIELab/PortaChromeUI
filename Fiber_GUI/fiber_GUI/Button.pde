@@ -130,6 +130,8 @@ class Button{
                         break;
                 }
                 case 4:{
+                    selectInput("Choose an image","bgImageSelected");
+                    // selectInput("Choose ledPosition files", "ledPosSelected");
                     readFibersFromFile();
                     hasFiber = true;
                     break;
@@ -149,6 +151,29 @@ void imageSelected(File selection) {
         // startImageProcessing();
     }
 }
+
+void bgImageSelected(File selection) {
+    if (selection ==  null) {println("Error");}
+    else{
+        canvas.bgImgPath = selection.getAbsolutePath();
+        println("bg image path: " + canvas.bgImgPath);
+
+        PImage imgTmp= loadImage(canvas.bgImgPath);
+        float aspectRatio = ((float)imgTmp.height)/imgTmp.width;
+        float aspectRatioSubWin = ((float)SUB_WIN_HEIGHT)/(float)SUB_WIN_WIDTH;
+        photo = new Img( imgTmp, PAINT_WIN_CENTER_X, PAINT_WIN_CENTER_Y, SUB_WIN_WIDTH, imgTmp.height * SUB_WIN_WIDTH/imgTmp.width);
+
+    }
+}
+
+// void ledPosSelected(File selection) {
+//     if (selection ==  null) {println("Error");}
+//     else{
+//         canvas.ledPosPath = selection.getAbsolutePath();
+//         println("led pos path: " + canvas.ledPosPath);
+//         readFibersFromFile();
+//     }
+// }
 
 // void startImageProcessing() {
 //     // now the picture is loaded 

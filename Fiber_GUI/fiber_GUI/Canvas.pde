@@ -22,7 +22,7 @@ class Canvas{
   Button startBtn;
   Button deactivateBtn;
   Button importBtn;
-
+  String bgImgPath="";
   // toggle button control the view (back or front)
   Button toggleFrontBack;
   Canvas(){
@@ -33,16 +33,15 @@ class Canvas{
     paintLayer = createGraphics(SUB_WIN_WIDTH,SUB_WIN_HEIGHT);
     picLayer = createGraphics(SUB_WIN_WIDTH,SUB_WIN_HEIGHT);
     layersMerged = createGraphics(SUB_WIN_WIDTH,SUB_WIN_HEIGHT);
-    PImage imgTmp= loadImage("images/0_bg.png");
-    float aspectRatio = ((float)imgTmp.height)/imgTmp.width;
-    float aspectRatioSubWin = ((float)SUB_WIN_HEIGHT)/(float)SUB_WIN_WIDTH;
-
-    if(aspectRatio > aspectRatioSubWin) {
-      photo = new Img( imgTmp, PAINT_WIN_CENTER_X, PAINT_WIN_CENTER_Y, imgTmp.width * SUB_WIN_HEIGHT/ imgTmp.height,SUB_WIN_HEIGHT);
+    if(bgImgPath!=""){
+        // PImage imgTmp= loadImage(bgImgPath);
+        // float aspectRatio = ((float)imgTmp.height)/imgTmp.width;
+        // float aspectRatioSubWin = ((float)SUB_WIN_HEIGHT)/(float)SUB_WIN_WIDTH;
+        // photo = new Img( imgTmp, PAINT_WIN_CENTER_X, PAINT_WIN_CENTER_Y, SUB_WIN_WIDTH, imgTmp.height * SUB_WIN_WIDTH/imgTmp.width);
     }
-    else {
-      photo = new Img( imgTmp, PAINT_WIN_CENTER_X, PAINT_WIN_CENTER_Y, SUB_WIN_WIDTH, imgTmp.height * SUB_WIN_WIDTH/imgTmp.width);
-    }
+    
+    
+    
     textSize(50);
     fill(0, 0, 0);
     text("ChromoFiber Design Tool", 100, 70 );
@@ -63,11 +62,9 @@ class Canvas{
   }
 
   void updateGUI(){
-
     paintLayer.beginDraw();
     picLayer.beginDraw();
     layersMerged.beginDraw();
-
     paintLayer.noFill();
     picLayer.noFill();
     
