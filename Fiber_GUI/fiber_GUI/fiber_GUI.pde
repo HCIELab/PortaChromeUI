@@ -32,19 +32,19 @@ void setup() {
     colorMode(RGB, 255, 255, 255);
     noStroke();
     background(255);
-    size(1400, 800);
+    size(1200, 800);
     output = createWriter("ledsOri.txt"); 
     
     printArray(Serial.list());
     myClient = new Client(this, "127.0.0.1", 50007); 
     // Open the port you are using at the rate you want:
-    myPort = new Serial(this, Serial.list()[5], 9600);
+    myPort = new Serial(this, Serial.list()[3], 9600);
     myPort.bufferUntil('\n'); 
     
     
     cp5 = new ControlP5(this);
     cw = cp5.addColorWheel("wheel")
-       .setPosition(1150, 200)
+       .setPosition(50, 550)
        ;
     
     cp5.addSlider("brushSize")

@@ -44,7 +44,7 @@ class Canvas{
     
     textSize(50);
     fill(0, 0, 0);
-    text("ChromoFiber Design Tool", 100, 70 );
+    text("ChromoFiber Design Tool", 50, 70 );
     textSize(SLIDER_TEXT_SIZE);
     text("Brush Size", BRUSH_SLIDRE_X, BRUSH_SLIDRE_Y - SLIDER_TEXT_PADDING );
     text("Image Roatation", PICROTATION_SLIDER_X, PICROTATION_SLIDER_Y - SLIDER_TEXT_PADDING );
@@ -52,11 +52,11 @@ class Canvas{
     text("Image X", IMGX_SLIDER_X, IMGX_SLIDER_Y - SLIDER_TEXT_PADDING );
     text("Image Y", IMGY_SLIDER_X, IMGY_SLIDER_Y - SLIDER_TEXT_PADDING );
     allFibers = createHatFibers();
-    brushBtn = new Button(1250,50,180,40,color(255,0,0),color(200,50,0),"Brush Off",0);
-    addImgBtn = new Button(1250,100,180,40,color(255,0,0),color(200,50,0),"Add an Image",1);
-    startBtn = new Button(1250,150,180,40,color(255,0,0),color(200,50,0),"Start Color Changing",2);
-    deactivateBtn =  new Button(1250,650,180,40,color(255,0,0),color(200,50,0),"Target Color",3);
-    importBtn =  new Button(1050,50,180,40,color(255,0,0),color(200,50,0),"Import",4);
+    brushBtn = new Button(150,480,200,40,color(255,0,0),color(200,50,0),"Brush Off",0);
+    addImgBtn = new Button(400,480,200,40,color(255,0,0),color(200,50,0),"Add an Image",1);
+    startBtn = new Button(650,620,200,40,color(255,0,0),color(200,50,0),"Start Color Changing",2);
+    deactivateBtn =  new Button(650,550,200,40,color(255,0,0),color(200,50,0),"Perview",3);
+    importBtn =  new Button(650,480,200,40,color(255,0,0),color(200,50,0),"Load LED positions",4);
     // tint(255, 128);
     brush = new Brush(20,INIT_BURSH_COLOR,true);
   }

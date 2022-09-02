@@ -1,3 +1,4 @@
+boolean firstTime= true;
 class Pixel{
     float x;
     float y;
@@ -22,10 +23,8 @@ class Fiber {
         leds= inputLeds;
 
         for(int i=0;i<inputLeds.size();i++){
-           
             ledsRealColor.add(new Pixel(inputLeds.get(i).x,inputLeds.get(i).y,0.0,0.0,0.0));
         }
-    
     }
     
     // convert the xy in coordinate of fibers[1920, 1080] to the world coordinates
@@ -41,31 +40,56 @@ class Fiber {
         }
         Pixel pixel0 = ledsDrawn.get(0);
         float prevWorldX = map(pixel0.x,0,cameraImgWidth,0,canvasWidth) + topLeftX;
-        float prevWorldY = canvasWidth/cameraImgWidth + topLeftY;
+        float prevWorldY =  map(pixel0.y,0,cameraImgHeight,0,canvasHeight) + topLeftY;
+
+        color prevColor = pixel0.c;
         stroke(220,220,220);
         if (drawSetting == 2)noStroke();
         else strokeWeight(1); 
         fill(pixel0.c);
-        rect(prevWorldX,prevWorldY,PIXEL_WIDTH,PIXEL_HEIGHT); 
-        
+        // rect(prevWorldX,prevWorldY,PIXEL_WIDTH,PIXEL_HEIGHT); 
+        // if(firstTime) println("first ledPos:"+prevWorldX+","+prevWorldY);
+
         for (int i = 1; i < ledsDrawn.size(); i++) {
             
             Pixel pixel = ledsDrawn.get(i);
             float worldX = map(pixel.x,0,cameraImgWidth,0,canvasWidth) + topLeftX;
             float worldY = map(pixel.y,0,cameraImgHeight,0,canvasHeight) + topLeftY;
-            
+            if(firstTime){
+                println("ledPos:"+worldX+","+worldY);
+            }
             fill(pixel.c);
-            rect(worldX,worldY,PIXEL_WIDTH,PIXEL_HEIGHT); 
-            if (drawSetting == 1) {
-                line(prevWorldX + PIXEL_WIDTH ,worldY,worldX,worldY);
-                line(prevWorldX + PIXEL_WIDTH ,worldY + PIXEL_HEIGHT,worldX,worldY + PIXEL_HEIGHT);
-        }
+            // rect(worldX,worldY,PIXEL_WIDTH,PIXEL_HEIGHT); 
+            int segNum =int(dist(prevWorldX,prevWorldY,worldX,worldY)/PIXEL_WIDTH);
+            float angle1 = atan((worldY- prevWorldY)/(worldX-prevWorldX));
+            
+            for(int j=0;j<segNum;j++){
+                float inter = map(j, 0, segNum, 0, 1);
+                color c = lerpColor(prevColor,pixel.c, inter);
+                float segX = prevWorldX + (worldX-prevWorldX)/segNum*j;
+                float segY = prevWorldY +  (worldY-prevWorldY)/segNum*j;
+                segment(segX, segY,c,angle1);
+                
+            }
+
             
             prevWorldX = worldX;
             prevWorldY = worldY;
+            prevColor = pixel.c;
+
         }
+        firstTime = false;
         
     }
+    void segment(float x, float y, color c, float angle) {
+        pushMatrix();
+        translate(x,y);
+        fill(c);
+        rotate(angle);
+        rect(0,0, PIXEL_WIDTH, PIXEL_HEIGHT);
+        popMatrix();
+    }
+
     void updatePixelColor(float topLeftX, float topLeftY, float canvasWidth, float canvasHeight,float cameraImgWidth, float cameraImgHeight) {
         // get color from canvas which is on the left side
         loadPixels();
@@ -236,7 +260,6 @@ Fibers readFibersFromFile(){
         String[] pos = split(lines[i], ';');
         for(int j = 0; j<pos.length-1; j++) {
             // spilt the position with ','
-            println(pos[j]);
             String[] posi = split(pos[j], ',');
             // get the x and y position of each led
             int x = Integer.parseInt(posi[0]);

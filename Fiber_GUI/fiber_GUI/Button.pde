@@ -96,7 +96,7 @@ class Button{
 
                 case 3 : {
                         if(isShowRealColor == false) {
-                            text = "Real Color";
+                            // text = "Perview";
                             // the text need to be passed is same as case 2, pass it to python to calculate the real color
                             print("start calculate real color");
                             String code = "";
@@ -122,9 +122,9 @@ class Button{
                             isShowRealColor = true;
                         }
                         else{
-                            text = "Target Color";
+                            // text = "Perview";
                             print("show original color");
-                            isShowRealColor = false;
+                            // isShowRealColor = false;
                         }
 
                         break;
