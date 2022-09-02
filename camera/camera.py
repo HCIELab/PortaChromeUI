@@ -109,7 +109,6 @@ time.sleep(0.5)
 ret, test = vid.read()
 coordmap = np.zeros(test.shape, np.uint8)
 while True:
-
     for indexed in range(0, LEDct, 7):  # search through LED string in groups of 7, indexed is first in the lined
         # send indexed to arduino so it knows where to start group of 7
         write_read(indexed)

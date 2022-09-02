@@ -35,7 +35,7 @@ class Window(QMainWindow):
     topPadding = 100
     bottomPadding = 50
     centralPaddingHori = 30
-
+    centralPaddingVertical = 50
     # button & slider setting
     btnHeight = 50
     # sliderWidth = 50
@@ -49,13 +49,14 @@ class Window(QMainWindow):
     #     "/Users/kangyixiao/EchoFile/coding/fiber_GUI/Fiber_GUI/fiber_GUI/ledPos.txt",
         # "w")
     ledPositions = ""
+    ledPosText = "Fiber 1:\n"
 
     def __init__(self):
         super().__init__()
 
         # set the title
         self.setWindowTitle("Fiber Calibration Tool")
-        width = self.leftPadding + self.subWinWidth + self.rightPadding
+        width = self.leftPadding + self.subWinWidth*2 + self.rightPadding + self.centralPaddingVertical 
         height = self.topPadding + self.subWinHeight + self.centralPaddingHori * 2 + self.btnHeight * 2 + self.bottomPadding
 
         # setting the fixed width of window
@@ -87,51 +88,33 @@ class Window(QMainWindow):
 
         # select obverse/reverse button
         FrontBtnY = self.topPadding + self.subWinHeight + self.centralPaddingHori
-        self.upLoadFrontBtn = QPushButton("Upload Video", self)
+        self.upLoadFrontBtn = QPushButton("Upload Scanned Video", self)
         self.upLoadFrontBtn.move(
             self.leftPadding,
             self.topPadding + self.subWinHeight + self.centralPaddingHori)
         self.upLoadFrontBtn.resize(self.subWinWidth, self.btnHeight)
         self.upLoadFrontBtn.clicked.connect(self.uploadFrontView)
-
-        # # upload Front button
-
-        # self.uploadBackBtn = QPushButton("Upload Back View", self)
-        # self.uploadBackBtn.move(backImgX, FrontBtnY)
-        # self.uploadBackBtn.resize(self.subWinWidth, self.btnHeight)
-        # self.uploadBackBtn.clicked.connect(self.uploadBackView)
+        self.upLoadFrontBtn.setFont(QFont("SansSerif", 18))
 
         # export data button
-        self.exportBtn = QPushButton("Export Data", self)
+        self.exportBtn = QPushButton("Extract LED Positions", self)
         self.exportBtn.move(
             self.leftPadding,
             FrontBtnY + self.btnHeight + self.centralPaddingHori)
         self.exportBtn.resize(self.subWinWidth, self.btnHeight)
         self.exportBtn.clicked.connect(self.exportData)
+        self.exportBtn.setFont(QFont("SansSerif", 18))
 
-        # # label "threshold"
-        # sliderX = self.leftPadding + self.subWinWidth*2 + self.centralPadding1+ self.centralPadding2
-        # self.thresholdLabel = QLabel(self)
-        # self.thresholdLabel.move(sliderX-30, self.topPadding)
-        # self.thresholdLabel.setText("Detection\nThreshold")
+        # text line edit fro led Positions
+        self.ledPosLineEdit = QLineEdit(self)
+        self.ledPosLineEdit.move(self.leftPadding+ self.subWinWidth+self.centralPaddingVertical, self.topPadding)
+        self.ledPosLineEdit.resize(self.subWinWidth, self.subWinHeight + 2*self.btnHeight+ 2*self.centralPaddingHori)
 
-        # # label value of slider
-
-        # self.thresholdValue = QLabel(self)
-        # self.thresholdValue.move(sliderX+40, self.topPadding)
-        # self.thresholdValue.setText("10")
-
-        # # add a slider to control threshold value
-
-        # self.thresholdSlider = QSlider(Qt.Vertical, self)
-        # self.thresholdSlider.move(sliderX, self.topPadding + self.sliderTopPadding)
-        # self.thresholdSlider.setMinimum(0)
-        # self.thresholdSlider.setMaximum(50)
-        # self.thresholdSlider.setValue(10)
-        # self.thresholdSlider.setTickPosition(QSlider.TicksBelow)
-        # self.thresholdSlider.setTickInterval(10)
-        # self.thresholdSlider.resize(self.sliderWidth, self.sliderHeight)
-        # self.thresholdSlider.valueChanged.connect(self.changeThreshold)
+        # text for led positions(I need a lable because text line don't have word wrapping, so everything is in one line)
+        self.ledPosLabel = QLabel(self)
+        self.ledPosLabel.move(self.leftPadding+ self.subWinWidth+self.centralPaddingVertical, self.topPadding)
+        self.ledPosLabel.resize(self.subWinWidth, self.subWinHeight + 2*self.btnHeight+ 2*self.centralPaddingHori)
+        self.ledPosLabel.setWordWrap(True)
 
         # show all the widget
         self.show()
@@ -148,7 +131,7 @@ class Window(QMainWindow):
         fileName = self.selectVideo()
         self.findFirstLed = False
 
-        self.curLED = 1
+        self.curLED = 0
         print("curLED: ", self.curLED)
         resultImg = self.processVideo(fileName)
         self.bgImage = resultImg
@@ -165,6 +148,11 @@ class Window(QMainWindow):
             self.ledImageFront.setPixmap(img_pix)
         else:
             self.ledImageReverse.setPixmap(img_pix)
+
+        # set the textline edit the positions of leds
+        if self.ledPositions != "":
+            self.ledPosLabel.setText(self.ledPosText+'\n finish')
+
 
     def exportData(self):
 
@@ -232,7 +220,7 @@ class Window(QMainWindow):
 
             print("find first LED")
             self.startFrame = curFrame
-            self.curLed = 1
+            self.curLed = 0
             print("startFrame" + str(self.startFrame))
             return True
         else:
@@ -269,9 +257,9 @@ class Window(QMainWindow):
             # print("canCapture")
             #  highlight the center
             self.ledPositions += str(cX) + "," + str(cY) + ';'
-            cv.circle(resultImg, (cX, cY), 5, (255, 255, 255), -1)
-            cv.circle(rgbResultImg, (cX, cY), 5, (0, 0, 255), -1)
-
+            self.ledPosText += "\tLED " + str(self.curLED) + ", X position: " + str(cX) + ",\t Y position:" + str(cY) + '\n'
+            cv.circle(resultImg, (cX, cY), 10, (255, 255, 255), -1)
+            cv.circle(rgbResultImg, (cX, cY), 10, (100, 100, 255), -1)
             # cv.imshow("Image", resultImg)
         return img, resultImg, rgbResultImg
 
@@ -318,6 +306,8 @@ class Window(QMainWindow):
         
         return rgbResultImg
 
+   
+
     # def changeThreshold(self):
     #     newVal = self.thresholdSlider.value()
     #     self.areaThreshold = newVal/10000
@@ -329,5 +319,6 @@ class Window(QMainWindow):
 App = QApplication(sys.argv)
 # create the instance of our Window
 window = Window()
+
 # start the app
 sys.exit(App. exec ())

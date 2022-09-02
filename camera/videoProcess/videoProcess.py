@@ -5,7 +5,7 @@ import cv2 as cv
 
 
 areaThreshold = 0.0005
-cap = cv.VideoCapture('../#scanning-samples/test4mov')
+cap = cv.VideoCapture('../#scanning-samples/test6.MOV')
 # get total frame number
 totalFrame = int(cap.get(cv.CAP_PROP_FRAME_COUNT))
 fps = cap.get(cv.CAP_PROP_FPS)
@@ -20,7 +20,6 @@ startFrame = 0
 f = open("ledPos.txt", "a")
 
 # check if the first led begin blinking
-
 
 def startCapture(thresh, curFrame):
     global findFirstLed
