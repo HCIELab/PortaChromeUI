@@ -166,3 +166,5 @@ change button to “Upload Scanned Video”, add position of each LED
 2. group UI component according to the function
 
 ![image-20220902232456124](README.assets/image-20220902232456124.png)
+
+![image-20220902232641506](README.assets/image-20220902232641506.png)
