@@ -153,3 +153,16 @@ The position of each LED is marked with a red circle.![image-20220807193813022](
 **Color Changing**
 
 After the user clicks on the ‘Start Color Changing’ button, the LED will change according to the pattern.![image-20220807193903430](README.assets/image-20220807193903430.png)
+
+
+
+### [0902 LED stripe display](https://plausible-bard-9b1.notion.site/0902-LED-stripe-display-dd8e6caffd8f4602b9d415ded9af59ab)
+
+change button to “Upload Scanned Video”, add position of each LED
+
+![image-20220902232402448](README.assets/image-20220902232402448.png)
+
+1. change single LEDs to LED stripe by interpolation
+2. group UI component according to the function
+
+![image-20220902232456124](README.assets/image-20220902232456124.png)
