@@ -68,7 +68,7 @@ class Window(QMainWindow):
         self.label = QLabel(self)
         self.label.move(self.leftPadding, 20)
         self.label.setText("ChromoFiber Calibration Tool")
-        self.label.setFont(QFont("SansSerif", 35))
+        self.label.setFont(QFont("SansSerif", 25))
         self.label.resize(self.label.sizeHint())
 
         # # display obverse image
