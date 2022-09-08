@@ -5,11 +5,11 @@ int WINDOW_WIDTH = 1400;
 int WINDOW_HEIGHT = 800;
 
 // fiber settings
-float PIXEL_WIDTH = 0.2f;
+float PIXEL_WIDTH = 0.3f;
 float PIXEL_HEIGHT = 7.0f;
 
 // widget settings
-int SUB_WIN_SPACING = 550; // spacing between two major sub window.
+int SUB_WIN_SPACING = 0; // spacing between two major sub window.
 int SUB_WIN_HEIGHT = 270; 
 int SUB_WIN_WIDTH = 480;
 

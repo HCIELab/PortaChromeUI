@@ -55,7 +55,7 @@ class Window(QMainWindow):
         super().__init__()
 
         # set the title
-        self.setWindowTitle("Fiber Calibration Tool")
+        self.setWindowTitle("ChromoFiber Calibration Tool")
         width = self.leftPadding + self.subWinWidth*2 + self.rightPadding + self.centralPaddingVertical 
         height = self.topPadding + self.subWinHeight + self.centralPaddingHori * 2 + self.btnHeight * 2 + self.bottomPadding
 
@@ -67,7 +67,7 @@ class Window(QMainWindow):
         # display window tile
         self.label = QLabel(self)
         self.label.move(self.leftPadding, 20)
-        self.label.setText("Fiber Calibration Tool")
+        self.label.setText("ChromoFiber Calibration Tool")
         self.label.setFont(QFont("SansSerif", 35))
         self.label.resize(self.label.sizeHint())
 

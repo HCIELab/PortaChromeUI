@@ -1,9 +1,13 @@
 
 Img img;
 Img photo;
+// users draw with brush on paintLayer
 PGraphics paintLayer;
+// users add image on piclayer
 PGraphics picLayer;
 PGraphics layersMerged;
+// cover the merged layer to prevent the brush and image shows up
+PGraphics coverMergeLayer;
 
 Brush brush;
 float brushSize;
@@ -32,6 +36,7 @@ class Canvas{
     stroke(0);
     paintLayer = createGraphics(SUB_WIN_WIDTH,SUB_WIN_HEIGHT);
     picLayer = createGraphics(SUB_WIN_WIDTH,SUB_WIN_HEIGHT);
+
     layersMerged = createGraphics(SUB_WIN_WIDTH,SUB_WIN_HEIGHT);
     if(bgImgPath!=""){
         // PImage imgTmp= loadImage(bgImgPath);
@@ -71,6 +76,7 @@ class Canvas{
     // clear last picLayer but keep last paintLayer
     picLayer.clear();
     layersMerged.clear();
+    layersMerged.background(255);
     image(paintLayer, PAINT_WIN_LEFT_TOP_X, PAINT_WIN_LEFT_TOP_Y);
     stroke(0);
     noFill();
@@ -86,13 +92,14 @@ class Canvas{
     layersMerged.image(picLayer,0,0);
     layersMerged.image(paintLayer,0,0);
     layersMerged.endDraw();
-
+    image(layersMerged,PAINT_WIN_LEFT_TOP_X, PAINT_WIN_LEFT_TOP_Y);
+    if(photo != null)photo.drawImg();
     if(hasFiber){
         allFibers.updateFibers(FIBER_WIN_LEFT_TOP_X, FIBER_WIN_LEFT_TOP_Y, SUB_WIN_WIDTH, SUB_WIN_HEIGHT);
         allFibers.drawFibers(FIBER_WIN_LEFT_TOP_X, FIBER_WIN_LEFT_TOP_Y, SUB_WIN_WIDTH, SUB_WIN_HEIGHT);
     }
     
-    image(layersMerged,PAINT_WIN_LEFT_TOP_X, PAINT_WIN_LEFT_TOP_Y);
+
     addImgBtn.drawButton();
     brushBtn.drawButton();
     startBtn.drawButton();
