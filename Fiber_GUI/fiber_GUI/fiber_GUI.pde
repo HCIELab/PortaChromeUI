@@ -36,8 +36,10 @@ void setup() {
     output = createWriter("ledsOri.txt"); 
     
     printArray(Serial.list());
+    // myClient is for python(preview function)
     myClient = new Client(this, "127.0.0.1", 50007); 
-    // Open the port you are using at the rate you want:
+    // Open the port you are using at the rate you want: 
+    // myPort is for arduino
     myPort = new Serial(this, Serial.list()[3], 9600);
     myPort.bufferUntil('\n'); 
     

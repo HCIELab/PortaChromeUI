@@ -7,9 +7,13 @@
 
 [Fiber Clibration Tool (OpenCV with PyQt5, add GUI to LED Locator)](https://github.com/echo-xiao9/FiberGUI/tree/main/camera/videoProcess/fiberCalibrationTool.py)
 
-[LED stripe controller(Arduino version)](https://github.com/echo-xiao9/FiberGUI/blob/main/camera/testLed/testLed.ino)
+[LED stripe controller for lighting LED(Arduino version)](https://github.com/echo-xiao9/FiberGUI/blob/main/camera/testLed/testLed.ino)
+
+[LED stripe controller for color changing](https://github.com/echo-xiao9/FiberGUI/tree/main/Serial/testSerial/testSerial)
 
 [Color Gradient Viewer(python version)](https://github.com/echo-xiao9/FiberGUI/blob/main/gradientDebug/gradientDebug.py)
+
+[Linear Programming solver(python version)](https://github.com/echo-xiao9/FiberGUI/blob/main/Fiber_GUI/fiber_GUI/solver.py)
 
 ## Dev log
 
@@ -168,3 +172,26 @@ change button to “Upload Scanned Video”, add position of each LED
 ![image-20220902232456124](README.assets/image-20220902232456124.png)
 
 ![image-20220902232641506](README.assets/image-20220902232641506.png)
+
+### [0909 merge window and display fiber on background](https://plausible-bard-9b1.notion.site/0909-merge-window-and-display-fiber-on-background-e5994965aef64d0085f63220be45b304)
+
+I merged the window into one and drew the fiber on the background image to make it more real. I tried to let the
+
+Users only draw in the area of fiber instead of the whole canvas. It really makes the interface more intuitive! I removed all the widgets about the image. Users can also create beautiful patterns with a brush without an image.
+
+![image-20220909094639102](README.assets/image-20220909094639102.png)
+
+### [0910 instruction of running code](https://plausible-bard-9b1.notion.site/0910-instruction-of-running-code-8c4b2a2757cb4dbaada19a32d7cf13a5)
+
+1. run FiberGUI/camera/testLed/testLed.ino to get video of LED stripe. You need to fix the camera.
+2. run camera/videoProess/fiberCalibrationTool.py to input video, save the ledPos.txt(can place it in the same folder of fiber_GUI.pde) and background image.
+3. run Fiber_GUI/fiber_GUI/solver.py to start the linear programming solver
+4. run Serial/testSerial/testSerial/testSerial.ino to set up Arduino and LED stripe for color changing. You need to define the data_pin according to which PIN the LED stripe is connected with ESP32.
+
+```
+#define DATA_PIN    7 //Pin for data on LedStrip
+```
+
+5. in  fiber_GUI, set the Serial.list[x] for Arduino. If you just want to test the design tool, you can set it to a number less than the length of Serial.list(). You can see the name of Serial in the result printed by printArray(Serial.list())
+
+![image-20220909094432731](README.assets/image-20220909094432731.png)

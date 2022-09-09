@@ -164,13 +164,13 @@ class Window(QMainWindow):
             bgImage_path, _ = QFileDialog.getSaveFileName(
                 self,
                 "Please specify the path for background image",
-                "/Users/kangyixiao/EchoFile/coding/fiber_GUI/Fiber_GUI/fiber_GUI/images/bgImage.png",
+                "../../Fiber_GUI/fiber_GUI/images/bgImage.png",
                 "All Files (*);;Image Files (*.png)",
                 options=options)
             ledPos_path, _ = QFileDialog.getSaveFileName(
                 self,
                 "Please specify the path for background image",
-                "/Users/kangyixiao/EchoFile/coding/fiber_GUI/Fiber_GUI/fiber_GUI/ledPos.txt",
+                "../../Fiber_GUI/fiber_GUI/ledPos.txt",
                 "All Files (*);;Text Files (*.txt)",
                 options=options)
             if bgImage_path:
