@@ -210,7 +210,9 @@ Users only draw in the area of fiber instead of the whole canvas. It really make
 
 ### [0913 Color Picker mode and the preview result with new deactivation data](https://plausible-bard-9b1.notion.site/0913-Color-Picker-mode-and-the-preview-result-with-new-deactivation-data-50fa300363ed446fb648112a61c36db4)
 
-I added a button to select between “Color Picker Mode” and “Color Wheel Mode”, users can choose black, white, cyan, yellow for the brush color.![截屏2022-09-13 下午7.10.42](README.assets/截屏2022-09-13 下午7.10.42.png)
+I added a button to select between “Color Picker Mode” and “Color Wheel Mode”, users can choose black, white, cyan, yellow for the brush color.
+
+![截屏2022-09-13 下午7.13.20](README.assets/截屏2022-09-13 下午7.13.20.png)
 
 I put the new deactivation data in to linear programming solver and test the preview result.
 
