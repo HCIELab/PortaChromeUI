@@ -1,3 +1,7 @@
+// By Yixiao Kang(kyx999@sjtu.edu.cn)
+// define the Image class, we can add image to the canvas, but now we delete this function, 
+// you can go to the https://github.com/echo-xiao9/FiberGUI to see the previous version with image function
+
 class Img{
   PImage img;
   int centerX;

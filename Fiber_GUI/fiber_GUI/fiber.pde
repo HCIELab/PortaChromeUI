@@ -8,7 +8,8 @@ class Pixel{
         x = x1;
         y = y1;
         c = color(r,g,b);
-}
+    }
+    
 }
 
 class Fiber {

@@ -1,3 +1,6 @@
+// By Yixiao Kang(kyx999@sjtu.edu.cn)
+// define the Brush class which is used to draw on the canvas
+
 class Brush {
   int radius;
   color c;

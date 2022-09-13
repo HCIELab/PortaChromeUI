@@ -1,3 +1,6 @@
+// By Yixiao Kang(kyx999@sjtu.edu.cn)
+// define the const used in the application
+
 // global settings
 int c = 20;
 

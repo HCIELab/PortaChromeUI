@@ -11,7 +11,6 @@ class Button{
     color currColor;
     boolean isPressed;
     String text;
-
     // type 0: brush on/off; 
     // type 1: choose image; 
     // type 2: start color changing;
@@ -34,6 +33,7 @@ class Button{
     
     void drawButton() {
         fill(currColor);
+        stroke(0);
         rect(centerX - width / 2, centerY - height / 2, width, height,10);
         textSize(BTN_TEXT_SIZE);
         textAlign(CENTER,CENTER);
@@ -58,15 +58,17 @@ class Button{
                             text = "Brush On";
                             currColor = pressColor;
                         } else{
-                            text = "BrushOff";
+                            text = "Brush Off";
                             currColor = noPressColor;
                         }
+                        
                         // print("brush is valid:" + brush.isValid + '\n');
                         break;
                     }
                 case 1 : {
                         selectInput("Choose an image","imageSelected");
                         // print("case1");
+                        
                         break;
                 }
                 case 2 : {
@@ -134,6 +136,29 @@ class Button{
                     // selectInput("Choose ledPosition files", "ledPosSelected");
                     readFibersFromFile();
                     hasFiber = true;
+                    break;
+                }
+                case 5:{
+                    println("case 5 color wheel mode or color picker mode");
+                    hideColorWheel= !hideColorWheel;
+                    currColor = noPressColor;
+                    if(hideColorWheel){
+                        text = "Color Picker Mode";
+                    }
+                    else{
+                        text = "Color Wheel Mode";
+                    }
+                    
+                    break;
+                }
+                case 6: {
+                    println("case 6 check which color picker is clicked and update the color of the brush");
+                    if(hideColorWheel){
+                        println("Change to r:"+red(pressColor)+",g:"+green(pressColor)+",b:"+blue(pressColor));
+                        brush.c = color(red(pressColor),green(pressColor),blue(pressColor));
+                    }
+                    
+                    
                     break;
                 }
             }

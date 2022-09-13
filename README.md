@@ -195,3 +195,29 @@ Users only draw in the area of fiber instead of the whole canvas. It really make
 5. in  fiber_GUI, set the Serial.list[x] for Arduino. If you just want to test the design tool, you can set it to a number less than the length of Serial.list(). You can see the name of Serial in the result printed by printArray(Serial.list())
 
 ![image-20220909094432731](README.assets/image-20220909094432731.png)
+
+
+
+### [A tool to capture the flash of light](https://plausible-bard-9b1.notion.site/0911-get-images-from-video-a7d9e26d96cd474cb5b0e6820928cd06)
+
+ OpenCV to capture the flash of light. I used it to get 233 photos in a video of a cyan fiber being illuminated with blue light. You need to change the parameters before running the code
+
+![image-20220913190312350](README.assets/image-20220913190312350.png)
+
+![<粘贴的图形-1.png>](../../../../../cid:4820C82C-B2E3-4D2C-8147-B8F3008CF590)
+
+![image-20220913190514085](README.assets/image-20220913190514085.png)
+
+### [0913 Color Picker mode and the preview result with new deactivation data](https://plausible-bard-9b1.notion.site/0913-Color-Picker-mode-and-the-preview-result-with-new-deactivation-data-50fa300363ed446fb648112a61c36db4)
+
+I added a button to select between “Color Picker Mode” and “Color Wheel Mode”, users can choose black, white, cyan, yellow for the brush color.![截屏2022-09-13 下午7.10.42](README.assets/截屏2022-09-13 下午7.10.42.png)
+
+I put the new deactivation data in to linear programming solver and test the preview result.
+
+inf= 1000000 FULL_DEACTIVATION_TIME = [[3500,2000,3600],[2000,2000,1000],[inf,4500,60]]
+
+The red color can not be simulated well by our fiber. The green and blue colors can be simulated well.
+
+Currently, there is no constrains on the LED shining time. We can add more constrains to the solver to see the results.
+
+![image-20220913190115432](README.assets/image-20220913190115432.png)

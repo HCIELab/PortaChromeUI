@@ -1,3 +1,7 @@
+// By Yixiao Kang(kyx999@sjtu.edu.cn)
+// fiber_GUI.pde, init the whole program, some global variables are initialized here
+// build the basic framework for processing setup() and draw()
+
 import controlP5.*;
 import processing.serial.*;
 import processing.net.*; 
@@ -6,10 +10,16 @@ Client myClient;
 Serial myPort; 
 PrintWriter output;
 
-
+// I list all boolean status which will be changed when using the application
 // since we're doing serial handshaking, 
 // we need to check if we've heard from the microcontroller
 boolean firstContact = false;
+boolean hideColorWheel = false;
+// two color mode: 1. color wheel(true) 2. 4 color picker(false)
+boolean isShowRealColor=false;
+boolean hasFiber = false;
+
+
 
 ControlP5 cp5;
 ColorWheel cw;
@@ -32,7 +42,7 @@ void setup() {
     colorMode(RGB, 255, 255, 255);
     noStroke();
     background(255);
-    size(600, 650);
+    size(600, 700);
     output = createWriter("ledsOri.txt"); 
     
     printArray(Serial.list());
@@ -46,7 +56,7 @@ void setup() {
     
     cp5 = new ControlP5(this);
     cw = cp5.addColorWheel("wheel")
-       .setPosition(300, 410)
+       .setPosition(300, 405)
        ;
     
     // cp5.addSlider("brushSize")
@@ -93,6 +103,7 @@ void setup() {
 }
 
 void draw() {
+    background(255);
     canvas.updateGUI();
     
     if (myPort.available() > 0) 
@@ -100,6 +111,8 @@ void draw() {
         String val = myPort.readStringUntil('\n');         // read it and store it in val
         if (val!= "")println(val); //print it out in the console
     } 
+    if(hideColorWheel)cw.hide();
+    else cw.show();
     if (myClient != null) {
         String input = myClient.readStringUntil(byte('\n'));
         
@@ -178,7 +191,13 @@ void mouseClicked() {
     canvas.startBtn.checkBtnClicked();
     canvas.deactivateBtn.checkBtnClicked();
     canvas.importBtn.checkBtnClicked();
+    canvas.colorModeBtn.checkBtnClicked();
+    canvas.colorPickerCyanBtn.checkBtnClicked();
+    canvas.colorPickerBlackBtn.checkBtnClicked();
+    canvas.colorPickerYellowBtn.checkBtnClicked();
+    canvas.colorPickerWhiteBtn.checkBtnClicked();
 }
+
 
 void mouseDragged() {
     brush.drawWithBrush();

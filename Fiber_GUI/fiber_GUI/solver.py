@@ -12,8 +12,10 @@ from scipy import optimize
 
 # row 1: cyan; row 2: magenta; row 3: yellow
 # col 1: red;  col 2: green  ; col 3: blue
-FULL_DEACTIVATION_TIME = [[467, 712, 687], [1500, 242, 177], [10000, 900, 20]]
-
+# FULL_DEACTIVATION_TIME = [[467, 712, 687], [1500, 242, 177], [10000, 900, 20]]
+# version 1:
+inf= 1000000
+FULL_DEACTIVATION_TIME = [[3500,2000,3600],[2000,2000,1000],[inf,4500,60]]
 
 RGB_SCALE = 255
 CMYK_SCALE = 1
@@ -159,8 +161,9 @@ while True:
             time, realColor1 = d.compute_deactivation_time([c,m,y])
             ledNum+=1
             realR, realG, realB = cmyk_to_rgb(realColor1[0],realColor1[1],realColor1[2],k)
-       
+            print("time:"+str(time))
             dataSent += str(realR)+","+str(realG)+","+str(realB)+"#"
+
         print("dataSent"+dataSent)
         print("ledNum"+str(ledNum))
         fwirte.write(dataSent)

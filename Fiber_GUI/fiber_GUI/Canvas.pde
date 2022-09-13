@@ -1,3 +1,6 @@
+// By Yixiao Kang(kyx999@sjtu.edu.cn)
+// define the Canvas class, control all the widgets in the canvas.
+
 
 Img img;
 Img photo;
@@ -15,17 +18,20 @@ float picRotation;
 float picScale;
 int imgX;
 int imgY;
-boolean isShowRealColor=false;
-boolean hasFiber = false;
 
 class Canvas{
-
   Fibers allFibers;
 //   Button addImgBtn;
   Button brushBtn;
   Button startBtn;
   Button deactivateBtn;
   Button importBtn;
+  Button colorModeBtn;
+  Button colorPickerCyanBtn;
+  Button colorPickerBlackBtn;
+  Button colorPickerYellowBtn;
+  Button colorPickerWhiteBtn;
+
   String bgImgPath="";
   // toggle button control the view (back or front)
   Button toggleFrontBack;
@@ -34,6 +40,7 @@ class Canvas{
 
   void drawGUI(){
     stroke(0);
+    background(255);
     paintLayer = createGraphics(SUB_WIN_WIDTH,SUB_WIN_HEIGHT);
     picLayer = createGraphics(SUB_WIN_WIDTH,SUB_WIN_HEIGHT);
 
@@ -45,8 +52,7 @@ class Canvas{
         // photo = new Img( imgTmp, PAINT_WIN_CENTER_X, PAINT_WIN_CENTER_Y, SUB_WIN_WIDTH, imgTmp.height * SUB_WIN_WIDTH/imgTmp.width);
     }
     
-    
-    
+
     textSize(40);
     fill(0, 0, 0);
     text("ChromoFiber Design Tool", 50, 70 );
@@ -58,17 +64,26 @@ class Canvas{
     // text("Image Y", IMGY_SLIDER_X, IMGY_SLIDER_Y - SLIDER_TEXT_PADDING );
     allFibers = createHatFibers();
     importBtn =  new Button(150,430,200,40,color(255,0,0),color(200,50,0),"Load LED positions",4);
-    brushBtn = new Button(150,480,200,40,color(255,0,0),color(200,50,0),"Brush Off",0);
+    brushBtn = new Button(150,500,200,40,color(255,0,0),color(200,50,0),"Brush Off",0);
     // addImgBtn = new Button(400,480,200,40,color(255,0,0),color(200,50,0),"Add an Image",1);
-    deactivateBtn =  new Button(150,530,200,40,color(255,0,0),color(200,50,0),"Perview",3);
-    startBtn = new Button(150,580,200,40,color(255,0,0),color(200,50,0),"Start Color Changing",2);
-    
-    
+    deactivateBtn =  new Button(150,570,200,40,color(255,0,0),color(200,50,0),"Perview",3);
+    startBtn = new Button(150,640,200,40,color(255,0,0),color(200,50,0),"Start Color Changing",2);
+    colorModeBtn = new Button(400,640,200,40,color(255,0,0),color(200,50,0),"Color Wheel Mode",5);
+
+    colorPickerCyanBtn =  new Button(340,450,70,50,color(0,255,255),color(0,255,255),"",6);
+    colorPickerYellowBtn = new Button(470,450,70,50,color(255,255,0),color(255,255,0),"",6);
+    colorPickerBlackBtn = new Button(340,550,70,50,color(0,0,0),color(0,0,0),"",6);
+    colorPickerWhiteBtn = new Button(470,550,70,50,color(255,255,255),color(255,255,255),"",6);
+
     // tint(255, 128);
     brush = new Brush(20,INIT_BURSH_COLOR,true);
   }
 
   void updateGUI(){
+    translate(0,0);
+    textSize(40);
+    fill(0, 0, 0);
+    text("ChromoFiber Design Tool", 270, 40 );
     paintLayer.beginDraw();
     picLayer.beginDraw();
     layersMerged.beginDraw();
@@ -101,12 +116,19 @@ class Canvas{
         allFibers.drawFibers(FIBER_WIN_LEFT_TOP_X, FIBER_WIN_LEFT_TOP_Y, SUB_WIN_WIDTH, SUB_WIN_HEIGHT);
     }
     
-
-    // addImgBtn.drawButton();
     brushBtn.drawButton();
     startBtn.drawButton();
     deactivateBtn.drawButton();
     importBtn.drawButton();
+    colorModeBtn.drawButton();
+    if(hideColorWheel){ 
+        colorPickerCyanBtn.drawButton();
+        colorPickerBlackBtn.drawButton();
+        colorPickerYellowBtn.drawButton();
+        colorPickerWhiteBtn.drawButton();
+    }
+   
+
     brush.radius = (int)brushSize;
  
     if(img != null) {
@@ -116,9 +138,12 @@ class Canvas{
       img.centerX = imgX;
       img.centerY = imgY;
     }
-
-    color cnew = color(cw.r(), cw.g(), cw.b());
-    brush.c = cnew;
+    if(!hideColorWheel){
+        color cnew = color(cw.r(), cw.g(), cw.b());
+        // if currently we use the color from color wheel then update the color 
+        brush.c = cnew;
+    }
+    
     
   }
 }
