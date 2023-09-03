@@ -72,7 +72,7 @@ class Button{
                         break;
                 }
                 case 2 : {
-                        print("start color changeing ");
+                        print("start color changeing \n");
                         // // write led data to myPort
                         String code = "";
                         int ledIndex = 0;
@@ -88,6 +88,8 @@ class Button{
                             
                         }
                         code += "*";
+                        
+                        print("string send: " + code + "\n");
 
                         myPort.write(code);
                         

@@ -55,7 +55,7 @@ class Canvas{
 
     textSize(40);
     fill(0, 0, 0);
-    text("ChromoFiber Design Tool", 50, 70 );
+    text("ChromoWrap Design Tool", 50, 70 );
     textSize(SLIDER_TEXT_SIZE);
     // text("Brush Size", BRUSH_SLIDRE_X, BRUSH_SLIDRE_Y - SLIDER_TEXT_PADDING_Y );
     
@@ -81,7 +81,7 @@ class Canvas{
     translate(0,0);
     textSize(40);
     fill(0, 0, 0);
-    text("ChromoFiber Design Tool", 270, 40 );
+    text("ChromoWrap Design Tool", 270, 40 );
     textSize(SLIDER_TEXT_SIZE);
     text("Roatation", IMG_ROTATE_SLIDER_X + SLIDER_TEXT_PADDING_X , IMG_ROTATE_SLIDER_Y + SLIDER_TEXT_PADDING_Y );
     text("Scale", IMG_SCALE_SLIDER_X + SLIDER_TEXT_PADDING_X, IMG_SCALE_SLIDER_Y + SLIDER_TEXT_PADDING_Y );
