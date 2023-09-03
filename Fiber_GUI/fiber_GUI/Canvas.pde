@@ -21,7 +21,7 @@ int imgY;
 
 class Canvas{
   Fibers allFibers;
-//   Button addImgBtn;
+  Button addImgBtn;
   Button brushBtn;
   Button startBtn;
   Button deactivateBtn;
@@ -57,18 +57,16 @@ class Canvas{
     fill(0, 0, 0);
     text("ChromoFiber Design Tool", 50, 70 );
     textSize(SLIDER_TEXT_SIZE);
-    // text("Brush Size", BRUSH_SLIDRE_X, BRUSH_SLIDRE_Y - SLIDER_TEXT_PADDING );
-    // text("Image Roatation", PICROTATION_SLIDER_X, PICROTATION_SLIDER_Y - SLIDER_TEXT_PADDING );
-    // text("Image Scale", PICSCALE_SLIDER_X, PICSCALE_SLIDER_Y - SLIDER_TEXT_PADDING );
-    // text("Image X", IMGX_SLIDER_X, IMGX_SLIDER_Y - SLIDER_TEXT_PADDING );
-    // text("Image Y", IMGY_SLIDER_X, IMGY_SLIDER_Y - SLIDER_TEXT_PADDING );
-    allFibers = createHatFibers();
+    // text("Brush Size", BRUSH_SLIDRE_X, BRUSH_SLIDRE_Y - SLIDER_TEXT_PADDING_Y );
+    
+    
+    allFibers = readFibersFromFile();
     importBtn =  new Button(150,430,200,40,color(255,0,0),color(200,50,0),"Load LED positions",4);
-    brushBtn = new Button(150,500,200,40,color(255,0,0),color(200,50,0),"Brush Off",0);
-    // addImgBtn = new Button(400,480,200,40,color(255,0,0),color(200,50,0),"Add an Image",1);
-    deactivateBtn =  new Button(150,570,200,40,color(255,0,0),color(200,50,0),"Perview",3);
-    startBtn = new Button(150,640,200,40,color(255,0,0),color(200,50,0),"Start Color Changing",2);
-    colorModeBtn = new Button(400,640,200,40,color(255,0,0),color(200,50,0),"Color Wheel Mode",5);
+    brushBtn = new Button(150,480,200,40,color(255,0,0),color(200,50,0),"Brush Off",0);
+    addImgBtn = new Button(150,530,200,40,color(255,0,0),color(200,50,0),"Add an Image",1);
+    deactivateBtn =  new Button(150,580,200,40,color(255,0,0),color(200,50,0),"Perview",3);
+    startBtn = new Button(150,630,200,40,color(255,0,0),color(200,50,0),"Start Color Changing",2);
+    // colorModeBtn = new Button(400,640,200,40,color(255,0,0),color(200,50,0),"Color Wheel Mode",5);
 
     colorPickerCyanBtn =  new Button(340,450,70,50,color(0,255,255),color(0,255,255),"",6);
     colorPickerYellowBtn = new Button(470,450,70,50,color(255,255,0),color(255,255,0),"",6);
@@ -84,6 +82,12 @@ class Canvas{
     textSize(40);
     fill(0, 0, 0);
     text("ChromoFiber Design Tool", 270, 40 );
+    textSize(SLIDER_TEXT_SIZE);
+    text("Roatation", IMG_ROTATE_SLIDER_X + SLIDER_TEXT_PADDING_X , IMG_ROTATE_SLIDER_Y + SLIDER_TEXT_PADDING_Y );
+    text("Scale", IMG_SCALE_SLIDER_X + SLIDER_TEXT_PADDING_X, IMG_SCALE_SLIDER_Y + SLIDER_TEXT_PADDING_Y );
+    text("X", IMGX_SLIDER_X + SLIDER_TEXT_PADDING_X, IMGX_SLIDER_Y + SLIDER_TEXT_PADDING_Y );
+    text("Y", IMGY_SLIDER_X + SLIDER_TEXT_PADDING_X, IMGY_SLIDER_Y + SLIDER_TEXT_PADDING_Y );
+
     paintLayer.beginDraw();
     picLayer.beginDraw();
     layersMerged.beginDraw();
@@ -120,7 +124,8 @@ class Canvas{
     startBtn.drawButton();
     deactivateBtn.drawButton();
     importBtn.drawButton();
-    colorModeBtn.drawButton();
+    addImgBtn.drawButton();
+    // colorModeBtn.drawButton();
     if(hideColorWheel){ 
         colorPickerCyanBtn.drawButton();
         colorPickerBlackBtn.drawButton();

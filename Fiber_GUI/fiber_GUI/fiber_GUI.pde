@@ -18,7 +18,7 @@ boolean hideColorWheel = false;
 // two color mode: 1. color wheel(true) 2. 4 color picker(false)
 boolean isShowRealColor=false;
 boolean hasFiber = false;
-
+boolean testMode = true;
 
 
 ControlP5 cp5;
@@ -50,15 +50,25 @@ void setup() {
     myClient = new Client(this, "127.0.0.1", 50007); 
     // Open the port you are using at the rate you want: 
     // myPort is for arduino
-    myPort = new Serial(this, Serial.list()[3], 9600);
-    myPort.bufferUntil('\n'); 
     
-    
+    // test Mode with no arduino, disable myPort 
+    if (testMode) {
+        myPort = null;
+    }
+    else{
+        // Open the port you are using at the rate you want: 
+        // myPort is for arduino, for the Serial.list[1], the number is the port number of arduino
+        myPort = new Serial(this, Serial.list()[1], 9600);
+        myPort.bufferUntil('\n'); 
+
+    }
+
     cp5 = new ControlP5(this);
     cw = cp5.addColorWheel("wheel")
        .setPosition(300, 405)
        ;
-    
+    readFibersFromFile();
+    hasFiber = true;
     // cp5.addSlider("brushSize")
     //    .setPosition(BRUSH_SLIDRE_X, BRUSH_SLIDRE_Y)
     //    .setRange(0,MAX_BRUSH_SIZE)
@@ -67,37 +77,37 @@ void setup() {
     //    .setValue(20)
     //    ;
     
-    // cp5.addSlider("picRotation")
-    //    .setPosition(PICROTATION_SLIDER_X, PICROTATION_SLIDER_Y)
-    //    .setRange(0,MAX_ROTATE)
-    //    .setWidth(PICROTATION_SLIDER_WID)
-    //    .setHeight(PICROTATION_SLIDER_HEIGHT)
-    //    .setValue(0)
-    //    ;
+    cp5.addSlider("picRotation")
+       .setPosition(IMG_ROTATE_SLIDER_X, IMG_ROTATE_SLIDER_Y)
+       .setRange(0,MAX_ROTATE)
+       .setWidth(IMG_ROTATE_SLIDER_WID)
+       .setHeight(IMG_ROTATE_SLIDER_HEIGHT)
+       .setValue(0)
+       ;
     
-    // cp5.addSlider("picScale")
-    //    .setPosition(PICSCALE_SLIDER_X, PICSCALE_SLIDER_Y)
-    //    .setRange(MIN_SCALE,MAX_SCALE)
-    //    .setWidth(PICSCALE_SLIDER_WID)
-    //    .setHeight(PICSCALE_SLIDER_HEIGHT)
-    //    .setValue(INIT_PIC_WIDTH)
-    //    ;
+    cp5.addSlider("picScale")
+       .setPosition(IMG_SCALE_SLIDER_X, IMG_SCALE_SLIDER_Y)
+       .setRange(MIN_SCALE,MAX_SCALE)
+       .setWidth(IMG_SCALE_SLIDER_WID)
+       .setHeight(IMG_SCALE_SLIDER_HEIGHT)
+       .setValue(INIT_PIC_WIDTH)
+       ;
     
-    // cp5.addSlider("imgX")
-    //    .setPosition(IMGX_SLIDER_X, IMGX_SLIDER_Y)
-    //    .setRange(MIN_X,MAX_X)
-    //    .setWidth(IMGX_SLIDER_WID)
-    //    .setHeight(IMGX_SLIDER_HEIGHT)
-    //    .setValue((MIN_X + MAX_X) / 2)
-    //    ;
+    cp5.addSlider("imgX")
+       .setPosition(IMGX_SLIDER_X, IMGX_SLIDER_Y)
+       .setRange(MIN_X,MAX_X)
+       .setWidth(IMGX_SLIDER_WID)
+       .setHeight(IMGX_SLIDER_HEIGHT)
+       .setValue((MIN_X + MAX_X) / 2)
+       ;
     
-    // cp5.addSlider("imgY")
-    //    .setPosition(IMGY_SLIDER_X, IMGY_SLIDER_Y)
-    //    .setRange(MIN_Y, MAX_Y)
-    //    .setWidth(IMGY_SLIDER_WID)
-    //    .setHeight(IMGY_SLIDER_HEIGHT)
-    //    .setValue((MIN_Y + MAX_Y) / 2)
-    //    ;
+    cp5.addSlider("imgY")
+       .setPosition(IMGY_SLIDER_X, IMGY_SLIDER_Y)
+       .setRange(MIN_Y, MAX_Y)
+       .setWidth(IMGY_SLIDER_WID)
+       .setHeight(IMGY_SLIDER_HEIGHT)
+       .setValue((MIN_Y + MAX_Y) / 2)
+       ;
     
     canvas.drawGUI();
 }
@@ -106,7 +116,7 @@ void draw() {
     background(255);
     canvas.updateGUI();
     
-    if (myPort.available() > 0) 
+    if (!testMode && myPort.available() > 0) 
     {  // If data is available,
         String val = myPort.readStringUntil('\n');         // read it and store it in val
         if (val!= "")println(val); //print it out in the console
@@ -186,12 +196,12 @@ void keyPressed() {
 }
 
 void mouseClicked() {
-    // canvas.addImgBtn.checkBtnClicked();
+    canvas.addImgBtn.checkBtnClicked();
     canvas.brushBtn.checkBtnClicked();
     canvas.startBtn.checkBtnClicked();
     canvas.deactivateBtn.checkBtnClicked();
     canvas.importBtn.checkBtnClicked();
-    canvas.colorModeBtn.checkBtnClicked();
+    // canvas.colorModeBtn.checkBtnClicked();
     canvas.colorPickerCyanBtn.checkBtnClicked();
     canvas.colorPickerBlackBtn.checkBtnClicked();
     canvas.colorPickerYellowBtn.checkBtnClicked();
