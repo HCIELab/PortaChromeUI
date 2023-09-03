@@ -223,3 +223,12 @@ The red color can not be simulated well by our fiber. The green and blue colors 
 Currently, there is no constrains on the LED shining time. We can add more constrains to the solver to see the results.
 
 ![image-20220913190115432](README.assets/image-20220913190115432.png)
+
+### [20220826 Hexagon fiber and add image back](https://plausible-bard-9b1.notion.site/20220826-Hexagon-fiber-and-add-image-back-bae18275ed81468ebb6da2efa32007b1)
+
+<img src="README.assets/image-20230903003021332.png" alt="image-20230903003021332" style="zoom: 25%;" />
+
+1. Change LED shape from rectangle to hexagon
+2. Add the Image back and the sliders
+3. Initialize the fiber with a given shape rather than load LED positions.
+4. Disable the color picker mode
