@@ -1,37 +1,37 @@
 #include <Adafruit_NeoPixel.h>
 
 #define LED_STRIP_PIN   4   // Pin for the RGB LED data
-#define STRIP_LED_COUNT 200
+#define UV_PIN 14
+#define STRIP_LED_COUNT 144
+#define PREVIEW_PIN 16
 
 Adafruit_NeoPixel strip(STRIP_LED_COUNT, LED_STRIP_PIN, NEO_GRB + NEO_KHZ800);
 
-void setup() {
-  // Enables serial communication with the python code
-  Serial.begin(9600);
-  // Initializes the LEDs. The Strip should be intense, at maximum brightness, but the light we dim a little bit to extentuate the changes in the fiber. 
-  strip.begin();           
-  strip.show();            
-  strip.setBrightness(100); 
-}
-
-struct RGB_timer {
+struct Color {
   int r;
   int g;
   int b;
-}; // in millisecond
+};
 
+Color DisplayArray[STRIP_LED_COUNT];
+Color DeactivationArray[STRIP_LED_COUNT];
+boolean previewing = true; 
 
-// common variables
-int currentMode = 0; // 0: "d" display, 1: "v" deactivate using visible color
-int currentIndex = 0;
+void setup() {
+  pinMode(UV_PIN, OUTPUT);
+  pinMode(PREVIEW_PIN, INPUT);
+  
+  // Enables serial communication with the python code
+  Serial.begin(9600); 
+  strip.begin();           
+  strip.show();            
 
-// variable for "v mode" deactivation only
-int actualNumPixel = 60;
-RGB_timer desaturationTimerMillisecond[STRIP_LED_COUNT];
-int timeSliceMillisecond = 100;  // the time needed to refresh, in millisecond
-boolean hasInitialized = false;
+}
 
 void loop() {
+
+  previewing = (digitalRead(PREVIEW_PIN) == HIGH);
+  Serial.print(digitalRead(PREVIEW_PIN));
   
   // Command List:
   // "d" - desaturate: program RGB LED in a way that 
@@ -39,130 +39,66 @@ void loop() {
   // a specific amount of time (or at specfic brightness)
   // "v" - visible light: desaturate color using visible light
   // input comes in (red shining time, green shining time, blue shining time) 
-  while(Serial.available()){
-
-    String input = Serial.readStringUntil('#');
-    if (input[0] == 'd') {
-      
-      // display mode start
+    while(Serial.available()){      
       strip.clear();
-      currentIndex = 0;
-      currentMode = 0;
+      Serial.print("available");
       
-      }
-    else if (input[0] == 'v') {
-      
-      // visible light deactivation start
-      // read the next three digits to figure out how many pixels we have
-      actualNumPixel = input.substring(1,4).toInt();
-      strip.clear();
-      currentIndex = 0;
-      currentMode = 1;
-      hasInitialized = false;
-      
-      } else {
-      // now we read color values 
-      
-      if (currentMode == 0) { 
-        // display mode
-        int red = input.substring(0, 3).toInt();
-        int green = input.substring(4, 7).toInt();
-        int blue = input.substring(8, 11).toInt();
-        strip.setPixelColor(currentIndex, red, green, blue);
-        currentIndex += 1;
-      }
-
-      else if (currentMode == 1) {
-        // deactivation mode, using visible light
-        // reading in deactivation time value
-        int red_time = input.substring(0, 3).toInt();
-        int green_time = input.substring(4, 7).toInt();
-        int blue_time = input.substring(8, 11).toInt();
-
-        // populate the timer
-        RGB_timer timer = {red_time * 1000, green_time * 1000, blue_time * 1000};        
-        desaturationTimerMillisecond[currentIndex] = timer;
-        currentIndex += 1;
-      }
-      }
-    }
-
-    // deactivation mode + have read everything
-    if (currentMode == 1 && currentIndex == actualNumPixel) {
-      // if everything has been stored in the timer
-      // start displaying
-      for (int i = 0; i < actualNumPixel; i++) {
-        
-        RGB_timer timer = desaturationTimerMillisecond[i];
-
-        Serial.print(timer.r);
-        Serial.print(",");
-        Serial.print(timer.g);
-        Serial.print(",");
-        Serial.print(timer.b);
-        Serial.print("| ");
-        
-        desaturationTimerMillisecond[i].r = timer.r - timeSliceMillisecond;
-        desaturationTimerMillisecond[i].g = timer.g - timeSliceMillisecond;
-        desaturationTimerMillisecond[i].b = timer.b - timeSliceMillisecond;
-
-        Serial.print(timer.r);
-        Serial.print(",");
-        Serial.print(timer.g);
-        Serial.print(",");
-        Serial.print(timer.b);
-        Serial.print("; ");
-
-        // find out whether anything changed
-        if ( timer.r > 0 && timer.r <= timeSliceMillisecond ||
-             timer.g > 0 && timer.g <= timeSliceMillisecond ||
-             timer.b > 0 && timer.b <= timeSliceMillisecond ||
-             !hasInitialized 
-             ) {
-
-          // refresh color 
-          int r_color = timer.r > timeSliceMillisecond ? 255 : 0;
-          int g_color = timer.g > timeSliceMillisecond ? 255 : 0;
-          int b_color = timer.b > timeSliceMillisecond ? 255 : 0;
-          strip.setPixelColor(i, r_color, g_color, b_color);
+      String input = Serial.readStringUntil('*');
+        if (input.startsWith("d#")) {
+            input.remove(0, 2); // Remove the initial "d#" from the string
+            processInput(input, DisplayArray);
           }
+        else if (input.startsWith("v#")) {
+            input.remove(0, 2); // Remove the initial "v#" from the string
+            processInput(input, DeactivationArray);
         }
-
-        Serial.println(" end");
-
-        strip.show();
-        delay(timeSliceMillisecond);
-
-        hasInitialized = true;
-
-        // turn off the strip after shining it for the correct amount of time
-//        strip.clear();
-//        strip.show();
     }
+
+  if (previewing) {
+    // Previewing mode, show colors from DisplayArray
+    for (int i = 0; i < STRIP_LED_COUNT; i++) {
+      strip.setPixelColor(i, strip.Color(DisplayArray[i].r, DisplayArray[i].g, DisplayArray[i].b));
+    }
+  } else {
+    // Deactivation mode
+    // Turn UV_PIN to HIGH for 3 seconds
+    digitalWrite(UV_PIN, HIGH);
+    delay(3000);  // Wait for 3 seconds
+    digitalWrite(UV_PIN, LOW);
     
+    // Now, display colors from DeactivationArray
+    for (int i = 0; i < STRIP_LED_COUNT; i++) {
+      strip.setPixelColor(i, strip.Color(DeactivationArray[i].r, DeactivationArray[i].g, DeactivationArray[i].b));
+    }
+  }
+  
   strip.show();
 }
 
 
+void processInput(String &input, Color colorArray[]) {
+  int ledNum = 0; // Counter for the number of LEDs processed
+  int hashPos = 0, commaPos = 0;
 
+  // Resetting all colors in the array to (0,0,0)
+  for (int i = 0; i < STRIP_LED_COUNT; i++) {
+    colorArray[i] = {0, 0, 0};
+  }
 
-//static void setColors (int numPixels, uint32_t shining_time_millisecond[]){
-//  // find the max-shining time
-//  uint32_t max_shining_time_millisecond = 0;
-//  for (int i = 0; i < numPixels; i++) {
-//      if (shining_time_millisecond[i] > max_shining_time_millisecond) {
-//        max_shining_time_millisecond =  shining_time_millisecond[i];
-//      }
-//  }
-//  
-//  for (int i = 0; i < numPixels; i++) {
-//    uint8_t intensity = floor((255 * shining_time_millisecond[i] / max_shining_time_millisecond));
-//    strip.setPixelColor(i, 0, intensity, 0);
-//  }
-//  strip.show();
-//  delay(max_shining_time_millisecond);
-//
-//  // turn off the strip after shining it for the correct amount of time
-//  strip.clear();
-//  strip.show();
-//}
+  while ((hashPos = input.indexOf('#')) != -1) {
+    String colorString = input.substring(0, hashPos);
+    input.remove(0, hashPos + 1);
+
+    int r = colorString.substring(0, commaPos = colorString.indexOf(',')).toInt();
+    colorString.remove(0, commaPos + 1);
+    int g = colorString.substring(0, commaPos = colorString.indexOf(',')).toInt();
+    colorString.remove(0, commaPos + 1);
+    int b = colorString.toInt();
+
+    if (ledNum < STRIP_LED_COUNT) { // Check to make sure we don't exceed the array size
+      colorArray[ledNum] = {r, g, b};
+      ledNum++;
+    }
+  }
+  return;
+}
