@@ -72,7 +72,8 @@ class Button{
                         break;
                 }
                 case 2 : {
-                        print("start color changing\n ");
+
+                        print("start color changing \n ");
                         // // write led data to myPort
                         String code = "d#";
                         int ledIndex = 0;

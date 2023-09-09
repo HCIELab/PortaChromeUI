@@ -126,6 +126,7 @@ class Deactivation:
             for j in range(3):
                 deltaColorWithReal += (1/FULL_DEACTIVATION_TIME[i][j])* deactivation_time[j]
             realColor.append(original_color[i] - deltaColorWithReal)
+        print("realColor: ", realColor)
         return deactivation_time, realColor
     
     

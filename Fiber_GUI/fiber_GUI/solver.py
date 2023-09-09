@@ -72,17 +72,17 @@ class Deactivation:
         def objective(x):
             return np.linalg.norm(A.dot(x) - b)**2
 
-        # Initial guess
-        x0 = np.array([1, 1, 1])
 
         # Perform optimization with constraints
         bounds = [(0, None)] * 3
-        results = minimize(objective, x0, bounds=bounds)
+        results = minimize(objective, original_color, bounds=bounds)
         
 
         if results.success:
             deactivation_time = results.x
-            realColor = A.dot(deactivation_time)
+            realColor = original_color - A.dot(deactivation_time)
+            print("realColor:"+str(realColor) +"\n")
+
             return deactivation_time, realColor
         else:
             print("Optimization failed")
