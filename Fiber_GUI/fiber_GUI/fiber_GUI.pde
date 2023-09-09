@@ -18,7 +18,7 @@ boolean hideColorWheel = false;
 // two color mode: 1. color wheel(true) 2. 4 color picker(false)
 boolean isShowRealColor=false;
 boolean hasFiber = false;
-boolean testMode = true;
+boolean testMode = false;
 
 
 ControlP5 cp5;

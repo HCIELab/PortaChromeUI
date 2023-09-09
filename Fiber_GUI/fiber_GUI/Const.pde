@@ -6,7 +6,8 @@ int c = 20;
 
 int WINDOW_WIDTH = 1400;
 int WINDOW_HEIGHT = 800;
-
+// the LED number is limited to 70 right now, because the data will be lost during transmission to Arduino, need further investigation on how to perserve the data.
+int MAX_LED = 40;
 
 
 // widget settings

@@ -44,7 +44,7 @@ class Button{
     // checkwhich button is clicked and respond accordingly
     // type 0: brush on/off; 
     // type 1: choose image; 
-    // type 2: start color changing;
+    // type 2: Send Color Pattern;
     // type 3: show color after deactivation; 
     // type 4: import package from calibration tool;
     void checkBtnClicked() {
@@ -72,14 +72,15 @@ class Button{
                         break;
                 }
                 case 2 : {
-                        print("start color changeing ");
+                        print("start color changing\n ");
                         // // write led data to myPort
-                        String code = "";
+                        String code = "d#";
                         int ledIndex = 0;
+                        // write the display fiber color to the serial port
                         for (int j = 0;j < canvas.allFibers.fibers.size();j++) {
                             Fiber targetFiber = canvas.allFibers.fibers.get(j);
                             
-                            for (int i = 0; i < targetFiber.leds.size() && ledIndex <70; i++) {
+                            for (int i = 0; i < targetFiber.leds.size() && ledIndex < MAX_LED; i++) {
                                 Pixel p = targetFiber.leds.get(i);
                                 // the acutual rgb of color is grb
                                 ledIndex += 1;
@@ -87,9 +88,27 @@ class Button{
                             }
                             
                         }
-                        code += "*";
 
-                        myPort.write(code);
+                        code += "*v";
+
+                        // print(code+'\n');
+                        ledIndex = 0;
+                        // write the v：deactivation color to the serial port
+                        for (int j = 0;j < canvas.allFibers.fibers.size();j++) {
+                            Fiber targetFiber = canvas.allFibers.fibers.get(j);
+                        
+                            for (int i = 0; i < targetFiber.ledsRealColor.size() && ledIndex < MAX_LED; i++) {
+                                Pixel p = targetFiber.ledsRealColor.get(i);
+                                // the acutual rgb of color is grb
+                                ledIndex += 1;
+                          
+                                code += str(int(red(p.c))) + "," + str(int(green(p.c))) + "," + str(int(blue(p.c))) + "#";
+                            }
+                            
+                        }
+                        code += "*";
+                        print(code);
+                        // myPort.write(code);
                         
                         // basic rgb test
                         // myPort.write("255,0,0#0,255,0#0,0,255#*");    
@@ -98,7 +117,7 @@ class Button{
 
                 case 3 : {
                         if(isShowRealColor == false) {
-                            // text = "Perview";
+                            // text = "Preview";
                             // the text need to be passed is same as case 2, pass it to python to calculate the real color
                             print("start calculate real color");
                             String code = "";
@@ -122,11 +141,13 @@ class Button{
                             // tell python solver.py to calculate
                             myClient.write("1");
                             isShowRealColor = true;
+                            currColor = pressColor;
                         }
                         else{
-                            // text = "Perview";
+                            // text = "Preview";
                             print("show original color");
-                            // isShowRealColor = false;
+                            isShowRealColor = false;
+                            currColor = noPressColor;
                         }
 
                         break;
