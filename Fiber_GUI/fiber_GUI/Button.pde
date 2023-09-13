@@ -87,10 +87,33 @@ class Button{
                             }
                             
                         }
+<<<<<<< Updated upstream
                         code += "*";
                         
                         print("string send: " + code + "\n");
 
+=======
+
+                        code += "*v#";
+
+                        // print(code+'\n');
+                        ledIndex = 0;
+                        // write the v：deactivation color to the serial port
+                        for (int j = 0;j < canvas.allFibers.fibers.size();j++) {
+                            Fiber targetFiber = canvas.allFibers.fibers.get(j);
+                        
+                            for (int i = 0; i < targetFiber.ledsRealColor.size() && ledIndex < MAX_LED; i++) {
+                                Pixel p = targetFiber.ledsRealColor.get(i);
+                                // the acutual rgb of color is grb
+                                ledIndex += 1;
+                          
+                                code += str(int(red(p.c))) + "," + str(int(green(p.c))) + "," + str(int(blue(p.c))) + "#";
+                            }
+                            
+                        }
+                        code += "*";
+                        print(code);
+>>>>>>> Stashed changes
                         myPort.write(code);
                         
                         // basic rgb test

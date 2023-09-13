@@ -15,7 +15,7 @@ from scipy import optimize
 # FULL_DEACTIVATION_TIME = [[467, 712, 687], [1500, 242, 177], [10000, 900, 20]]
 # version 1:
 inf= 1000000
-FULL_DEACTIVATION_TIME = [[3500,2000,3600],[2000,2000,1000],[inf,4500,60]]
+FULL_DEACTIVATION_TIME = [[72,50,100],[100,36,100],[1000,30,5]]
 
 RGB_SCALE = 255
 CMYK_SCALE = 1
@@ -118,6 +118,7 @@ class Deactivation:
                                   target_color,
                                   original_color=[1, 1, 1]):
         color_to_deactivate = np.array(original_color) - np.array(target_color)
+<<<<<<< Updated upstream
         deactivation_time, deltaColor = linear_programming_solve(self.deactivation_speed,
                                                      color_to_deactivate)
         realColor =[]                                             
@@ -128,6 +129,37 @@ class Deactivation:
             realColor.append(original_color[i] - deltaColorWithReal)
         return deactivation_time, realColor
  
+=======
+        
+        A = self.deactivation_speed
+        b = color_to_deactivate
+
+        def objective(x):
+            saturation_level = np.minimum(np.dot(A, x), 1)
+            color_difference = np.linalg.norm(saturation_level - b)**2
+            time = np.max(x)
+            return 10000 * color_difference + time
+
+
+        # Perform optimization with constraints
+        bounds = [(0, None)] * 3
+        results = minimize(objective, [10,10,10], bounds=bounds)
+        
+
+        if results.success:
+            deactivation_time = results.x
+            realColor = np.maximum(original_color - A.dot(deactivation_time), 0)
+            print("realColor:"+str(realColor) +"\n")
+
+            return deactivation_time, realColor
+        else:
+            print("Optimization failed")
+            exit(  "Optimization failed")
+            return None, None
+    
+
+
+>>>>>>> Stashed changes
 HOST = ''                 # Symbolic name meaning all available interfaces
 PORT = 50007              # Arbitrary non-privileged port
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

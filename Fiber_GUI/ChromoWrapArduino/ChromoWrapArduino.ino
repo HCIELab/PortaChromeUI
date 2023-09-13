@@ -5,6 +5,9 @@
 #define STRIP_LED_COUNT 144
 #define PREVIEW_PIN 16
 
+#define UV_SATURATION_TIME 5000  
+#define RGB_DESATURATION_TIME 0
+
 Adafruit_NeoPixel strip(STRIP_LED_COUNT, LED_STRIP_PIN, NEO_GRB + NEO_KHZ800);
 
 struct Color {
@@ -15,7 +18,9 @@ struct Color {
 
 Color DisplayArray[STRIP_LED_COUNT];
 Color DeactivationArray[STRIP_LED_COUNT];
-boolean previewing = true; 
+boolean previewing = true;
+boolean color_reprogrammed = false;
+int RGB_time = 0; 
 
 void setup() {
   pinMode(UV_PIN, OUTPUT);
@@ -24,15 +29,30 @@ void setup() {
   // Enables serial communication with the python code
   Serial.begin(9600); 
   strip.begin();           
-  strip.show();            
+  strip.show();  
+
+
+  // set placeholders
+    // Placeholder values, change as required
+  Color R = {255, 0, 0};  // Red for DisplayArray
+  Color G = {0, 255, 0};  // Green for DeactivationArray
+  Color B = {0, 0, 255}; 
+  Color Zero = {0,0,0};
+  
+  // Initialize DisplayArray with placeholder1 repeated 12 times
+  for (int i = 0; i < STRIP_LED_COUNT; ++i) {
+    DisplayArray[i] = {0,0,0};
+  }
+
+  // Initialize DeactivationArray with placeholder2 repeated 12 times
+  for (int i = 0; i < STRIP_LED_COUNT; ++i) {
+    DeactivationArray[i] = {0, 6*i, 0};
+  }
 
 }
 
 void loop() {
-
-  previewing = (digitalRead(PREVIEW_PIN) == HIGH);
-  Serial.print(digitalRead(PREVIEW_PIN));
-  
+  previewing = (digitalRead(PREVIEW_PIN) == HIGH); 
   // Command List:
   // "d" - desaturate: program RGB LED in a way that 
   // it shines specific light combination for 
@@ -55,24 +75,34 @@ void loop() {
     }
 
   if (previewing) {
+    color_reprogrammed = false;
     // Previewing mode, show colors from DisplayArray
     for (int i = 0; i < STRIP_LED_COUNT; i++) {
       strip.setPixelColor(i, strip.Color(DisplayArray[i].r, DisplayArray[i].g, DisplayArray[i].b));
     }
+    strip.show();
   } else {
     // Deactivation mode
-    // Turn UV_PIN to HIGH for 3 seconds
-    digitalWrite(UV_PIN, HIGH);
-    delay(3000);  // Wait for 3 seconds
-    digitalWrite(UV_PIN, LOW);
+    strip.clear();
+    strip.show();
     
-    // Now, display colors from DeactivationArray
-    for (int i = 0; i < STRIP_LED_COUNT; i++) {
-      strip.setPixelColor(i, strip.Color(DeactivationArray[i].r, DeactivationArray[i].g, DeactivationArray[i].b));
+    if (color_reprogrammed == false) {
+      // Turn UV_PIN to HIGH for 3 seconds
+      digitalWrite(UV_PIN, HIGH);
+      delay(UV_SATURATION_TIME); 
+      digitalWrite(UV_PIN, LOW);
+      
+      // Now, display colors from DeactivationArray
+      for (int i = 0; i < STRIP_LED_COUNT; i++) {
+        strip.setPixelColor(i, strip.Color(DeactivationArray[i].r, DeactivationArray[i].g, DeactivationArray[i].b));
+      }
+      strip.show();
+      delay(RGB_DESATURATION_TIME); // might be a variable, use UV at the moment as a placeholder
+      strip.clear();
+      strip.show();
+      color_reprogrammed = true;
     }
-  }
-  
-  strip.show();
+  } 
 }
 
 
