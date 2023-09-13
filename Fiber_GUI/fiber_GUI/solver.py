@@ -118,18 +118,6 @@ class Deactivation:
                                   target_color,
                                   original_color=[1, 1, 1]):
         color_to_deactivate = np.array(original_color) - np.array(target_color)
-<<<<<<< Updated upstream
-        deactivation_time, deltaColor = linear_programming_solve(self.deactivation_speed,
-                                                     color_to_deactivate)
-        realColor =[]                                             
-        for i in range(3):
-            deltaColorWithReal = 0
-            for j in range(3):
-                deltaColorWithReal += (1/FULL_DEACTIVATION_TIME[i][j])* deactivation_time[j]
-            realColor.append(original_color[i] - deltaColorWithReal)
-        return deactivation_time, realColor
- 
-=======
         
         A = self.deactivation_speed
         b = color_to_deactivate
@@ -158,8 +146,6 @@ class Deactivation:
             return None, None
     
 
-
->>>>>>> Stashed changes
 HOST = ''                 # Symbolic name meaning all available interfaces
 PORT = 50007              # Arbitrary non-privileged port
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
