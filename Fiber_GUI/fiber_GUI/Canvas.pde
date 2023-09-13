@@ -61,10 +61,10 @@ class Canvas{
     
     
     allFibers = readFibersFromFile();
-    importBtn =  new Button(150,430,200,40,color(255,0,0),color(200,50,0),"Load LED positions",4);
-    brushBtn = new Button(150,480,200,40,color(255,0,0),color(200,50,0),"Brush Off",0);
+    // importBtn =  new Button(150,430,200,40,color(255,0,0),color(200,50,0),"Load LED positions",4);
+    brushBtn = new Button(150,480,200,40,color(255,0,0),color(200,50,0),"Turn off Brush",0);
     addImgBtn = new Button(150,530,200,40,color(255,0,0),color(200,50,0),"Add an Image",1);
-    deactivateBtn =  new Button(150,580,200,40,color(255,0,0),color(200,50,0),"Preview",3);
+    deactivateBtn =  new Button(150,580,200,40,color(255,0,0),color(200,50,0),"Simulate",3);
     startBtn = new Button(150,630,200,40,color(255,0,0),color(200,50,0),"Send Color Pattern",2);
     // colorModeBtn = new Button(400,640,200,40,color(255,0,0),color(200,50,0),"Color Wheel Mode",5);
 
@@ -123,7 +123,7 @@ class Canvas{
     brushBtn.drawButton();
     startBtn.drawButton();
     deactivateBtn.drawButton();
-    importBtn.drawButton();
+    // importBtn.drawButton();
     addImgBtn.drawButton();
     // colorModeBtn.drawButton();
     if(hideColorWheel){ 

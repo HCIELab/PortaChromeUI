@@ -55,10 +55,10 @@ class Button{
                         // brushbutton; 
                         brush.isValid = !brush.isValid;
                         if (isPressed) {
-                            text = "Brush On";
+                            text = "Turn off Brush";
                             currColor = pressColor;
                         } else{
-                            text = "Brush Off";
+                            text = "Turn off Brush";
                             currColor = noPressColor;
                         }
                         
@@ -118,7 +118,7 @@ class Button{
 
                 case 3 : {
                         if(isShowRealColor == false) {
-                            // text = "Preview";
+                            // text = "Simulate";
                             // the text need to be passed is same as case 2, pass it to python to calculate the real color
                             print("start calculate real color");
                             String code = "";
@@ -145,7 +145,7 @@ class Button{
                             currColor = pressColor;
                         }
                         else{
-                            // text = "Preview";
+                            // text = "Simulate";
                             print("show original color");
                             isShowRealColor = false;
                             currColor = noPressColor;

@@ -200,7 +200,7 @@ void mouseClicked() {
     canvas.brushBtn.checkBtnClicked();
     canvas.startBtn.checkBtnClicked();
     canvas.deactivateBtn.checkBtnClicked();
-    canvas.importBtn.checkBtnClicked();
+    // canvas.importBtn.checkBtnClicked();
     // canvas.colorModeBtn.checkBtnClicked();
     canvas.colorPickerCyanBtn.checkBtnClicked();
     canvas.colorPickerBlackBtn.checkBtnClicked();
