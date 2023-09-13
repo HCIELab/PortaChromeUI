@@ -3,11 +3,18 @@ class Pixel{
     float x;
     float y;
     color c;
+    // deativation time for each led
+    int rTime;
+    int gTime;
+    int bTime;
     
     Pixel(float x1, float y1, float r, float g, float b) {
         x = x1;
         y = y1;
         c = color(r,g,b);
+        rTime = 0;
+        gTime = 0;
+        bTime = 0;
     }
 
     
@@ -44,6 +51,7 @@ class Fiber {
     ArrayList<Pixel> leds;
     //store the real color calculated by solver.py
     ArrayList<Pixel> ledsRealColor;
+    
 
     Fiber(ArrayList<Pixel> inputLeds) {
         ledsRealColor = new ArrayList<Pixel>();
@@ -123,21 +131,8 @@ class Fiber {
         popMatrix();
     }
 
+ 
     void updatePixelColor(float topLeftX, float topLeftY, float canvasWidth, float canvasHeight,float cameraImgWidth, float cameraImgHeight) {
-        // get color from canvas which is on the left side
-        loadPixels();
-        
-        for (int i = 0; i < leds.size(); i++) {
-            Pixel pixel = leds.get(i);
-            float worldX = map(pixel.x,0,cameraImgWidth,0,canvasWidth) + topLeftX;
-            float worldY = map(pixel.y,0,cameraImgHeight,0,canvasHeight) + topLeftY;
-            int referX = (int)(worldX - SUB_WIN_SPACING);
-            int referY = (int)(worldY);
-            
-            pixel.c = pixels[referY * WINDOW_WIDTH + referX];
-        }
-    }
-    void updatePixelColor2(float topLeftX, float topLeftY, float canvasWidth, float canvasHeight,float cameraImgWidth, float cameraImgHeight) {
         // get color from canvas which is on the left side
         layersMerged.loadPixels();
         for (int i = 0; i < leds.size(); i++) {
@@ -179,7 +174,7 @@ class Fibers {
         for (int i = 0; i < fiberNum;i++) {
             Fiber targetFiber = fibers.get(i);
             
-            targetFiber.updatePixelColor2(topLeftX,  topLeftY,  canvasWidth,  canvasHeight, cameraImgWidth,  cameraImgHeight);
+            targetFiber.updatePixelColor(topLeftX,  topLeftY,  canvasWidth,  canvasHeight, cameraImgWidth,  cameraImgHeight);
         }
 }
     void updateRealColor(ArrayList<ColorTmp> realColors){
@@ -189,6 +184,9 @@ class Fibers {
             for(int j=0;j<targetFiber.leds.size();j++){
                 color newColor = color(realColors.get(realColorIdx).r, realColors.get(realColorIdx).g, realColors.get(realColorIdx).b);
                 targetFiber.ledsRealColor.get(j).c = newColor;
+                targetFiber.ledsRealColor.get(j).rTime = realColors.get(realColorIdx).rTime;
+                targetFiber.ledsRealColor.get(j).gTime = realColors.get(realColorIdx).gTime;
+                targetFiber.ledsRealColor.get(j).bTime = realColors.get(realColorIdx).bTime;
                 realColorIdx++;
             }
         }
@@ -273,4 +271,3 @@ String createLedPos(){
     String ledPos = topLeft + topRight + ";" + bottomLeft + ";" + bottomRight;
     return ledPos;
 }
-

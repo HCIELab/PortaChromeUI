@@ -1,3 +1,4 @@
+#  Version 1.0: 144 led, four regions, every part is 6*6
 
 def transform(string, horizontal_gap, vertical_gap):
     pairs = string.split(';')

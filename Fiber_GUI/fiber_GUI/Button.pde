@@ -73,31 +73,42 @@ class Button{
                 }
                 case 2 : {
 
-                        print("start color changing \n ");
+                        print("start color changing\n ");
                         // // write led data to myPort
                         String code = "d#";
                         int ledIndex = 0;
                         // write the display fiber color to the serial port
                         for (int j = 0;j < canvas.allFibers.fibers.size();j++) {
                             Fiber targetFiber = canvas.allFibers.fibers.get(j);
-                            
+
                             for (int i = 0; i < targetFiber.leds.size() && ledIndex < MAX_LED; i++) {
                                 Pixel p = targetFiber.leds.get(i);
                                 // the acutual rgb of color is grb
                                 ledIndex += 1;
                                 code += str(int(red(p.c))) + "," + str(int(green(p.c))) + "," + str(int(blue(p.c))) + "#";
                             }
-                            
+
+                        }
+
+                        code += "*v";
+                    
+                        
+                        ledIndex = 0;
+                        // write the v：deactivation color to the serial port
+                        for (int j = 0;j < canvas.allFibers.fibers.size();j++) {
+                            Fiber targetFiber = canvas.allFibers.fibers.get(j);
+                            // print(code+'\n');
+                            print( "size:"+str(targetFiber.ledsRealColor.size())+"\n");
+                            for (int i = 0; i < targetFiber.ledsRealColor.size() && ledIndex < MAX_LED; i++) {
+                                Pixel p = targetFiber.ledsRealColor.get(i);
+                                // the acutual rgb of color is grb
+                                ledIndex += 1;
+                                code += str(p.rTime) + "," + str(p.gTime) + "," + str(p.bTime) + "#";
+                            }
+
                         }
                         code += "*";
-                        
-                        print("string send: " + code + "\n");
-
-                        myPort.write(code);
-                        
-                        // basic rgb test
-                        // myPort.write("255,0,0#0,255,0#0,0,255#*");    
-                        break;
+                        print(code);
                     }
 
                 case 3 : {

@@ -29,11 +29,17 @@ class ColorTmp{
     int r;
     int g;
     int b;
+    int rTime;
+    int gTime;  
+    int bTime;
     
-    ColorTmp(int r, int g, int b) {
+    ColorTmp(int r, int g, int b, int rTime, int gTime, int bTime) {
         this.r = r;
         this.g = g;
         this.b = b;
+        this.rTime = rTime;
+        this.gTime = gTime;
+        this.bTime = bTime;
     }
 }
 
@@ -151,7 +157,10 @@ void updateFiberRealColor(String newColor) {
         int r = Integer.valueOf(rgb[0]);
         int g = Integer.valueOf(rgb[1]);
         int b = Integer.valueOf(rgb[2]);
-        newColors.add(new ColorTmp(r,g,b));
+        int rTime = Integer.valueOf(rgb[3]);
+        int gTime = Integer.valueOf(rgb[4]);
+        int bTime = Integer.valueOf(rgb[5]);
+        newColors.add(new ColorTmp(r,g,b,rTime,gTime,bTime));
     }
     canvas.allFibers.updateRealColor(newColors);
 }

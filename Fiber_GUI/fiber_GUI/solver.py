@@ -127,8 +127,13 @@ while True:
             time, realColor1 = d.compute_deactivation_time([c,m,y])
             ledNum+=1
             realR, realG, realB = cmyk_to_rgb(realColor1[0],realColor1[1],realColor1[2],k)
-            print("time:"+str(time))
-            dataSent += str(realR)+","+str(realG)+","+str(realB)+"#"
+            rTime = int(time[0])
+            gTime = int(time[1])
+            bTime = int(time[2])
+
+            # print("time:"+str(time))
+
+            dataSent += str(realR)+","+str(realG)+","+str(realB)+","+str(rTime)+","+str(gTime)+","+str(bTime)+ "#"
 
         print("dataSent"+dataSent)
         print("ledNum"+str(ledNum))
