@@ -48,7 +48,7 @@ void setup() {
     colorMode(RGB, 255, 255, 255);
     noStroke();
     background(255);
-    size(600, 700);
+    size(600, 720);
     output = createWriter("ledsOri.txt"); 
     
     printArray(Serial.list());

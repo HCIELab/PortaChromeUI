@@ -18,19 +18,45 @@ class Pixel{
     }
 
     
-    
+    // without hexagon rotation
+    // void drawHexagon(float rotationAngle, float hexRadius, float centerX, float centerY) {
+    //     // Set the fill and stroke color of the hexagon
+    //     fill(c);   // Green fill color
+    //     stroke(0);
+        
+    //     float sideLength = hexRadius/1.732*2;
+    //     // Calculate the coordinates of the vertices of the hexagon
+    //     float[] verticesX = new float[6];
+    //     float[] verticesY = new float[6];
+        
+    //     for (int i = 0; i < 6; i++) {
+    //         float angle = rotationAngle + TWO_PI * i / 6;
+    //         verticesX[i] = centerX + cos(angle) * sideLength;
+    //         verticesY[i] = centerY + sin(angle) * sideLength;
+    //     }
+        
+    //     // Draw the hexagon
+    //     beginShape();
+    //     for (int i = 0; i < 6; i++) {
+    //         vertex(verticesX[i], verticesY[i]);
+    //     }
+    //     endShape(CLOSE);
+    // }
+
+    // with 30 degree hexagon rotation
     void drawHexagon(float rotationAngle, float hexRadius, float centerX, float centerY) {
         // Set the fill and stroke color of the hexagon
-        fill(c);   // Green fill color
+        fill(c);   // Assuming 'c' is defined elsewhere in your code as the color
         stroke(0);
         
-        float sideLength = hexRadius/1.732*2;
+        float sideLength = hexRadius / 1.732 * 2;  // This is equivalent to hexRadius * sqrt(3)
+        
         // Calculate the coordinates of the vertices of the hexagon
         float[] verticesX = new float[6];
         float[] verticesY = new float[6];
         
         for (int i = 0; i < 6; i++) {
-            float angle = rotationAngle + TWO_PI * i / 6;
+            float angle = rotationAngle + TWO_PI * i / 6 + PI/6;  // Added PI/6 for 30-degree rotation
             verticesX[i] = centerX + cos(angle) * sideLength;
             verticesY[i] = centerY + sin(angle) * sideLength;
         }
@@ -42,6 +68,7 @@ class Pixel{
         }
         endShape(CLOSE);
     }
+
 
 }
 
@@ -86,7 +113,7 @@ class Fiber {
         // rect(prevWorldX,prevWorldY,PIXEL_WIDTH,PIXEL_HEIGHT); 
         // if(firstTime) println("first ledPos:"+prevWorldX+","+prevWorldY);
 
-        for (int i = 1; i < ledsDrawn.size(); i++) {
+        for (int i = 0; i < ledsDrawn.size(); i++) {
             
             Pixel pixel = ledsDrawn.get(i);
             float worldX = map(pixel.x,0,cameraImgWidth,0,canvasWidth) + topLeftX;
@@ -199,7 +226,7 @@ Fibers readFibersFromFile(){
     ArrayList<Fiber> fiberList =  new ArrayList<Fiber>();
     // String[] lines =loadStrings("ledPos.txt");
     String[] lines = new String[FIBER_NUMBER];
-    String ledPos = createLedPos();
+    String ledPos = create72LedPos();
     lines[0] = ledPos;
     
     int fiberNum = lines.length;
@@ -270,4 +297,42 @@ String createLedPos(){
 
     String ledPos = topLeft + topRight + ";" + bottomLeft + ";" + bottomRight;
     return ledPos;
+}
+
+String create72LedPos(){
+    int SHIFT_X_1 = 960;
+    int SHIFT_Y_1 = 300;
+    // int HEX_RADIUS = 50;
+    // int HORIZONTAL_NUM = 6;
+    // int VERTICAL_NUM = 6;
+    String ans = "";
+    float y=0;
+    for (int i = 0; i < HORIZONTAL_NUM; i++) {
+        y = i * HEX_RADIUS * 2 + SHIFT_Y_1;
+
+        for (int j = 0; j < VERTICAL_NUM; j++) {
+        float x;
+        if (i % 2 == 0) {
+            x = SHIFT_X_1 - HEX_RADIUS - 2 * HEX_RADIUS * j;
+        } else {
+            x = SHIFT_X_1 - 10 * HEX_RADIUS + 2 * HEX_RADIUS * j;
+        }
+        ans += str(x) + "," + str(y) + ";";
+        }
+    }
+    print(y);
+    for(int i = 0; i<HORIZONTAL_NUM; i++){
+        float y1 = y -i * HEX_RADIUS * 2;
+        for (int j = 0; j < VERTICAL_NUM; j++) {
+            float x;
+            if (i % 2 == 0) {
+                x = SHIFT_X_1 + 2*HEX_RADIUS + 2 * HEX_RADIUS * j;
+            } else {
+                x = SHIFT_X_1 +HEX_RADIUS+ 10 * HEX_RADIUS - 2 * HEX_RADIUS * j;
+            }
+            ans += str(x) + "," + str(y1) + ";";
+        }
+    }
+    print(ans);
+    return ans;
 }
