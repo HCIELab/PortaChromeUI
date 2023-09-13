@@ -55,10 +55,10 @@ class Button{
                         // brushbutton; 
                         brush.isValid = !brush.isValid;
                         if (isPressed) {
-                            text = "Turn off Brush";
+                            text = "Turn Off Brush";
                             currColor = pressColor;
                         } else{
-                            text = "Turn off Brush";
+                            text = "Turn On Brush";
                             currColor = noPressColor;
                         }
                         
@@ -89,27 +89,11 @@ class Button{
                             }
                             
                         }
-
-                        code += "*v";
-
-                        // print(code+'\n');
-                        ledIndex = 0;
-                        // write the v：deactivation color to the serial port
-                        for (int j = 0;j < canvas.allFibers.fibers.size();j++) {
-                            Fiber targetFiber = canvas.allFibers.fibers.get(j);
-                        
-                            for (int i = 0; i < targetFiber.ledsRealColor.size() && ledIndex < MAX_LED; i++) {
-                                Pixel p = targetFiber.ledsRealColor.get(i);
-                                // the acutual rgb of color is grb
-                                ledIndex += 1;
-                          
-                                code += str(int(red(p.c))) + "," + str(int(green(p.c))) + "," + str(int(blue(p.c))) + "#";
-                            }
-                            
-                        }
                         code += "*";
-                        print(code);
-                        // myPort.write(code);
+                        
+                        print("string send: " + code + "\n");
+
+                        myPort.write(code);
                         
                         // basic rgb test
                         // myPort.write("255,0,0#0,255,0#0,0,255#*");    

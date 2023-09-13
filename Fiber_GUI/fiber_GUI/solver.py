@@ -16,7 +16,7 @@ from scipy.optimize import minimize
 # FULL_DEACTIVATION_TIME = [[467, 712, 687], [1500, 242, 177], [10000, 900, 20]]
 # version 1:
 inf= 1000000
-FULL_DEACTIVATION_TIME = [[3500,2000,3600],[2000,2000,1000],[inf,4500,60]]
+FULL_DEACTIVATION_TIME = [[72,50,100],[100,36,100],[1000,30,5]]
 
 RGB_SCALE = 255
 CMYK_SCALE = 1
@@ -70,17 +70,20 @@ class Deactivation:
         b = color_to_deactivate
 
         def objective(x):
-            return np.linalg.norm(A.dot(x) - b)**2
+            saturation_level = np.minimum(np.dot(A, x), 1)
+            color_difference = np.linalg.norm(saturation_level - b)**2
+            time = np.max(x)
+            return 10000 * color_difference + time
 
 
         # Perform optimization with constraints
         bounds = [(0, None)] * 3
-        results = minimize(objective, original_color, bounds=bounds)
+        results = minimize(objective, [10,10,10], bounds=bounds)
         
 
         if results.success:
             deactivation_time = results.x
-            realColor = original_color - A.dot(deactivation_time)
+            realColor = np.maximum(original_color - A.dot(deactivation_time), 0)
             print("realColor:"+str(realColor) +"\n")
 
             return deactivation_time, realColor
@@ -89,7 +92,6 @@ class Deactivation:
             exit(  "Optimization failed")
             return None, None
     
-
 
 HOST = ''                 # Symbolic name meaning all available interfaces
 PORT = 50007              # Arbitrary non-privileged port
