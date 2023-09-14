@@ -2,11 +2,12 @@
 
 #define LED_STRIP_PIN   4   // Pin for the RGB LED data
 #define UV_PIN 14
-#define STRIP_LED_COUNT 144
+#define STRIP_LED_COUNT 24
 #define PREVIEW_PIN 16
 
-#define UV_SATURATION_TIME 5000  
+#define UV_SATURATION_TIME 0  
 #define RGB_DESATURATION_TIME 0
+
 
 Adafruit_NeoPixel strip(STRIP_LED_COUNT, LED_STRIP_PIN, NEO_GRB + NEO_KHZ800);
 
@@ -17,10 +18,14 @@ struct Color {
 };
 
 Color DisplayArray[STRIP_LED_COUNT];
-Color DeactivationArray[STRIP_LED_COUNT];
+Color DeactivationTimeArray[STRIP_LED_COUNT];
+Color DeactivationColorArray[STRIP_LED_COUNT];
+
 boolean previewing = true;
 boolean color_reprogrammed = false;
 int RGB_time = 0; 
+int maximum_time = 0;
+
 
 void setup() {
   pinMode(UV_PIN, OUTPUT);
@@ -31,22 +36,14 @@ void setup() {
   strip.begin();           
   strip.show();  
 
-
-  // set placeholders
-    // Placeholder values, change as required
-  Color R = {255, 0, 0};  // Red for DisplayArray
-  Color G = {0, 255, 0};  // Green for DeactivationArray
-  Color B = {0, 0, 255}; 
-  Color Zero = {0,0,0};
-  
-  // Initialize DisplayArray with placeholder1 repeated 12 times
+  // Initialize DisplayArray with placeholder
   for (int i = 0; i < STRIP_LED_COUNT; ++i) {
-    DisplayArray[i] = {0,0,0};
+    DisplayArray[i] = {0,125,0};
   }
 
-  // Initialize DeactivationArray with placeholder2 repeated 12 times
+  // Initialize DeactivationArray with placeholder
   for (int i = 0; i < STRIP_LED_COUNT; ++i) {
-    DeactivationArray[i] = {0, 6*i, 0};
+    DeactivationColorArray[i] = {0, 6*i, 0};
   }
 
 }
@@ -70,7 +67,9 @@ void loop() {
           }
         else if (input.startsWith("v#")) {
             input.remove(0, 2); // Remove the initial "v#" from the string
-            processInput(input, DeactivationArray);
+            maximum_time = 0;
+            processInput(input, DeactivationTimeArray);
+            processDeactivationTimes();
         }
     }
 
@@ -94,10 +93,10 @@ void loop() {
       
       // Now, display colors from DeactivationArray
       for (int i = 0; i < STRIP_LED_COUNT; i++) {
-        strip.setPixelColor(i, strip.Color(DeactivationArray[i].r, DeactivationArray[i].g, DeactivationArray[i].b));
+        strip.setPixelColor(i, strip.Color(DeactivationColorArray[i].r, DeactivationColorArray[i].g, DeactivationColorArray[i].b));
       }
       strip.show();
-      delay(RGB_DESATURATION_TIME); // might be a variable, use UV at the moment as a placeholder
+      delay(maximum_time * 1000); // might be a variable, use UV at the moment as a placeholder
       strip.clear();
       strip.show();
       color_reprogrammed = true;
@@ -125,10 +124,21 @@ void processInput(String &input, Color colorArray[]) {
     colorString.remove(0, commaPos + 1);
     int b = colorString.toInt();
 
+    maximum_time = max(maximum_time, max(r, max(g,b)));
     if (ledNum < STRIP_LED_COUNT) { // Check to make sure we don't exceed the array size
       colorArray[ledNum] = {r, g, b};
       ledNum++;
     }
   }
   return;
+}
+ 
+void processDeactivationTimes() {
+  for (int i = 0; i < STRIP_LED_COUNT; i++) {
+     Color c = DeactivationTimeArray[i]; // actually it refers to a triplet of time in seconds
+     int r = c.r;
+     int g = c.g;
+     int b = c.b;
+     DeactivationColorArray[i] = {map(r, 0, maximum_time, 0, 255), map(g, 0, maximum_time, 0, 255), map(b, 0, maximum_time, 0, 255)};
+  }
 }
