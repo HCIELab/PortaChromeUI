@@ -2,7 +2,7 @@
 
 #define LED_STRIP_PIN   4   // Pin for the RGB LED data
 #define UV_PIN 14
-#define STRIP_LED_COUNT 24
+#define STRIP_LED_COUNT 36
 #define PREVIEW_PIN 16
 
 #define UV_SATURATION_TIME 0  
@@ -22,9 +22,11 @@ Color DeactivationTimeArray[STRIP_LED_COUNT];
 Color DeactivationColorArray[STRIP_LED_COUNT];
 
 boolean previewing = true;
-boolean color_reprogrammed = false;
+boolean reprogram_started = false;
 int RGB_time = 0; 
 int maximum_time = 0;
+unsigned long startTime = 0; // timer for RGB desaturation delay
+unsigned long lastUpdate = 0; // timer for RGB desaturation delay
 
 
 void setup() {
@@ -43,7 +45,7 @@ void setup() {
 
   // Initialize DeactivationArray with placeholder
   for (int i = 0; i < STRIP_LED_COUNT; ++i) {
-    DeactivationColorArray[i] = {0, 6*i, 0};
+    DeactivationTimeArray[i] = {i, i, 0};
   }
 
 }
@@ -74,7 +76,7 @@ void loop() {
     }
 
   if (previewing) {
-    color_reprogrammed = false;
+    reprogram_started = false;
     // Previewing mode, show colors from DisplayArray
     for (int i = 0; i < STRIP_LED_COUNT; i++) {
       strip.setPixelColor(i, strip.Color(DisplayArray[i].r, DisplayArray[i].g, DisplayArray[i].b));
@@ -83,25 +85,32 @@ void loop() {
   } else {
     // Deactivation mode
     strip.clear();
-    strip.show();
-    
-    if (color_reprogrammed == false) {
-      // Turn UV_PIN to HIGH for 3 seconds
-      digitalWrite(UV_PIN, HIGH);
-      delay(UV_SATURATION_TIME); 
-      digitalWrite(UV_PIN, LOW);
-      
-      // Now, display colors from DeactivationArray
-      for (int i = 0; i < STRIP_LED_COUNT; i++) {
-        strip.setPixelColor(i, strip.Color(DeactivationColorArray[i].r, DeactivationColorArray[i].g, DeactivationColorArray[i].b));
-      }
-      strip.show();
-      delay(maximum_time * 1000); // might be a variable, use UV at the moment as a placeholder
-      strip.clear();
-      strip.show();
-      color_reprogrammed = true;
+
+    unsigned long now = millis();
+
+    if (reprogram_started == false) {
+      startTime = now;
+      reprogram_started = true;
     }
-  } 
+    
+    if (now - lastUpdate >= 1000) { 
+      lastUpdate = now;
+      unsigned long time_programmed = now - startTime;
+
+       for (int i = 0; i < STRIP_LED_COUNT; ++i) {
+        // turn on and off light based on whether the time has passed
+        // the required time is larger than the time passed
+        // then stay on
+        int r = DeactivationTimeArray[i].r * 1000 > time_programmed ? 255 : 0;
+        int g = DeactivationTimeArray[i].g * 1000 > time_programmed ? 255 : 0;
+        int b = DeactivationTimeArray[i].b * 1000 > time_programmed ? 255 : 0;
+
+        strip.setPixelColor(i, r, g, b); 
+       }
+         
+      strip.show();
+    }
+  }
 }
 
 
