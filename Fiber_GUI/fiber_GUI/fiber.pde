@@ -315,7 +315,7 @@ String create72LedPos(){
         if (i % 2 == 0) {
             x = SHIFT_X_1 - HEX_RADIUS - 2 * HEX_RADIUS * j;
         } else {
-            x = SHIFT_X_1 - 10 * HEX_RADIUS + 2 * HEX_RADIUS * j;
+            x = SHIFT_X_1 - 12 * HEX_RADIUS + 2 * HEX_RADIUS * j;
         }
         ans += str(x) + "," + str(y) + ";";
         }
@@ -326,7 +326,7 @@ String create72LedPos(){
         for (int j = 0; j < VERTICAL_NUM; j++) {
             float x;
             if (i % 2 == 0) {
-                x = SHIFT_X_1 + 2*HEX_RADIUS + 2 * HEX_RADIUS * j;
+                x = SHIFT_X_1  + 2 * HEX_RADIUS * j;
             } else {
                 x = SHIFT_X_1 +HEX_RADIUS+ 10 * HEX_RADIUS - 2 * HEX_RADIUS * j;
             }
