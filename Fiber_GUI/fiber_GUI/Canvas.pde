@@ -62,7 +62,7 @@ class Canvas{
     
     allFibers = readFibersFromFile();
     // importBtn =  new Button(150,430,200,40,color(255,0,0),color(200,50,0),"Load LED positions",4);
-    brushBtn = new Button(150,430,200,40,color(255,0,0),color(200,50,0),"Turn off Brush",0);
+    brushBtn = new Button(150,430,200,40,color(255,0,0),color(200,50,0),"Turn On Brush",0);
     addImgBtn = new Button(150,510,200,40,color(255,0,0),color(200,50,0),"Add an Image",1);
     deactivateBtn =  new Button(150,590,200,40,color(255,0,0),color(200,50,0),"Simulate",3);
     startBtn = new Button(150,670,200,40,color(255,0,0),color(200,50,0),"Send Color Pattern",2);
