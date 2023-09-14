@@ -16,7 +16,7 @@ from scipy.optimize import minimize
 # FULL_DEACTIVATION_TIME = [[467, 712, 687], [1500, 242, 177], [10000, 900, 20]]
 # version 1:
 inf= 1000000
-FULL_DEACTIVATION_TIME = [[72,50,100],[100,36,100],[1000,30,5]]
+FULL_DEACTIVATION_TIME = [[72,160,240],[200,35,40],[1000,80,3]]
 
 RGB_SCALE = 255
 CMYK_SCALE = 1
@@ -70,21 +70,21 @@ class Deactivation:
         b = color_to_deactivate
 
         def objective(x):
-            saturation_level = np.minimum(np.dot(A, x), 1)
-            color_difference = np.linalg.norm(saturation_level - b)**2
+            desaturation_level = np.minimum(np.dot(A, x), 1)
+            color_difference = np.linalg.norm(desaturation_level - b)**2
             time = np.max(x)
             return 10000 * color_difference + time
 
 
         # Perform optimization with constraints
         bounds = [(0, None)] * 3
-        results = minimize(objective, [10,10,10], bounds=bounds)
+        results = minimize(objective, [3,3,3], bounds=bounds)
         
 
         if results.success:
             deactivation_time = results.x
             realColor = np.maximum(original_color - A.dot(deactivation_time), 0)
-            print("realColor:"+str(realColor) +"\n")
+            print("realColor (CMY):"+str(realColor) +"\n")
 
             return deactivation_time, realColor
         else:
@@ -127,11 +127,19 @@ while True:
             time, realColor1 = d.compute_deactivation_time([c,m,y])
             ledNum+=1
             realR, realG, realB = cmyk_to_rgb(realColor1[0],realColor1[1],realColor1[2],k)
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
             rTime = int(time[0])
             gTime = int(time[1])
             bTime = int(time[2])
 
+<<<<<<< Updated upstream
             # print("time:"+str(time))
+=======
+            print("time:"+str(time))
+>>>>>>> Stashed changes
 
             dataSent += str(realR)+","+str(realG)+","+str(realB)+","+str(rTime)+","+str(gTime)+","+str(bTime)+ "#"
 
