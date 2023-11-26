@@ -130,10 +130,15 @@ class Button{
                                 
                             }
                             code += "*";
+                            String[] lines = {code};
                             print("processing sent "+ledIndex+" led to python");
-                            output.println(code);
-                            output.flush();
-                            output.close();
+                            saveStrings("/Users/kangyixiao/EchoFile/coding/FiberGUI/Fiber_GUI/fiber_GUI/ledsOri.txt",lines);
+
+
+                            // output.println(code);
+                            // output.flush();
+                            // output.close();
+                            // output = createWriter("ledsOri.txt"); 
                             // tell python solver.py to calculate
                             if(enableSpeedControl){
                                 myClient.write(str(maxColorChangingTime));

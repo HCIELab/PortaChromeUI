@@ -51,7 +51,7 @@ void setup() {
     noStroke();
     background(255);
     size(600, 770);
-    output = createWriter("ledsOri.txt"); 
+    // output = createWriter("ledsOri.txt"); 
     
     printArray(Serial.list());
     // myClient is for python(preview function)
@@ -116,7 +116,6 @@ void setup() {
        .setHeight(IMGY_SLIDER_HEIGHT)
        .setValue((MIN_Y + MAX_Y) / 2)
        ;
-    
  
     cp5.addSlider("maxColorChangingTime")
        .setPosition(MAX_COLOR_CHANGING_TIME_SLIDER_X, MAX_COLOR_CHANGING_TIME_SLIDER_Y)
@@ -125,15 +124,12 @@ void setup() {
        .setHeight(MAX_COLOR_CHANGING_TIME_SLIDER_HEIGHT)
        .setValue((MIN_COLOR_CHANGING_TIME + MAX_COLOR_CHANGING_TIME) / 2)
        ;
-    
-
-    
     canvas.drawGUI();
 }
 
 void draw() {
     background(255);
-    canvas.updateGUI();
+    
     
     if (!testMode && myPort.available() > 0) 
     {  // If data is available,
@@ -157,6 +153,7 @@ void draw() {
             updateFiberRealColor(lines[0]);
         }
     }
+    canvas.updateGUI();
 }
 
 // update Fiber RealColor from the date received from solver.py
