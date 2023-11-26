@@ -21,6 +21,7 @@ FULL_DEACTIVATION_TIME = [[72,160,240],[200,35,40],[1000,80,3]]
 RGB_SCALE = 255
 CMYK_SCALE = 1
 
+
 def rgb_to_cmyk(r, g, b):
     if (r, g, b) == (0, 0, 0):
         # black
@@ -63,7 +64,9 @@ class Deactivation:
 
     def compute_deactivation_time(self,
                                   target_color,
-                                  original_color=[1, 1, 1]):
+                                  bound = None,
+                                  original_color=[1, 1, 1]
+                                  ):
         color_to_deactivate = np.array(original_color) - np.array(target_color)
         
         A = self.deactivation_speed
@@ -77,7 +80,11 @@ class Deactivation:
 
 
         # Perform optimization with constraints
-        bounds = [(0, None)] * 3
+        if bound:
+            print("bound:"+str(bound))
+            bounds = [(0, bound)] * 3
+        else:
+            bounds = [(0, None)] * 3
         results = minimize(objective, [3,3,3], bounds=bounds)
         
 
@@ -85,6 +92,7 @@ class Deactivation:
             deactivation_time = results.x
             realColor = np.maximum(original_color - A.dot(deactivation_time), 0)
             print("realColor (CMY):"+str(realColor) +"\n")
+            print("deactivation_time:"+str(deactivation_time) +"\n")
 
             return deactivation_time, realColor
         else:
@@ -100,21 +108,23 @@ s.bind((HOST, PORT))
 s.listen(1)
 conn, addr = s.accept()
 print('Connected by', addr)
-dataSent=""
-ledNum=0
+
 
 while True:
     data = conn.recv(1024).decode("utf-8")
     # if data is not None:
     #     print('Received:'+ data)
+    dataSent=""
+    ledNum=0
 
-    if data =="1":
+    if data:
+        maxColorChangingTime = 0
         # read colors of leds sent by processing
-        fread = open("ledsOri.txt","r")
+        fread = open("/Users/kangyixiao/EchoFile/coding/FiberGUI/Fiber_GUI/fiber_GUI/ledsOri.txt","r")
         rgbs = fread.read().split("#")
         fread.close()
         # write colors of leds after deactivation
-        fwirte = open("ledsDeactivate.txt","w")
+        fwirte = open("/Users/kangyixiao/EchoFile/coding/FiberGUI/Fiber_GUI/fiber_GUI/ledsDeactivate.txt","w")
         for i in range(len(rgbs)-1):
 
             color = rgbs[i].split(',')
@@ -124,38 +134,32 @@ while True:
           
             # print(color) # Paging Python!
             d = Deactivation();
-            time, realColor1 = d.compute_deactivation_time([c,m,y])
+            if data == "1":
+                time, realColor1 = d.compute_deactivation_time([c,m,y])
+            else:
+                time, realColor1 = d.compute_deactivation_time([c,m,y], bound = int(data))
             ledNum+=1
             realR, realG, realB = cmyk_to_rgb(realColor1[0],realColor1[1],realColor1[2],k)
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
             rTime = int(time[0])
             gTime = int(time[1])
             bTime = int(time[2])
-
-<<<<<<< Updated upstream
-            # print("time:"+str(time))
-=======
-            print("time:"+str(time))
->>>>>>> Stashed changes
-
+            maxColorChangingTime = max(maxColorChangingTime, rTime, gTime, bTime)
             dataSent += str(realR)+","+str(realG)+","+str(realB)+","+str(rTime)+","+str(gTime)+","+str(bTime)+ "#"
 
-        print("dataSent"+dataSent)
-        print("ledNum"+str(ledNum))
+        print("dataSent:")
+        print(dataSent)
+
         fwirte.write(dataSent)
         fwirte.close()
         # send dataSent to socket 
-        conn.send("0\n".encode("utf-8"))
+        strSend = str(int(maxColorChangingTime))+ "\n"
+        conn.send(strSend.encode("utf-8"))
 
 
 
 conn.close()
 # optionally put a loop here so that you start 
 # listening again after the connection closes
-
 
 
 

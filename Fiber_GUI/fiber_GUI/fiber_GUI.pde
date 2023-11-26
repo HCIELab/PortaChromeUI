@@ -19,7 +19,9 @@ boolean hideColorWheel = false;
 boolean isShowRealColor=false;
 boolean hasFiber = false;
 boolean testMode = false;
-
+boolean enableSpeedControl = false;
+int maxColorChangingTime = 0; // the max time bound set by slider
+int colorChangingTime = 0; // the color changing time calculated by the solver.py
 
 ControlP5 cp5;
 ColorWheel cw;
@@ -48,7 +50,7 @@ void setup() {
     colorMode(RGB, 255, 255, 255);
     noStroke();
     background(255);
-    size(600, 720);
+    size(600, 770);
     output = createWriter("ledsOri.txt"); 
     
     printArray(Serial.list());
@@ -115,6 +117,17 @@ void setup() {
        .setValue((MIN_Y + MAX_Y) / 2)
        ;
     
+ 
+    cp5.addSlider("maxColorChangingTime")
+       .setPosition(MAX_COLOR_CHANGING_TIME_SLIDER_X, MAX_COLOR_CHANGING_TIME_SLIDER_Y)
+       .setRange(MIN_COLOR_CHANGING_TIME, MAX_COLOR_CHANGING_TIME)
+       .setWidth(MAX_COLOR_CHANGING_TIME_SLIDER_WID)
+       .setHeight(MAX_COLOR_CHANGING_TIME_SLIDER_HEIGHT)
+       .setValue((MIN_COLOR_CHANGING_TIME + MAX_COLOR_CHANGING_TIME) / 2)
+       ;
+    
+
+    
     canvas.drawGUI();
 }
 
@@ -133,7 +146,11 @@ void draw() {
         String input = myClient.readStringUntil(byte('\n'));
         
         if (input != null) {
+            if (input.endsWith("\n")) {
+            input = input.substring(0, input.length() - 1);
+            }
             println("input: " + input);
+            colorChangingTime = Integer.parseInt(input);
             String[] lines = loadStrings("ledsDeactivate.txt");
             println("lines:" + lines[0]);
             
@@ -215,6 +232,7 @@ void mouseClicked() {
     canvas.colorPickerBlackBtn.checkBtnClicked();
     canvas.colorPickerYellowBtn.checkBtnClicked();
     canvas.colorPickerWhiteBtn.checkBtnClicked();
+    canvas.speedControlBtn.checkBtnClicked();
 }
 
 

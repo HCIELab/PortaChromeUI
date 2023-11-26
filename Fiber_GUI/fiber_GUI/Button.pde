@@ -135,7 +135,12 @@ class Button{
                             output.flush();
                             output.close();
                             // tell python solver.py to calculate
-                            myClient.write("1");
+                            if(enableSpeedControl){
+                                myClient.write(str(maxColorChangingTime));
+                            }
+                            else{
+                                myClient.write("1");
+                            }
                             isShowRealColor = true;
                             currColor = pressColor;
                         }
@@ -177,6 +182,15 @@ class Button{
                     
                     
                     break;
+                }
+                case 7:{
+                    enableSpeedControl = !enableSpeedControl;
+                    if(enableSpeedControl){
+                        currColor = pressColor;
+                    }
+                    else{
+                        currColor = noPressColor;
+                    }
                 }
             }
         }

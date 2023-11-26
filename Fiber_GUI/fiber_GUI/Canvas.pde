@@ -31,6 +31,7 @@ class Canvas{
   Button colorPickerBlackBtn;
   Button colorPickerYellowBtn;
   Button colorPickerWhiteBtn;
+  Button speedControlBtn;
 
   String bgImgPath="";
   // toggle button control the view (back or front)
@@ -72,6 +73,7 @@ class Canvas{
     colorPickerYellowBtn = new Button(470,450,70,50,color(255,255,0),color(255,255,0),"",6);
     colorPickerBlackBtn = new Button(340,550,70,50,color(0,0,0),color(0,0,0),"",6);
     colorPickerWhiteBtn = new Button(470,550,70,50,color(255,255,255),color(255,255,255),"",6);
+    speedControlBtn = new Button(440,710,20,20,color(0,170,255),color(0,45,90),"",7);
 
     // tint(255, 128);
     brush = new Brush(20,INIT_BURSH_COLOR,true);
@@ -87,7 +89,10 @@ class Canvas{
     text("Scale", IMG_SCALE_SLIDER_X + SLIDER_TEXT_PADDING_X, IMG_SCALE_SLIDER_Y + SLIDER_TEXT_PADDING_Y );
     text("X", IMGX_SLIDER_X + SLIDER_TEXT_PADDING_X, IMGX_SLIDER_Y + SLIDER_TEXT_PADDING_Y );
     text("Y", IMGY_SLIDER_X + SLIDER_TEXT_PADDING_X, IMGY_SLIDER_Y + SLIDER_TEXT_PADDING_Y );
-
+    text("Enable Speed Control", ENABLE_SPEED_CONTROL_X+ SLIDER_TEXT_PADDING_X, ENABLE_SPEED_CONTROL_Y+ SLIDER_TEXT_PADDING_Y );
+    text("Color Changing Time: "+str(colorChangingTime)+"s",150, 630);
+    text("Max time (s)",MAX_COLOR_CHANGING_TIME_SLIDER_X + SLIDER_TEXT_PADDING_X, MAX_COLOR_CHANGING_TIME_SLIDER_Y+ SLIDER_TEXT_PADDING_Y );
+    
     paintLayer.beginDraw();
     picLayer.beginDraw();
     layersMerged.beginDraw();
@@ -126,11 +131,13 @@ class Canvas{
     // importBtn.drawButton();
     addImgBtn.drawButton();
     // colorModeBtn.drawButton();
+    speedControlBtn.drawButton();
     if(hideColorWheel){ 
         colorPickerCyanBtn.drawButton();
         colorPickerBlackBtn.drawButton();
         colorPickerYellowBtn.drawButton();
         colorPickerWhiteBtn.drawButton();
+        
     }
    
 

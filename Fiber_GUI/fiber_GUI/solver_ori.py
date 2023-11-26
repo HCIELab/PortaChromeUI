@@ -140,6 +140,7 @@ conn, addr = s.accept()
 print('Connected by', addr)
 dataSent=""
 ledNum=0
+
 while True:
     data = conn.recv(1024).decode("utf-8")
     # if data is not None:
@@ -152,6 +153,7 @@ while True:
         fread.close()
         # write colors of leds after deactivation
         fwirte = open("ledsDeactivate.txt","w")
+        maxColorChangingTime = 0
         for i in range(len(rgbs)-1):
 
             color = rgbs[i].split(',')
@@ -162,6 +164,8 @@ while True:
             # print(color) # Paging Python!
             d = Deactivation();
             time, realColor1 = d.compute_deactivation_time([c,m,y])
+            maxColorChangingTime = max(maxColorChangingTime,time[0],time[1],time[2])
+
             ledNum+=1
             realR, realG, realB = cmyk_to_rgb(realColor1[0],realColor1[1],realColor1[2],k)
             print("time:"+str(time))
@@ -172,7 +176,8 @@ while True:
         fwirte.write(dataSent)
         fwirte.close()
         # send dataSent to socket 
-        conn.send("0\n".encode("utf-8"))
+        strSend = str(maxColorChangingTime)+ "\n"
+        conn.send(strSend.encode("utf-8"))
     
     
 
