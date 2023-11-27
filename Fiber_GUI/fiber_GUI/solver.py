@@ -120,11 +120,11 @@ while True:
     if data:
         maxColorChangingTime = 0
         # read colors of leds sent by processing
-        fread = open("/Users/kangyixiao/EchoFile/coding/FiberGUI/Fiber_GUI/fiber_GUI/ledsOri.txt","r")
+        fread = open("./ledsOri.txt","r")
         rgbs = fread.read().split("#")
         fread.close()
         # write colors of leds after deactivation
-        fwirte = open("/Users/kangyixiao/EchoFile/coding/FiberGUI/Fiber_GUI/fiber_GUI/ledsDeactivate.txt","w")
+        fwirte = open("./ledsDeactivate.txt","w")
         for i in range(len(rgbs)-1):
 
             color = rgbs[i].split(',')

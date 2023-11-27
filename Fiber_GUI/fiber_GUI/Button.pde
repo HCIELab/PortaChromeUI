@@ -132,7 +132,7 @@ class Button{
                             code += "*";
                             String[] lines = {code};
                             print("processing sent "+ledIndex+" led to python");
-                            saveStrings("/Users/kangyixiao/EchoFile/coding/FiberGUI/Fiber_GUI/fiber_GUI/ledsOri.txt",lines);
+                            saveStrings("./ledsOri.txt",lines);
 
 
                             // output.println(code);
