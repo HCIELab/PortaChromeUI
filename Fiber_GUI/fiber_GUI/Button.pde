@@ -109,6 +109,7 @@ class Button{
                         }
                         code += "*";
                         print(code);
+                        myPort.write(code);
                     }
 
                 case 3 : {
