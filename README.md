@@ -232,3 +232,19 @@ Currently, there is no constrains on the LED shining time. We can add more const
 2. Add the Image back and the sliders
 3. Initialize the fiber with a given shape rather than load LED positions.
 4. Disable the color picker mode
+
+## [20231126 deactivation time display, speed control, multiple time preview](https://plausible-bard-9b1.notion.site/20231126-deactivation-time-display-speed-control-multiple-time-preview-b6a623abd51f4876acc948264f0d8d56?pvs=4)
+
+### color changing time display
+
+![image-20231126152511189](README.assets/image-20231126152511189.png)
+
+After testing the rainbow image, it was found that the maximum time for all colors is 327s. Therefore, I set the maximum color-changing time to 350s.
+
+### Speed control
+
+add a checkbox and a slider to set the max time
+
+### fix bug: multiple-time preview
+
+![image-20231126152530640](README.assets/image-20231126152530640.png)
