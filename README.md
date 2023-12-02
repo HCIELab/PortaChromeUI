@@ -248,3 +248,25 @@ add a checkbox and a slider to set the max time
 ### fix bug: multiple-time preview
 
 ![image-20231126152530640](README.assets/image-20231126152530640.png)
+
+## [20221201 Calculate the color with our dye instead of standard CMY dye](https://plausible-bard-9b1.notion.site/Calculate-the-color-with-our-dye-instead-of-standard-CMY-dye-7489e72b131e4a2bb90d12f231caf647?pvs=4)
+
+```python
+# Pure Cyan: RGB(182,168, 249) 
+# Pure Magenta:RGB(237, 117,140)
+# Pure Yellow: RBG(250, 223, 87)
+def standardCMY_to_ourCMY(c,m,y,k):
+    pureCyan = rgb_to_cmyk(182,168, 249)
+    pureMagenta = rgb_to_cmyk(237, 117,140)
+    pureYellow = rgb_to_cmyk(250, 223, 87)
+
+    resC = c* (pureCyan[0] + pureMagenta[0] + pureYellow[0])
+    resM = m* (pureCyan[1] + pureMagenta[1] + pureYellow[1])
+    resY = y* (pureCyan[2] + pureMagenta[2] + pureYellow[2])
+    resK = k* (pureCyan[3] + pureMagenta[3] + pureYellow[3])
+    return resC, resM, resY, resK
+```
+
+![image-20231201194748186](README.assets/image-20231201194748186.png)
+
+![image-20231201194801938](README.assets/image-20231201194801938.png)

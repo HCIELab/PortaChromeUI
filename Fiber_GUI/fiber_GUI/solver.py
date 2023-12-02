@@ -11,6 +11,8 @@ from scipy.optimize import minimize
 #     (2400.0, 1000.0, 35.0)
 #   ) # Photochromeleon
 
+
+
 # row 1: cyan; row 2: magenta; row 3: yellow
 # col 1: red;  col 2: green  ; col 3: blue
 # FULL_DEACTIVATION_TIME = [[467, 712, 687], [1500, 242, 177], [10000, 900, 20]]
@@ -48,6 +50,22 @@ def cmyk_to_rgb(c,m,y,k):
     g = RGB_SCALE*(1-m)*(1-k)
     b = RGB_SCALE*(1-y)*(1-k)
     return int(r), int(g), int(b)
+
+
+# Pure Cyan: RGB(182,168, 249) 
+# Pure Magenta:RGB(237, 117,140)
+# Pure Yellow: RBG(250, 223, 87)
+def standardCMY_to_ourCMY(c,m,y,k):
+    pureCyan = rgb_to_cmyk(182,168, 249)
+    pureMagenta = rgb_to_cmyk(237, 117,140)
+    pureYellow = rgb_to_cmyk(250, 223, 87)
+
+    resC = c* (pureCyan[0] + pureMagenta[0] + pureYellow[0])
+    resM = m* (pureCyan[1] + pureMagenta[1] + pureYellow[1])
+    resY = y* (pureCyan[2] + pureMagenta[2] + pureYellow[2])
+    resK = k* (pureCyan[3] + pureMagenta[3] + pureYellow[3])
+    return resC, resM, resY, resK
+
 
 class Deactivation:
     debug = False
@@ -139,10 +157,13 @@ while True:
             else:
                 time, realColor1 = d.compute_deactivation_time([c,m,y], bound = int(data))
             ledNum+=1
-            realR, realG, realB = cmyk_to_rgb(realColor1[0],realColor1[1],realColor1[2],k)
+            # the calculated color is in standard CMY dye, now we convert to our dye
+            realColor1 = standardCMY_to_ourCMY(realColor1[0],realColor1[1],realColor1[2],k) 
+            realR, realG, realB = cmyk_to_rgb(realColor1[0],realColor1[1],realColor1[2],realColor1[3])
             rTime = int(time[0])
             gTime = int(time[1])
             bTime = int(time[2])
+            
             maxColorChangingTime = max(maxColorChangingTime, rTime, gTime, bTime)
             dataSent += str(realR)+","+str(realG)+","+str(realB)+","+str(rTime)+","+str(gTime)+","+str(bTime)+ "#"
 
