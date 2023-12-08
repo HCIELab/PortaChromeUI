@@ -25,7 +25,7 @@ int MAX_BRUSH_SIZE = 30;
 int FIBER_NUMBER = 1;
 float PIXEL_WIDTH = 0.3f;
 float PIXEL_HEIGHT = 7.0f;
-float HEX_RADIUS = 45.0f;
+float HEX_RADIUS = 35.0f;
 
 int HORIZONTAL_NUM = 6;
 int VERTICAL_NUM = 6;

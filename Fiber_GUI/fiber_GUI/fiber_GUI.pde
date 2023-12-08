@@ -22,7 +22,7 @@ boolean testMode = false;
 boolean enableSpeedControl = false;
 int maxColorChangingTime = 0; // the max time bound set by slider
 int colorChangingTime = 0; // the color changing time calculated by the solver.py
-
+float rotateHexagon = 0 ; // change to 3.1415926/6 when dealing with 108 leds. 
 ControlP5 cp5;
 ColorWheel cw;
 Canvas canvas = new Canvas();

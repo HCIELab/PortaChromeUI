@@ -119,7 +119,8 @@ class Fiber {
             float worldX = map(pixel.x,0,cameraImgWidth,0,canvasWidth) + topLeftX;
             float worldY = map(pixel.y,0,cameraImgHeight,0,canvasHeight) + topLeftY;
             float worldRadius = map(HEX_RADIUS,0,cameraImgWidth,0,canvasWidth);
-            pixel.drawHexagon(0, worldRadius, worldX, worldY);
+      
+            pixel.drawHexagon(rotateHexagon, worldRadius, worldX, worldY);
 
             // if(firstTime){
             //     println("ledPos:"+worldX+","+worldY);
@@ -224,10 +225,12 @@ class Fibers {
  // process every line in the ledpos file, and output the fibers
 Fibers readFibersFromFile(){
     ArrayList<Fiber> fiberList =  new ArrayList<Fiber>();
-    // String[] lines =loadStrings("ledPos.txt");
-    String[] lines = new String[FIBER_NUMBER];
-    String ledPos = create72LedPos();
-    lines[0] = ledPos;
+    String[] lines = loadStrings("ledPos.txt"); // for 108 leds, change file to ledPos108.txt and float rotateHexagon = 3.1415926/6; (in fiber_GUI.pde), float HEX_RADIUS = 45.0f; in const.pde
+    // String[] lines = 
+
+    // String[] lines = new String[FIBER_NUMBER];
+    // String ledPos = create72LedPos();
+    // lines[0] = ledPos;
     
     int fiberNum = lines.length;
 
