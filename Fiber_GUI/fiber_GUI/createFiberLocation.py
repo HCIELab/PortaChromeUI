@@ -71,10 +71,10 @@
 # # version 2022.12.07, 108 leds
 
 # SHIFT_X = 325
-# SHIFT_Y = 330
+# SHIFT_Y = 30
 # HEX_RADIUS = 50
 # HORIZONTAL_NUM = 18
-# VERTICAL_NUM = 6
+# VERTICAL_NUM = 12
 # ans = ""
 
 # for i in range(HORIZONTAL_NUM):
@@ -86,40 +86,183 @@
 #             y = 4.5 * 1.732 * HEX_RADIUS  - 1.732 * HEX_RADIUS * j + SHIFT_Y
 
 #         ans += str(int(x)) + ',' + str(int(y)) + ';'
+
 # print(ans)
 
 # version 2022.12.07, 216 leds
-SHIFT_X = 500
+# SHIFT_X = 500
+# SHIFT_Y = 30
+# HEX_RADIUS = 40
+# HORIZONTAL_NUM = 6
+# VERTICAL_NUM = 18
+# ans = ""
+
+# for i in range(VERTICAL_NUM):
+#     for j in range(HORIZONTAL_NUM):
+#         y = 1.5 * HEX_RADIUS * i + SHIFT_Y
+#         if i % 2 == 0:
+#             x = 1.732 * HEX_RADIUS * j + 1.732/2 * HEX_RADIUS + SHIFT_X
+#         else:
+#             x = 5 * 1.732 * HEX_RADIUS  - 1.732 * HEX_RADIUS * j + SHIFT_X
+
+#         ans += str(int(x)) + ',' + str(int(y)) + ';'
+
+# m = 11.5* 1.732 * HEX_RADIUS
+# n = 1.5 * HEX_RADIUS * (VERTICAL_NUM-1)
+
+# # ans += '\n'
+
+# for i in range(VERTICAL_NUM):
+#     for j in range(HORIZONTAL_NUM):
+#         y = n - 1.5 * HEX_RADIUS * i + SHIFT_Y
+#         if i % 2 == 0:
+#             x = m - 1.732/2 * HEX_RADIUS - 1.732 * HEX_RADIUS * j + SHIFT_X
+#         else:
+#             x = m - 5 * 1.732 * HEX_RADIUS + 1.732 * HEX_RADIUS * j + SHIFT_X
+#         ans += str(int(x)) + ',' + str(int(y)) + ';'
+
+
+# print(ans)
+       
+# version 2023.12.09, 216 leds, Yunyi
+
+# SHIFT_X = 500
+# SHIFT_Y = 30
+# HEX_RADIUS = 40
+# HORIZONTAL_NUM = 6
+# VERTICAL_NUM = 18
+# ans = []
+
+# # Generate the coordinates in the normal order
+# for i in range(VERTICAL_NUM):
+#     for j in range(HORIZONTAL_NUM):
+#         y = 1.5 * HEX_RADIUS * i + SHIFT_Y
+#         if i % 2 == 0:
+#             x = 1.732 * HEX_RADIUS * j + 1.732/2 * HEX_RADIUS + SHIFT_X
+#         else:
+#             x = 5 * 1.732 * HEX_RADIUS  - 1.732 * HEX_RADIUS * j + SHIFT_X
+
+#         ans.append((int(x), int(y)))
+
+# m = 11.5 * 1.732 * HEX_RADIUS
+# n = 1.5 * HEX_RADIUS * (VERTICAL_NUM - 1)
+
+# for i in range(VERTICAL_NUM):
+#     for j in range(HORIZONTAL_NUM):
+#         y = n - 1.5 * HEX_RADIUS * i + SHIFT_Y
+#         if i % 2 == 0:
+#             x = m - 1.732/2 * HEX_RADIUS - 1.732 * HEX_RADIUS * j + SHIFT_X
+#         else:
+#             x = m - 5 * 1.732 * HEX_RADIUS + 1.732 * HEX_RADIUS * j + SHIFT_X
+
+#         ans.append((int(x), int(y)))
+
+# # Reverse the array
+# ans.reverse()
+
+# # Convert to string
+# ans_str = ';'.join([f'{x},{y}' for x, y in ans])
+
+# print(ans_str)
+
+# version 2023.12.09, 216 LEDs, Yunyi, horizontal
+# SHIFT_X = 500
+# SHIFT_Y = 30
+# HEX_RADIUS = 40
+# HORIZONTAL_NUM = 6
+# VERTICAL_NUM = 18
+# ans = []
+
+# # Adjust these to shift the rotated array as needed
+# NEW_SHIFT_X = 450
+# NEW_SHIFT_Y = 150
+
+# # Calculate the height and width of the original array
+# total_height = 1.5 * HEX_RADIUS * (VERTICAL_NUM - 1)
+# total_width = 1.732 * HEX_RADIUS * (HORIZONTAL_NUM - 1)
+
+# # Generate the coordinates in the normal order and rotate them
+# for i in range(VERTICAL_NUM):
+#     for j in range(HORIZONTAL_NUM):
+#         original_y = 1.5 * HEX_RADIUS * i + SHIFT_Y
+#         if i % 2 == 0:
+#             original_x = 1.732 * HEX_RADIUS * j + 1.732/2 * HEX_RADIUS + SHIFT_X
+#         else:
+#             original_x = 5 * 1.732 * HEX_RADIUS - 1.732 * HEX_RADIUS * j + SHIFT_X
+
+#         # Rotating the array clockwise
+#         x = total_height - (original_y - SHIFT_Y) + NEW_SHIFT_X
+#         y = original_x - SHIFT_X + NEW_SHIFT_Y
+
+#         ans.append((int(x), int(y)))
+
+# m = 11.5 * 1.732 * HEX_RADIUS
+# n = 1.5 * HEX_RADIUS * (VERTICAL_NUM - 1)
+
+# for i in range(VERTICAL_NUM):
+#     for j in range(HORIZONTAL_NUM):
+#         original_y = n - 1.5 * HEX_RADIUS * i + SHIFT_Y
+#         if i % 2 == 0:
+#             original_x = m - 1.732/2 * HEX_RADIUS - 1.732 * HEX_RADIUS * j + SHIFT_X
+#         else:
+#             original_x = m - 5 * 1.732 * HEX_RADIUS + 1.732 * HEX_RADIUS * j + SHIFT_X
+
+#         # Rotating the array clockwise
+#         x = total_height - (original_y - SHIFT_Y) + NEW_SHIFT_X
+#         y = original_x - SHIFT_X + NEW_SHIFT_Y
+
+#         ans.append((int(x), int(y)))
+
+
+# # Reverse the array
+# ans.reverse()
+
+# # Convert to string
+# ans_str = ';'.join([f'{x},{y}' for x, y in ans])
+
+# print(ans_str)
+
+
+# 2023-12-12 Yunyi Customize 9 by 9 
+
+SHIFT_X = 1
 SHIFT_Y = 30
 HEX_RADIUS = 40
-HORIZONTAL_NUM = 6
-VERTICAL_NUM = 18
-ans = ""
+HORIZONTAL_NUM = 9
+VERTICAL_NUM = 8
+ans = []
 
+# Adjust these to shift the rotated array as needed
+NEW_SHIFT_X = 500
+NEW_SHIFT_Y = 250
+
+# Calculate the height and width of the original array
+total_height = 1.5 * HEX_RADIUS * (VERTICAL_NUM - 1)
+total_width = 1.732 * HEX_RADIUS * (HORIZONTAL_NUM - 1)
+
+# Generate the coordinates in the normal order and rotate them
 for i in range(VERTICAL_NUM):
     for j in range(HORIZONTAL_NUM):
-        y = 1.5 * HEX_RADIUS * i + SHIFT_Y
+        original_y = 1.5 * HEX_RADIUS * i + SHIFT_Y
         if i % 2 == 0:
-            x = 1.732 * HEX_RADIUS * j + 1.732/2 * HEX_RADIUS + SHIFT_X
+            original_x = 1.732 * HEX_RADIUS * j + 1.732/2 * HEX_RADIUS + SHIFT_X
         else:
-            x = 5 * 1.732 * HEX_RADIUS  - 1.732 * HEX_RADIUS * j + SHIFT_X
+            original_x = 5 * 1.732 * HEX_RADIUS - 1.732 * HEX_RADIUS * j + SHIFT_X
 
-        ans += str(int(x)) + ',' + str(int(y)) + ';'
+        # Rotating the array clockwise
+        x = total_height - (original_y - SHIFT_Y) + NEW_SHIFT_X
+        y = original_x - SHIFT_X + NEW_SHIFT_Y
 
-m = 11.5* 1.732 * HEX_RADIUS
-n = 1.5 * HEX_RADIUS * (VERTICAL_NUM-1)
-
-# ans += '\n'
-
-for i in range(VERTICAL_NUM):
-    for j in range(HORIZONTAL_NUM):
-        y = n - 1.5 * HEX_RADIUS * i + SHIFT_Y
-        if i % 2 == 0:
-            x = m - 1.732/2 * HEX_RADIUS - 1.732 * HEX_RADIUS * j + SHIFT_X
-        else:
-            x = m - 5 * 1.732 * HEX_RADIUS + 1.732 * HEX_RADIUS * j + SHIFT_X
-        ans += str(int(x)) + ',' + str(int(y)) + ';'
+        ans.append((int(x), int(y)))
 
 
-print(ans)
-       
+
+# Reverse the array
+ans.reverse()
+
+# Convert to string
+ans_str = ';'.join([f'{x},{y}' for x, y in ans])
+
+print(ans_str)
+
+

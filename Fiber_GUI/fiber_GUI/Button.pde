@@ -77,10 +77,11 @@ class Button{
                         // // write led data to myPort
                         String code = "d#";
                         int ledIndex = 0;
+                        
                         // write the display fiber color to the serial port
                         for (int j = 0;j < canvas.allFibers.fibers.size();j++) {
                             Fiber targetFiber = canvas.allFibers.fibers.get(j);
-
+                            print(targetFiber.leds.size());
                             for (int i = 0; i < targetFiber.leds.size() && ledIndex < MAX_LED; i++) {
                                 Pixel p = targetFiber.leds.get(i);
                                 // the acutual rgb of color is grb
@@ -89,8 +90,12 @@ class Button{
                             }
 
                         }
-
-                        code += "*v";
+                        code += "*";
+                        print(code);
+                        myPort.write(code);
+                        
+                        code = "";
+                        code += "v#";
                     
                         
                         ledIndex = 0;
@@ -98,7 +103,7 @@ class Button{
                         for (int j = 0;j < canvas.allFibers.fibers.size();j++) {
                             Fiber targetFiber = canvas.allFibers.fibers.get(j);
                             // print(code+'\n');
-                            print( "size:"+str(targetFiber.ledsRealColor.size())+"\n");
+                            print( "size: "+str(targetFiber.ledsRealColor.size())+"\n");
                             for (int i = 0; i < targetFiber.ledsRealColor.size() && ledIndex < MAX_LED; i++) {
                                 Pixel p = targetFiber.ledsRealColor.get(i);
                                 // the acutual rgb of color is grb

@@ -22,7 +22,7 @@ boolean testMode = false;
 boolean enableSpeedControl = false;
 int maxColorChangingTime = 0; // the max time bound set by slider
 int colorChangingTime = 0; // the color changing time calculated by the solver.py
-float rotateHexagon = 0 ; // change to 3.1415926/6 when dealing with 108 leds. 
+float rotateHexagon = 3.1415926/6 ; // change to 3.1415926/6 when dealing with 108 leds. 
 ControlP5 cp5;
 ColorWheel cw;
 Canvas canvas = new Canvas();
@@ -66,7 +66,7 @@ void setup() {
     else{
         // Open the port you are using at the rate you want: 
         // myPort is for arduino, for the Serial.list[1], the number is the port number of arduino
-        myPort = new Serial(this, Serial.list()[1], 9600);
+        myPort = new Serial(this, Serial.list()[11], 9600);
         myPort.bufferUntil('\n'); 
 
     }
@@ -133,8 +133,8 @@ void draw() {
     
     if (!testMode && myPort.available() > 0) 
     {  // If data is available,
-        String val = myPort.readStringUntil('\n');         // read it and store it in val
-        if (val!= "")println(val); //print it out in the console
+       // String val = myPort.readStringUntil('\n');         // read it and store it in val
+        //if (val!= "")println(val); //print it out in the console
     } 
     if(hideColorWheel)cw.hide();
     else cw.show();
